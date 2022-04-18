@@ -3,11 +3,31 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {Web3ReactProvider} from "@web3-react/core";
+import { MetamaskStateProvider } from "./metamaskReactHook/index";
+import {SnackbarProvider} from "notistack";
+import Web3 from "web3";
+
+function getLibrary(provider) {
+  return new Web3(provider);
+}
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Web3ReactProvider getLibrary={getLibrary}>
+    <MetamaskStateProvider>
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        maxSnack={3}
+      >
+        <App />
+        {/* <MetamaskModal /> */}
+        {/* <VestingOverview/> */}
+      </SnackbarProvider>
+    </MetamaskStateProvider>
+  </Web3ReactProvider>,
   document.getElementById('root')
 );
 
