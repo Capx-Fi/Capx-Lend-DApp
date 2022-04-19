@@ -1,0 +1,78 @@
+/*
+*
+Setup
+*                                                           
+*/ 
+@import './variables.less';
+
+html, body{
+    min-height: 100vh;
+    font-family: @font-family;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    font-smoothing: antialiased !important;
+    font-feature-settings: normal !important;
+    font-variant:normal !important;
+    font-size: @font-size-base + 2;
+    scroll-behavior: smooth;
+    padding: 0;
+    margin: 0;
+}
+main{
+  position: relative;
+}
+a{
+  text-decoration: none;
+}
+.icon {
+  width: 16px;
+  height: auto;
+  fill: #000;
+  transition: fill 0.3s;
+  &.icon-white{
+    fill: #fff;
+  }
+}
+
+#root{
+  overflow-x: hidden;
+}
+
+.anchor-tag{
+  cursor: pointer;
+}
+
+h1{
+  color: @text-color-primary;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+h2{
+  color: @text-color-primary;
+  font-weight: bold;
+}
+
+h3{
+  color: @text-color-primary;
+  font-weight: 600;
+}
+
+h4{
+  color: @text-color-primary;
+}
+
+p{
+  font-size: @font-size-base + 2;
+  color: @text-color-secondary;
+}
+
+.main-wrapper{
+  .main-wrapper-inner{
+    display: flex;
+    .right-content-wrapper{
+      width: 100%;
+      padding: 20px;
+    }
+  }
+}
