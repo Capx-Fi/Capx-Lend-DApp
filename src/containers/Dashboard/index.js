@@ -1,15 +1,23 @@
 import React from "react";
-import { Button } from "antd";
-import { SvgIcon } from "../../components/common";
+import { Tabs } from "antd";
 import "./index.less";
+import BorrowTab from "./BorrowTab";
+import UpcomingPaymentTab from "./UpcomingPaymentTab";
+import LendTab from "./LendTab";
+
+const { TabPane } = Tabs;
 
 const Dashboard = () => {
     return (
-        <div>
-            Dashbaord
-            <Button type="primary">Primary Button</Button>
-            <SvgIcon name="close" viewbox="0 0 19 19" />
-        </div>
+        <Tabs className="capx-tabs" defaultActiveKey="1" type="card">
+            <TabPane tab="Borrow" key="1">
+                <BorrowTab />
+                {/* <UpcomingPaymentTab /> */}
+            </TabPane>
+            <TabPane tab="Lend" key="2">
+                <LendTab />
+            </TabPane>
+        </Tabs>
     )
 }
 

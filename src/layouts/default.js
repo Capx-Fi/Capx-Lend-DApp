@@ -3,19 +3,26 @@ import PropTypes from "prop-types";
 
 import SideBar from "../containers/SideBar";
 import NavigationBar from "../containers/NavigationBar";
+import { Layout } from 'antd';
+
+const { Header, Content, Sider } = Layout;
 
 const DefaultLayout = ({ children, navigationbar, sideBar }) => (
   <React.Fragment>
-    {!navigationbar && <NavigationBar />}
     <main>
-      <div className="main-wrapper">
-        <div className="main-wrapper-inner">
-          {!sideBar && <SideBar />}
-          <div className="right-content-wrapper">
+      <Layout>
+        <Header className="header">
+          {!navigationbar && <NavigationBar />}
+        </Header>
+        <Layout className="main-content">
+          <Sider width={300} className="site-layout-background">
+            {!sideBar && <SideBar />}
+          </Sider>
+          <Content className="right-content-wrapper">
             {children}
-          </div>
-        </div>
-      </div>
+          </Content>
+        </Layout>
+      </Layout>
     </main>
   </React.Fragment>
 );

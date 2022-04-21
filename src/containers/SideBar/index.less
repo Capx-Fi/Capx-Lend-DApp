@@ -1,8 +1,50 @@
 @import "../../assets/less/variables.less";
 
-.sidebar{
+.sidebar-inner{
     background: @sidebar-bg;
     width: 100%;
     max-width: 300px;
     height: calc(100vh - 60px);
+    padding: 40px 30px;
+    .sidebar-menu{
+        ul{
+            list-style-type: none;
+            padding-left: 0;
+            li{
+                margin-bottom: 15px;
+                a{
+                    color: @black;
+                    padding: 6px 15px;
+                    display: flex;
+                    align-items: center;
+                    border-radius: 40px;
+                    font-weight: 600;
+                    .icon{
+                        fill: @grey-color;
+                        margin-right: 8px;
+                    }
+                    &.selected{
+                        background: @white;
+
+                    }
+                }
+            }
+        }
+    }
+    .sidebar-bottom{
+        border-top: 1px solid @black;
+        margin-top: 3.5rem;
+        padding-top: 2.5rem;
+        a{
+            display: block;
+            color: @black;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            .icon{
+                width: 12px;
+                fill: @black;
+                margin-left: 5px;
+            }
+        }
+    }
 }
