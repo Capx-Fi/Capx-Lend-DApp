@@ -194,6 +194,9 @@
                         display: grid;
                         grid-gap: 15px;
                         grid-template-columns: repeat(3, 1fr);
+                        &.four-col{
+                            grid-template-columns: repeat(4, 1fr);
+                        }
                         li{
                             position: relative;
                             &:first-child{
@@ -219,13 +222,13 @@
                 }
                 .additionalinfo-right{
                     width: 100%;
-                    max-width: 300px;
+                    max-width: 350px;
                     border-left: 1px solid @border-color-light;
-                    text-align: center;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     .lqd-loan{
+                        text-align: center;
                         h2{
                             font-size: 21px;
                             .tooltip-icon{
@@ -235,6 +238,7 @@
                         }
                     }
                     .completed-loan{
+                        text-align: center;
                         h2{
                             color: @success-color;
                         }
@@ -244,12 +248,26 @@
                         }
                     }
                     .defaulted-loan{
+                        text-align: center;
                         h2{
                             color: @warning-color;
                         }
                         .icon{
                             width: 60px;
                             fill: @warning-color;
+                        }
+                    }
+                    .replay-loan{
+                        padding: 0 30px;
+                        b{
+                            font-size: 16px;
+                        }
+                    }
+                    .installment-completed{
+                        padding: 0 30px;
+                        width: 100%;
+                        b{
+                            font-size: 16px;
                         }
                     }
                 }
