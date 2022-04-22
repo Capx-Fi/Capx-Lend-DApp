@@ -1,5 +1,5 @@
 import React from "react";
-import LendLogo from "../assets/lend-logo.svg";
+import LendLogo from "../../../assets/images/svg/lend-logo.svg";
 
 function LoadingScreen() {
   return (

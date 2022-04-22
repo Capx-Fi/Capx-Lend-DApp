@@ -1,12 +1,10 @@
-import Dashboard from "./containers/Dashboard";
-// Layout Types
-import { defaultLayout } from "./layouts";
+import Dashboard from './containers/Dashboard';
 
-export const publicRoutes = [
+const routes = [
   {
     path: "/",
-    exact: true,
-    layout: defaultLayout,
-    component: Dashboard
-  },
-]
+    element: <Dashboard />,
+  }
+];
+
+export default routes;

@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs } from "antd";
 import "./index.less";
 import BorrowTab from "./BorrowTab";
-import UpcomingPaymentTab from "./UpcomingPaymentTab";
+// import UpcomingPaymentTab from "./UpcomingPaymentTab";
 import LendTab from "./LendTab";
 
 const { TabPane } = Tabs;
