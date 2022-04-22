@@ -12,7 +12,7 @@ import svgFile from './assets/images/svg/svg-sprite.svg';
 
 import './App.less';
 
-const { Header, Content, Sider } = Layout;
+const { Header, Content, Sider, Footer } = Layout;
 
 const Routes = () => {
   let routes = useRoutes([
@@ -32,13 +32,14 @@ const App = () => {
           <NavigationBar />
         </Header>
         <Layout className="main-content">
-          <Sider width={300} className="site-layout-background">
+          <Sider width={290} className="site-layout-background">
             <SideBar />
           </Sider>
           <Content className="right-content-wrapper">
             <Routes />
           </Content>
         </Layout>
+        <Footer className='main-footer'>© 2021 Capx All rights reserved.</Footer>
       </Layout>
     </>
   );

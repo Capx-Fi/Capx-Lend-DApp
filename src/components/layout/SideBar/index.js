@@ -9,9 +9,9 @@ const SideBar = () => {
         <div className="sidebar-inner">
             <div className="sidebar-menu">
                 <ul>
-                    <li><NavLink to="/lend-borrow" className={(navData) => (navData.isActive ? "selected" : '')}><SvgIcon name="rect" viewbox="0 0 24 24" /> Lend/Borrow</NavLink></li>
-                    <li><NavLink to="/" className={(navData) => (navData.isActive ? "selected" : '')}><SvgIcon name="rect" viewbox="0 0 24 24" /> Dashboard</NavLink></li>
-                    <li><NavLink to="/Liquidation" className={(navData) => (navData.isActive ? "selected" : '')}><SvgIcon name="rect" viewbox="0 0 24 24" /> Liquidation</NavLink></li>
+                    <li><NavLink to="/lend-borrow" className={(navData) => (navData.isActive ? "selected" : '')}><SvgIcon name="lend-borrow" viewbox="0 0 21.539 17.647" /> Lend/Borrow</NavLink></li>
+                    <li><NavLink to="/" className={(navData) => (navData.isActive ? "selected" : '')}><SvgIcon name="dashboard" viewbox="0 0 20 20" /> Dashboard</NavLink></li>
+                    <li><NavLink to="/Liquidation" className={(navData) => (navData.isActive ? "selected" : '')}><SvgIcon name="liquidation" viewbox="0 0 20 20" /> Liquidation</NavLink></li>
                 </ul>
             </div>
             <div className="sidebar-bottom">
