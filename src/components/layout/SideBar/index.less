@@ -1,72 +1,76 @@
 @import "../../../assets/less/_variables.less";
 
-.sidebar-inner{
-    background: @sidebar-bg;
-    width: 100%;
-    max-width: 300px;
-    height: calc(100vh - 60px);
-    padding: 40px 30px;
-    border-right: 1px solid #404040;
-    transition: all ease-in-out 0.4s;
-    .sidebar-menu{
-        ul{
-            list-style-type: none;
-            padding-left: 0;
-            li{
-                margin-bottom: 15px;
-                a{
-                    color: @white;
-                    padding: 6px 15px;
-                    display: flex;
-                    align-items: center;
-                    border-radius: 40px;
-                    font-weight: 600;
-                    transition: all ease-in-out 0.2s;
-                    .icon{
-                        fill: @grey-color;
-                        margin-right: 8px;
-                    }
-                    &:hover{
-                        background: #262626;
-                        transition: all ease-in-out 0.2s;
-                    }
-                    &.selected{
-                        background: #233039;
-                        transition: all ease-in-out 0.4s;
-                    }
-                }
-            }
-        }
-        .sidebar-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 8px;
-        }
-    }
-    .sidebar-bottom{
-        border-top: 1px solid #404040;
-        margin-top: 3.5rem;
-        padding-top: 2.5rem;
-        a{
-            display: block;
-            color: @white;
-            margin-bottom: 1.5rem;
-            margin-left:1rem;
-            font-weight: 600;
-            .icon{
-                width: 12px;
-                fill: @white;
-                margin-left: 5px;
-            }
+.sidebar-inner {
+	background: @sidebar-bg;
+	width: 100%;
+	max-width: 300px;
+	height: calc(100vh - 60px);
+	padding: 40px 30px;
+	border-right: 1px solid #404040;
+	transition: all ease-in-out 0.4s;
+	.sidebar-menu {
+		ul {
+			list-style-type: none;
+			padding-left: 0;
+			li {
+				margin-bottom: 15px;
+				a {
+					color: @white;
+					padding: 6px 15px;
+					display: flex;
+					align-items: center;
+					border-radius: 40px;
+					font-weight: 600;
+					transition: all ease-in-out 0.2s;
+					.icon {
+						fill: @grey-color;
+						margin-right: 8px;
+					}
+					&:hover {
+						background: #262626;
+						transition: all ease-in-out 0.2s;
+					}
+					&.selected {
+						background: #233039;
+						transition: all ease-in-out 0.4s;
+					}
+				}
+			}
+		}
+		.sidebar-icon {
+			width: 20px;
+			height: 20px;
+			margin-right: 8px;
+		}
+	}
+	.sidebar-bottom {
+		border-top: 1px solid #404040;
+		margin-top: 3.5rem;
+		padding-top: 2.5rem;
+		a {
+			display: flex;
+			align-content: center;
+			align-items: center;
+			color: @white;
+			margin-bottom: 1.5rem;
+			margin-left: 1rem;
+			font-weight: 600;
+			.icon {
+				width: 12px;
+				fill: @white;
+				margin-left: 5px;
+			}
 
-            &:hover{
-                text-decoration: underline;
-            }
-        }
-        .sidebar-icon {
-            width: 20px;
-            height: 20px;
-            margin-left: 8px;
-        }
-    }
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+		.sidebar-icon {
+			&.icon {
+				width: 24px;
+				height: 24px;
+				margin-left: 8px;
+			}
+		}
+	}
 }

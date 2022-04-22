@@ -1,18 +1,66 @@
-@import "../../../assets/less/_variables";
+@import "../../../assets/less/_variables.less";
 
-.header{
-    background: @secondary-color;
-    color: @white;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .logo{
-        font-size: 26px;
-        height: 100%;
-    }
-    .top-bar-right{
-        font-size: 26px;
-        height: 100%;
-    }
+.ant-layout-header {
+	&.header {
+		background: #151517;
+		color: @white;
+		height: 60px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.logo {
+		&.icon {
+			width: 10rem;
+			height: 100%;
+		}
+	}
+	.top-bar-right {
+		display: flex;
+		align-items: center;
+	}
+	.notification {
+		display: flex;
+		align-items: center;
+		padding-right: 1.5rem;
+		height: 2.5rem;
+		border-right: 1px solid #4d4d4d;
+		.icon {
+			width: auto;
+			height: 1.5rem;
+		}
+	}
+	.ant-dropdown-link {
+		cursor: pointer;
+		margin: 0 1rem;
+		padding: 1rem;
+		width: fit-content;
+		height: 1.5rem;
+		background-color: #262626;
+		border: 2px solid #4d4d4d;
+		border-radius: 12px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.address {
+		display: flex;
+		cursor: pointer;
+		justify-content: center;
+		align-items: center;
+		padding: 1rem;
+		width: fit-content;
+		height: 1.5rem;
+		background-color: #0b0c0c;
+		border: 2px solid #4d4d4d;
+		border-radius: 12px;
+		.address-right {
+			display: flex;
+			align-items: center;
+			height: 2rem;
+			padding-right: 1rem;
+			margin-right: 0.5rem;
+			border-right: 1px solid #4d4d4d;
+		}
+	}
 }

@@ -8,17 +8,17 @@ import LendTab from "./LendTab";
 const { TabPane } = Tabs;
 
 const Dashboard = () => {
-    return (
-        <Tabs className="capx-tabs" defaultActiveKey="1" type="card">
-            <TabPane tab="Borrow" key="1">
-                <BorrowTab />
-                {/* <UpcomingPaymentTab /> */}
-            </TabPane>
-            <TabPane tab="Lend" key="2">
-                <LendTab />
-            </TabPane>
-        </Tabs>
-    )
-}
+	return (
+		<Tabs className='capx-tabs' defaultActiveKey='1' type='card'>
+			<TabPane tab='Borrow' key='1'>
+				<BorrowTab />
+				{/* <UpcomingPaymentTab /> */}
+			</TabPane>
+			<TabPane tab='Lend' key='2'>
+				<LendTab />
+			</TabPane>
+		</Tabs>
+	);
+};
 
-export default Dashboard
+export default Dashboard;
