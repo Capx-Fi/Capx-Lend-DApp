@@ -63,3 +63,61 @@
 		}
 	}
 }
+
+.capx-sider{
+    .ant-btn{
+        &.menu-link{
+            background: @menu-active;
+            border: 1px solid @border-color-base;
+            width: 24px;
+            height: 24px;
+            border-radius: 24px;
+            position: absolute;
+            right: 0;
+            top: 20px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            right: -12px;
+            z-index: 2;
+            .icon{
+                width: 6px;
+                fill: @text-white;
+            }
+            &:hover, &:focus{
+                background: @menu-active;
+                border-color: @white;
+            }
+        }
+    }
+    &.ant-layout-sider-collapsed{
+        .sidebar-inner{
+            padding-left: 10px;
+            padding-right: 10px;
+            text-align: center;
+            .sidebar-menu{
+                li{
+                    a{
+                        font-size: 0;
+                        padding: 5px;
+                        text-align: center;
+                        .icon{
+                            margin: auto;
+                        }
+                    }
+                }
+            }
+            .sidebar-bottom{
+                a{
+                    font-size: 9px;
+                    margin-left: 0;
+                    .icon{
+                        width: 18px;
+                        margin-left: 2px;
+                    }
+                }
+            }
+        }
+    }
+}

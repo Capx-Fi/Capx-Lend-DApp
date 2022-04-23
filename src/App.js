@@ -1,7 +1,7 @@
 import React from "react";
 import SvgSprite from "./utils/SvgSpriteLoader";
 import { useRoutes } from "react-router-dom";
-import { Layout } from "antd";
+import { Layout, Button } from "antd";
 
 import SideBar from "./components/layout/SideBar";
 import NavigationBar from "./components/layout/NavigationBar";
@@ -12,6 +12,7 @@ import LendBorrow from "./containers/Lend-Borrow";
 import svgFile from "./assets/images/svg/svg-sprite.svg";
 
 import "./App.less";
+import { SvgIcon } from "./components/common";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -25,6 +26,10 @@ const Routes = () => {
 };
 
 const App = () => {
+  const [collapsed, setCollapsed] = React.useState(false);
+  const toggleCollapsed = () => {
+      setCollapsed(!collapsed);
+  };
 	return (
 		<>
 			<SvgSprite url={svgFile} />
@@ -33,8 +38,11 @@ const App = () => {
 					<NavigationBar />
 				</Header>
 				<Layout className="main-content">
-					<Sider width={290} className="site-layout-background">
+					<Sider width={290} className="capx-sider" collapsed={collapsed}>
 						<SideBar />
+            <Button className="menu-link" type="link" onClick={toggleCollapsed} style={{ marginBottom: 16 }}>
+                {collapsed ? <SvgIcon name="chevron-right" viewbox="0 0 5.333 9.333" /> : <SvgIcon name="chevron-left" viewbox="0 0 5.333 9.333" />}
+            </Button>
 					</Sider>
 					<Content className="right-content-wrapper">
 						<Routes />
