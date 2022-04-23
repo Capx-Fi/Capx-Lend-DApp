@@ -11,7 +11,7 @@ const BorrowTab = (collapsed) => {
     const onChange = e => {
         console.log('radio checked', e.target.value);
         setValue(e.target.value);
-      };
+    };
     return (
         <>
             <Row>
@@ -39,15 +39,33 @@ const BorrowTab = (collapsed) => {
                 </Col>
             </Row>
             <Row className="heading-row">
-                <Col>
-                    <h2>Orders</h2>
+                <Col className="left-col">
+                    <Select dropdownClassName="capx-dropdown" suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />} placeholder="Loan Type" bordered={false}>
+                        <Option value="1">Loan Type</Option>
+                        <Option value="2">Loan Type</Option>
+                    </Select>
+                    <Select dropdownClassName="capx-dropdown" suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />} placeholder="Company Asset" bordered={false}>
+                        <Option value="1">Company Asset</Option>
+                        <Option value="2">Company Asset</Option>
+                    </Select>
+                    <Select dropdownClassName="capx-dropdown" suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />} placeholder="Lending Asset" bordered={false}>
+                        <Option value="1">Lending Asset</Option>
+                        <Option value="2">Lending Asset</Option>
+                    </Select>
+                    <Select dropdownClassName="capx-dropdown" suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />} placeholder="Loan Status" bordered={false}>
+                        <Option value="1">Loan Status</Option>
+                        <Option value="2">Loan Status</Option>
+                    </Select>
                 </Col>
-                <Col>
+                <Col className="right-col">
                     <Select dropdownClassName="capx-dropdown" suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />} placeholder="Sort By" style={{ minWidth: 120 }}>
                         <Option value="sb1">Order Status</Option>
                         <Option value="sb2">Order Type</Option>
                         <Option value="sb3">Health Factor</Option>
                     </Select>
+                </Col>
+                <Col sm="12">
+                    <h2>All Projects</h2>
                 </Col>
             </Row>
             <Row>
