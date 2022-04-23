@@ -1,7 +1,7 @@
 @import "../../../assets/less/_variables.less";
 
 .sidebar-inner {
-	background: @sidebar-bg;
+	background: @primary-color;
 	width: 100%;
 	max-width: 300px;
 	height: calc(100vh - 60px);
@@ -15,24 +15,21 @@
 			li {
 				margin-bottom: 15px;
 				a {
-					color: @white;
-					padding: 6px 15px;
+					color: @text-white;
+					padding: 10px 18px;
 					display: flex;
 					align-items: center;
 					border-radius: 40px;
-					font-weight: 600;
-					transition: all ease-in-out 0.2s;
+					opacity: 0.5;
 					.icon {
 						fill: @grey-color;
-						margin-right: 8px;
-					}
-					&:hover {
-						background: #262626;
-						transition: all ease-in-out 0.2s;
+						margin-right: 10px;
+						width: 18px;
 					}
 					&.selected {
-						background: #233039;
-						transition: all ease-in-out 0.4s;
+						background: @menu-active;
+						font-weight: 600;
+						opacity: 1;
 					}
 				}
 			}
@@ -44,20 +41,18 @@
 		}
 	}
 	.sidebar-bottom {
-		border-top: 1px solid #404040;
-		margin-top: 3.5rem;
+		border-top: 1px solid @border-color-base;
+		margin-top: 5.5rem;
 		padding-top: 2.5rem;
 		a {
-			display: flex;
-			align-content: center;
-			align-items: center;
-			color: @white;
+			display: block;
+			color: @text-color-primary;
 			margin-bottom: 1.5rem;
 			margin-left: 1rem;
 			font-weight: 600;
 			.icon {
 				width: 12px;
-				fill: @white;
+				fill: @text-color-primary;
 				margin-left: 5px;
 			}
 
