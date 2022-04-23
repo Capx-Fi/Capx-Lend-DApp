@@ -16,7 +16,7 @@ const BorrowTab = (collapsed) => {
         <>
             <Row>
                 <Col>
-                    <div className="capx-card dashboard-statics-card">
+                    <div className="capx-card-secondary dashboard-statics-card">
                         <ul>
                             <li>
                                 <p>Borrowed Amount</p>

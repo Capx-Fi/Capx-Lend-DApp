@@ -12,7 +12,7 @@ html, body{
     scroll-behavior: smooth;
     padding: 0;
     margin: 0;
-    background: @primary-color;
+    background: @secondary-color;
     color: @text-white;
 }
 main{
@@ -99,13 +99,10 @@ b, span{
     .ant-select-selector{
       height: 40px;
       line-height: 40px;
-      background-color: @card-bg;
+      background-color: @select-bg-secondary;
       color: @black;
-      border: 1px solid @black;
+      border: 1px solid @border-color-base;
       border-radius: 6px;
-      &:hover, &:focus{
-        border: 1px solid @black;
-      }
       input{
         height: 40px !important;
         line-height: 100%;
@@ -116,6 +113,12 @@ b, span{
       .ant-select-selection-placeholder{
         line-height: 38px;
         color: @black;
+      }
+    }
+    &:hover, &:focus{
+      .ant-select-selector{
+        border-color: @success-color !important;
+        box-shadow: none !important;
       }
     }
     .ant-select-arrow{
@@ -150,6 +153,14 @@ b, span{
 .capx-card{
   background: @card-gradient;
   border: 1px solid @border-color-base;
+  padding: 15px 25px;
+  border-radius: 1rem;
+  margin-bottom: 15px;
+}
+
+.capx-card-secondary{
+  background: @card-bg;
+  border: 1px solid @border-card;
   padding: 15px 25px;
   border-radius: 1rem;
   margin-bottom: 15px;

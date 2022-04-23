@@ -7,25 +7,26 @@
                 display: none;
             }
             .ant-tabs-nav-list{
-                background: @silver-bg;
-                border-radius: 3px;
+                background: @dark-bg;
+                border-radius: 12px;
+                padding: 4px;
+                border: 1px solid @border-dark-green;
                 .ant-tabs-tab{
                     border: 0;
                     font-size: 16px;
-                    height: 36px;
+                    height: 34px;
                     padding: 0 26px;
-                    &:first-child{
-                        border-radius: 5px 0 0 5px;
-                    }
-                    &:nth-child(2){
-                        border-radius: 0 5px 5px 0 !important;
-                    }
+                    background: none;
+                    border-radius: 10px;
                     .ant-tabs-tab-btn{
-                        color: @black;
+                        color: @text-white;
                         font-weight: 600;
                     }
                     &.ant-tabs-tab-active{
-                        background: @tab-bg;
+                        background: @tab-gradient;
+                        .ant-tabs-tab-btn{
+                            color: @dark-bg;
+                        }
                     }
                 }
             }
@@ -54,32 +55,11 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         li{
-            padding-left: 30px;
             position: relative;
-            &::before{
-                content: ' ';
-                border-right: 0.25px solid rgba(@black, 0.3);
-                height: 70%;
-                width: 1px;
-                display: block;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                margin: auto;
-                left: 0;
-            }
-            &:first-child{
-                padding-left: 0;
-                &::before{
-                    display: none;
-                }
-            }
-            &:last-child{
-                border: 0;
-            }
             p{
                 font-size: 15px;
                 margin-bottom: 0;
+                color: @text-muted;
             }
             h4{
                 font-size: 20px;
