@@ -3,8 +3,6 @@ import { Menu, Dropdown } from "antd";
 import { SvgIcon } from "../../common";
 import "./index.less";
 
-const { Option } = Select;
-
 const NavigationBar = () => {
 	const menu = (
 		<Menu
