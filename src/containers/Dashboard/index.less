@@ -38,8 +38,8 @@
     align-items: center;
     padding: 5px 0 12px 0;
     h2{
-        font-size: 22px;
-        color: @black;
+        font-size: 30px;
+        color: @text-white;
         margin-bottom: 0;
     }
     .ant-select{
@@ -71,6 +71,10 @@
 
 .orderlist-card{
     margin-bottom: 15px;
+    .card-title{
+        font-size: 20px;
+        font-weight: 700;
+    }
     .capx-card{
         margin-bottom: 0;
     }
@@ -97,12 +101,24 @@
                 background: @light-bg;
                 border: 1px solid @border-color-light;
                 font-size: 14px;
-                padding: 4px 20px;
+                height: 32px;
+                line-height: 32px;
+                padding: 0 20px;
                 border-radius: 20px;
                 margin-right: 10px;
                 font-weight: 500;
+                display: inline-block;
                 &:last-child{
                     margin-right: 0;
+                }
+                &.badge-green{
+                    border: 1px solid @success-color;
+                    color: @text-white;
+                    background: none;
+                }
+                &.badge-expired{
+                    background: @red-color;
+                    border-color: @red-color;
                 }
             }
         }
@@ -123,6 +139,9 @@
             right: 0;
             bottom: 0;
             transition: all ease-in 0.2s;
+            .icon{
+                fill: #B6E2C5;
+            }
             &.up{
                 transform: rotate(-180deg);
             }
@@ -153,7 +172,7 @@
         }
     }
     .additional-info{
-        background: @light-bg;
+        background: @card-bg2;
         border: 1px solid rgba(@black, 0.5);
         border-top: 0;
         border-radius:0 0 5px 5px;
@@ -185,17 +204,20 @@
                             p{
                                 font-size: 13px;
                                 margin-bottom: 0;
+                                color: @text-white;
+                                opacity: 0.7;
                                 .tooltip-icon{
                                     width: 11px;
                                     margin-bottom: -1px;
                                     margin-left: 3px;
+                                    fill: @tooltip-icon;
                                 }
                             }
                             h4{
                                 font-size: 15px;
                                 margin-bottom: 0;
                                 font-weight: 600;
-                                color: @black;
+                                color: @text-white;
                             }
                         }
                     }

@@ -43,9 +43,10 @@ const BorrowTab = (collapsed) => {
                     <h2>Orders</h2>
                 </Col>
                 <Col>
-                    <Select suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />} placeholder="Sort By" style={{ width: 120 }}>
-                        <Option value="sb1">Date</Option>
-                        <Option value="sb2">Name</Option>
+                    <Select dropdownClassName="capx-dropdown" suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />} placeholder="Sort By" style={{ minWidth: 120 }}>
+                        <Option value="sb1">Order Status</Option>
+                        <Option value="sb2">Order Type</Option>
+                        <Option value="sb3">Health Factor</Option>
                     </Select>
                 </Col>
             </Row>
@@ -54,6 +55,7 @@ const BorrowTab = (collapsed) => {
                     <CapxScrollbars style={{ height: "59vh" }}>
                         <div className="order-list">
                             <div className="orderlist-card">
+                                <h4 className="card-title">Expired</h4>
                                 <div className="capx-card">
                                     <div className="ordercard-upper">
                                         <div className="upper-left">
@@ -65,8 +67,8 @@ const BorrowTab = (collapsed) => {
                                             </span>
                                         </div>
                                         <div className="upper-right">
-                                            <span className="badge">Pending</span>
-                                            <span className="badge">Single Payment</span>
+                                            <span className="badge badge-green">Single Payment</span>
+                                            <span className="badge badge-expired">Expired</span>
                                         </div>
                                     </div>
                                     <div className="ordercard-bottom">
