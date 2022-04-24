@@ -41,9 +41,11 @@ function AccordionCard({
           </div>
           <div className="upper-right">
             <span className="badge badge-green">{paymentType}</span>
-            <span className={`badge badge-${status.toLowerCase()}`}>
-              {status}
-            </span>
+            {status && (
+              <span className={`badge badge-${status.toLowerCase()}`}>
+                {status}
+              </span>
+            )}
           </div>
         </div>
         <div className="ordercard-bottom">
