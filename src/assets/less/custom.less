@@ -64,7 +64,7 @@ p{
   color: @text-color-primary;
 }
 
-b, span{
+b {
   color: @text-color-primary;
 }
 
@@ -74,6 +74,19 @@ b, span{
     border: 1px solid @border-color-base;
     color: @black;
     border-radius: 4px;
+  }
+  &.ant-btn-secondary{
+    background: @btn-gradient;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    color: @secondary-color;
+    font-weight: bold;
+    &.ant-btn-lg{
+      height: 50px;
+      line-height: 50px;
+      padding: 0 30px;
+    }
   }
 }
 
@@ -95,6 +108,18 @@ b, span{
   }
 }
 
+.ant-input{
+  height: 40px;
+  line-height: 40px;
+  background-color: @select-bg-secondary;
+  color: @text-white;
+  border: 1px solid @border-dark-green;
+  border-radius: 6px;
+  &:focus{
+    border-color: @success-color;
+  }
+}
+
 .ant-select{
   &:not(.ant-select-customize-input){
     .ant-select-selector{
@@ -102,7 +127,7 @@ b, span{
       line-height: 40px;
       background-color: @select-bg-secondary;
       color: @text-white;
-      border: 1px solid @border-color-base;
+      border: 1px solid @border-dark-green;
       border-radius: 6px;
       input{
         height: 40px !important;
