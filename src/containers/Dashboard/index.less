@@ -41,9 +41,29 @@
         font-size: 30px;
         color: @text-white;
         margin-bottom: 0;
+        font-weight: 700;
     }
-    .ant-select{
-        float: right;
+    .left-col{
+        padding-bottom: 20px;
+        .ant-select{
+            .ant-select-selector{
+                color: #A1A1A1;
+                .ant-select-selection-placeholder{
+                    color: #A1A1A1;
+                }
+            }
+            .ant-select-arrow{
+                .icon{
+                    fill: #A1A1A1;
+                }
+            }
+        }
+    }
+    .right-col{
+        padding-bottom: 20px;
+        .ant-select{
+            float: right;
+        }
     }
 }
 
@@ -77,10 +97,11 @@
     }
     .capx-card{
         margin-bottom: 0;
+        position: relative;
+        z-index: 1;
     }
     .ordercard-upper{
         display: flex;
-        align-items: center;
         justify-content: space-between;
         .upper-left{
             b{
@@ -91,6 +112,13 @@
                 display: inline-block;
                 margin-bottom: -2px;
                 margin-left: 4px;
+                width: 14px;
+            }
+            .helthfactor-title{
+                color: #ABFAB6;
+                b{
+                    color: #ABFAB6;
+                }
             }
         }
         .upper-right{
@@ -119,6 +147,30 @@
                 &.badge-expired{
                     background: @red-color;
                     border-color: @red-color;
+                }
+                &.badge-funded{
+                    background: #82735F;
+                    border-color: #82735F;
+                }
+                &.badge-active{
+                    background: #48547E;
+                    border-color: #48547E;
+                }
+                &.badge-defaulted{
+                    background: #BF0000;
+                    border-color: #BF0000;
+                }
+                &.badge-completed{
+                    background: #49C574;
+                    border-color: #49C574;
+                }
+                &.badge-cancelled{
+                    background: #238B92;
+                    border-color: #238B92;
+                }
+                &.badge-pending{
+                    background: #7A5E34;
+                    border-color: #7A5E34;
                 }
             }
         }
@@ -173,11 +225,12 @@
     }
     .additional-info{
         background: @card-bg2;
-        border: 1px solid rgba(@black, 0.5);
+        border: 1px solid @border-color-base;
         border-top: 0;
-        border-radius:0 0 5px 5px;
+        border-radius: 0 0 16px 16px;
+        margin-top: -12px;
         .additional-info-inner{
-            padding: 20px 25px;
+            padding: 38px 25px 20px 25px;
             h3{
                 font-size: 20px;
             }
@@ -225,10 +278,66 @@
                 .additionalinfo-right{
                     width: 100%;
                     max-width: 350px;
-                    border-left: 1px solid @border-color-light;
+                    border-left: 1px solid @border-card;
                     display: flex;
                     align-items: center;
                     justify-content: center;
+                    color: @text-white;
+                    .additionalinfo-right-inner{
+                        width: 80%;
+                        .action-btn{
+                            background: @btn-gradient;
+                            color: @secondary-color;
+                            font-weight: bold;
+                            span{
+                                color: @secondary-color;
+                            }
+                        }
+                        .cancel-btn{
+                            background: @btn-cancel-gradient;
+                            font-weight: bold;
+                            border: 0;
+                        }
+                        b{
+                            font-size: 16px;
+                        }
+                        .tooltip-icon{
+                            width: 13px;
+                            fill: @tooltip-icon;
+                            margin-bottom: -2px;
+                            margin-left: 5px;
+                        }
+                        .defaulted-loan{
+                            text-align: center;
+                            h2{
+                                color: @red-color;
+                            }
+                            .icon{
+                                width: 60px;
+                                fill: @red-color;
+                            }
+                        }
+                        .cancelled-loan{
+                            text-align: center;
+                            h2{
+                                color: #238B92;
+                            }
+                            .icon{
+                                width: 60px;
+                                fill: #238B92;
+                            }
+                        }
+                        .completed-loan{
+                            text-align: center;
+                            h2{
+                                color: #49C574;
+                            }
+                            .icon{
+                                width: 60px;
+                                fill: #49C574;
+                            }
+                        }
+                    }
                     .lqd-loan{
                         text-align: center;
                         h2{
@@ -249,21 +358,9 @@
                             fill: @success-color;
                         }
                     }
-                    .defaulted-loan{
-                        text-align: center;
-                        h2{
-                            color: @warning-color;
-                        }
-                        .icon{
-                            width: 60px;
-                            fill: @warning-color;
-                        }
-                    }
                     .replay-loan{
                         padding: 0 30px;
-                        b{
-                            font-size: 16px;
-                        }
+                        
                     }
                     .installment-completed{
                         padding: 0 30px;

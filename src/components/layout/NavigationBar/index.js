@@ -1,71 +1,54 @@
 import React from "react";
-import { Menu, Dropdown } from "antd";
 import { SvgIcon } from "../../common";
-import { useAccount, useDisconnect, useConnect } from "wagmi";
+import { Button, Select } from "antd";
 import "./index.less";
 
+import { useAccount, useDisconnect, useConnect } from "wagmi";
+
+const { Option } = Select;
+
 const NavigationBar = () => {
-	const menu = (
-		<Menu
-			selectable
-			items={[
-				{
-					label: <a href="https://www.antgroup.com">1st menu item</a>,
-					key: "0",
-				},
-				{
-					label: <a href="https://www.aliyun.com">2nd menu item</a>,
-					key: "1",
-				},
-				{
-					type: "divider",
-				},
-				{
-					label: "3rd menu item",
-					key: "3",
-				},
-			]}
-		/>
-	);
-	const currentChain = "Ethereum";
 	const { data: account } = useAccount();
-	console.log(account?.address);
 	const address = account?.address;
 	const { disconnect } = useDisconnect();
 	const isConnected = useConnect().isConnected;
 	return (
 		<>
-			<SvgIcon name="lend-logo" className="logo" viewbox="0 0 2130 552" />
+			<div className="logo">
+				<SvgIcon name="lend-logo" viewbox="0 0 2130 552" />
+			</div>
 			{isConnected && (
 				<div className="top-bar-right">
-					<div className="notification">
-						<Dropdown overlay={menu}>
-							<SvgIcon
-								name="bell"
-								className="notification-bell"
-								viewbox="0 0 24 24"
-							/>
-						</Dropdown>
-					</div>
-					<Dropdown overlay={menu} trigger={["click"]}>
-						<button
-							className="ant-dropdown-link"
-							onClick={(e) => e.preventDefault()}
-						>
-							{currentChain}
-							<SvgIcon name="dropdown-arrow" viewbox="0 0 24 24" fill="none" />
-						</button>
-					</Dropdown>
-					<div className="address" onClick={disconnect}>
-						<div className="address-right">
-							{address?.slice(0, 6)}...{address?.slice(-4)}
+					<div className="notifications">
+						<div className="bell-icon">
+							<span></span>
+							<SvgIcon name="bell" viewbox="0 0 20.03 21.997" />
 						</div>
-						<SvgIcon
-							name="logout"
-							viewbox="0 0 24 24"
-							fill="#7fe7a3"
-							onClick={disconnect}
-						/>
+					</div>
+					<Select
+						className="coin-select"
+						dropdownClassName="coin-select-dropdown"
+						defaultActiveFirstOption={true}
+						defaultValue="1"
+						suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
+					>
+						<Option key="1" value="1">
+							<div className="select-inner">
+								<div className="svg-icon">
+									<div className="svg-icon-inner">
+										<SvgIcon name="polygon" viewbox="0 0 38.3 33.7" />
+									</div>
+								</div>
+								<div className="name">Polygon</div>
+							</div>
+						</Option>
+					</Select>
+					<div className="wallet-address" onClick={disconnect}>
+						<Button
+							icon={<SvgIcon name="logout" viewbox="0 0 15.501 15.383" />}
+						>
+							{address?.slice(0, 6)}...{address?.slice(-4)}
+						</Button>
 					</div>
 				</div>
 			)}

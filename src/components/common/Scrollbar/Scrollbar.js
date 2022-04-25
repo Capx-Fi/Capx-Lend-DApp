@@ -12,7 +12,7 @@ export default class CapxScrollbars extends Component {
     
     renderView({ style, ...props }) {
         const viewStyle = {
-            paddingRight: 15,
+            paddingRight: 12,
         };
         return (
             <div
@@ -24,8 +24,9 @@ export default class CapxScrollbars extends Component {
 
     renderThumb({ style, ...props }) {
         const thumbStyle = {
-            backgroundColor: `#F4BABA`,
-            borderRadius: 10
+            backgroundColor: `#172623`,
+            borderRadius: 10,
+            width: 4
         };
         return (
             <div

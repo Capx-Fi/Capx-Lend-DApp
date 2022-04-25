@@ -79,15 +79,16 @@ b, span{
 
 .ant-radio-wrapper{
   font-size: 13px;
-  font-weight: 600;
+  font-weight: normal;
   .ant-radio{
     .ant-radio-inner{
-      border-color: @black;
+      border-color: @border-dark-green;
+      background-color: @border-dark-green;
     }
     &.ant-radio-checked{
       .ant-radio-inner{
         &::after{
-          background: #DD4A4A;
+          background: @success-color;
         }
       }
     }
@@ -100,7 +101,7 @@ b, span{
       height: 40px;
       line-height: 40px;
       background-color: @select-bg-secondary;
-      color: @black;
+      color: @text-white;
       border: 1px solid @border-color-base;
       border-radius: 6px;
       input{
@@ -109,10 +110,11 @@ b, span{
       }
       .ant-select-selection-item{
         line-height: 38px;
+        color: @text-white;
       }
       .ant-select-selection-placeholder{
         line-height: 38px;
-        color: @black;
+        color: @text-white;
       }
     }
     &:hover, &:focus{
@@ -171,7 +173,7 @@ b, span{
 .capx-card{
   background: @card-gradient;
   border: 1px solid @border-color-base;
-  padding: 15px 25px;
+  padding: 25px;
   border-radius: 1rem;
   margin-bottom: 15px;
 }
