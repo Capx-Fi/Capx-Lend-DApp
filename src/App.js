@@ -64,6 +64,9 @@ const App = () => {
 							<Routes />
 						</Content>
 					</Layout>
+					<Footer className="main-footer">
+						© 2021 Capx All rights reserved.
+					</Footer>
 				</Layout>
 			</>
 		);

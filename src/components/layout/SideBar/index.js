@@ -30,6 +30,7 @@ const SideBar = () => {
 								name="dashboard"
 								className="sidebar-icon"
 								viewbox="0 0 48 48"
+								fill="none"
 							/>{" "}
 							Dashboard
 						</NavLink>
