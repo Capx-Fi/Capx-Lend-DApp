@@ -1,3 +1,5 @@
+@import "../../assets/less/_variables.less";
+
 .main-container {
 	display: flex;
 	flex-direction: column;
@@ -38,5 +40,11 @@
 		position: absolute;
 		right: -7.5rem;
 		bottom: -7.5rem;
+		@media @desktop {
+			width: 20rem;
+		}
+		@media @upper {
+			width: 25rem;
+		}
 	}
 }
