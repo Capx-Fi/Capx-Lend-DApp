@@ -94,6 +94,7 @@ b {
 .ant-radio-wrapper {
 	font-size: 13px;
 	font-weight: normal;
+  color: @text-white;
 	.ant-radio {
 		.ant-radio-inner {
 			border-color: @border-dark-green;
@@ -216,4 +217,28 @@ b {
 	padding: 15px 25px;
 	border-radius: 1rem;
 	margin-bottom: 15px;
+}
+
+.ant-checkbox-wrapper{
+  color: @text-white;
+  .ant-checkbox{
+    top: 0.32em;
+    .ant-checkbox-inner{
+      border-color: @border-dark-green;
+      width: 20px;
+      height: 20px;
+      &::after{
+        top: 52%;
+        left: 24.5%;
+      }
+    }
+    &.ant-checkbox-checked{
+      .ant-checkbox-inner{
+        background-color: @white;
+        &::after{
+          border-color: @border-dark-green;
+        }
+      }
+    }
+  }
 }
