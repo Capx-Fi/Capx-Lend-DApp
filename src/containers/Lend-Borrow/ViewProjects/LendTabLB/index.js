@@ -10,6 +10,7 @@ import "./index.less";
 import AccordionCard from "../../../../components/common/accordion-card/AccordionCard";
 import { getLendBorrowProjects } from "../../../../utils/getLendBorrowProjects";
 import { getAdditionalInfo } from "../../../../utils/getAdditionalInfo";
+import LendBorrow from "../../NewOffer";
 
 const { Option } = Select;
 
@@ -20,7 +21,8 @@ const LendTabLB = (collapsed) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
-  return (
+  const pathname = window.location.pathname;
+  return !pathname.includes("/new") ? (
     <>
       <Row className="heading-row">
         <Col className="left-col">
@@ -125,6 +127,8 @@ const LendTabLB = (collapsed) => {
         </Col>
       </Row>
     </>
+  ) : (
+    <LendBorrow />
   );
 };
 

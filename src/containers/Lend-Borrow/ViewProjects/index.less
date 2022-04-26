@@ -1,5 +1,6 @@
 @import "../../../assets/less/_variables.less";
 
+
 .ant-tabs{
     &.capx-tabs{
         .ant-tabs-nav{
@@ -293,6 +294,7 @@
                                 color: @secondary-color;
                             }
                         }
+                      
                         .cancel-btn{
                             background: @btn-cancel-gradient;
                             font-weight: bold;
@@ -372,5 +374,15 @@
                 }
             }
         }
+    }
+}
+
+.action-outline-btn{
+    border: 1px solid @btn-gradient;
+    background: @black;
+    color: @white;
+    font-weight: bold;
+    span{
+        color: @white;
     }
 }

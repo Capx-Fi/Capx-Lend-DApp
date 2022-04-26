@@ -15,9 +15,8 @@ import LendBorrow from "../../NewOffer";
 
 const { Option } = Select;
 
-const BorrowTabLB = (collapsed) => {
+const BorrowTabLB = () => {
   const pathname = window.location.pathname;
-  console.log(pathname);
   return !pathname.includes("/new") ? (
     <>
       <Row className="heading-row">
@@ -70,9 +69,6 @@ const BorrowTabLB = (collapsed) => {
             <Option value="sb2">Order Type</Option>
             <Option value="sb3">Health Factor</Option>
           </Select>
-          <NavLink to={"/lend-borrow/newborrow"}>
-            <Button className="action-btn">Create Loan Offer</Button>
-          </NavLink>
         </Col>
       </Row>
       <Row>
