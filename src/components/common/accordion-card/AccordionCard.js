@@ -1,7 +1,7 @@
 import { Button, Col, Row, Tooltip } from "antd";
 import React, { useState } from "react";
 import SvgIcon from "../svg-icon/svg-icon";
-import "../../../containers/Dashboard/index.less";
+import "./index.less";
 import {
   healthFactorTooltip,
   marketPriceTooltip,
@@ -48,7 +48,7 @@ function AccordionCard({
             )}
           </div>
         </div>
-        <div className="ordercard-bottom">
+        <div className={`ordercard-bottom-${orderDetails.length}`}>
           <ul>
             {orderDetails.map((item, index) => {
               return (

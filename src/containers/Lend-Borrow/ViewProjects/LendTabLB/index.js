@@ -1,14 +1,19 @@
 import React from "react";
 import { Button, Select, Tooltip, Radio } from "antd";
-import { SvgIcon, Row, Col, CapxScrollbars } from "../../../components/common";
+import {
+  SvgIcon,
+  Row,
+  Col,
+  CapxScrollbars,
+} from "../../../../components/common";
 import "./index.less";
-import AccordionCard from "../../../components/common/accordion-card/AccordionCard";
-import { getOrderDetails } from "../../../utils/getOrderDetails";
-import { getAdditionalInfo } from "../../../utils/getAdditionalInfo";
+import AccordionCard from "../../../../components/common/accordion-card/AccordionCard";
+import { getLendBorrowProjects } from "../../../../utils/getLendBorrowProjects";
+import { getAdditionalInfo } from "../../../../utils/getAdditionalInfo";
 
 const { Option } = Select;
 
-const LendTab = (collapsed) => {
+const LendTabLB = (collapsed) => {
   const [isCollapsed, setIsCollapsed] = React.useState(collapsed);
   const [value, setValue] = React.useState(1);
   const onChange = (e) => {
@@ -17,30 +22,6 @@ const LendTab = (collapsed) => {
   };
   return (
     <>
-      <Row>
-        <Col>
-          <div className="capx-card-secondary dashboard-statics-card">
-            <ul>
-              <li>
-                <p>Lent Amount</p>
-                <h4>125567.11 </h4>
-              </li>
-              <li>
-                <p>Number of loans</p>
-                <h4>3</h4>
-              </li>
-              <li>
-                <p>Interest Accured</p>
-                <h4>$560.00</h4>
-              </li>
-              <li>
-                <p>Interest Pending</p>
-                <h4>$560.00</h4>
-              </li>
-            </ul>
-          </div>
-        </Col>
-      </Row>
       <Row className="heading-row">
         <Col className="left-col">
           <Select
@@ -98,7 +79,7 @@ const LendTab = (collapsed) => {
       </Row>
       <Row>
         <Col>
-          <CapxScrollbars style={{ height: "59vh" }}>
+          <CapxScrollbars style={{ height: "70vh" }}>
             <div className="order-list">
               <div className="orderlist-card">
                 <h4 className="card-title">Expired</h4>
@@ -106,8 +87,7 @@ const LendTab = (collapsed) => {
                   orderId={"321234"}
                   healthFactor={"1.2"}
                   paymentType={"Single Payment"}
-                  status="Expired"
-                  orderDetails={getOrderDetails()}
+                  orderDetails={getLendBorrowProjects()}
                   additonalInfo={getAdditionalInfo()}
                 />
               </div>
@@ -117,8 +97,7 @@ const LendTab = (collapsed) => {
                   orderId={"321234"}
                   healthFactor={"1.2"}
                   paymentType={"Single Payment"}
-                  status="Funded"
-                  orderDetails={getOrderDetails()}
+                  orderDetails={getLendBorrowProjects()}
                   additonalInfo={getAdditionalInfo()}
                 />
               </div>
@@ -128,44 +107,16 @@ const LendTab = (collapsed) => {
                   orderId={"321234"}
                   healthFactor={"1.2"}
                   paymentType={"Single Payment"}
-                  status="Active"
-                  orderDetails={getOrderDetails()}
+                  orderDetails={getLendBorrowProjects()}
                   additonalInfo={getAdditionalInfo()}
                 />
               </div>
               <div className="orderlist-card">
-                <AccordionCard
-                  orderId={"321234"}
-                  healthFactor={"1.2"}
-                  paymentType={"Installment"}
-                  status="Active"
-                  orderDetails={getOrderDetails()}
-                  additonalInfo={getAdditionalInfo()}
-                />
-              </div>
-              <div className="orderlist-card">
-                <h4 className="card-title">Orders</h4>
                 <AccordionCard
                   orderId={"321234"}
                   healthFactor={"1.2"}
                   paymentType={"Single Payment"}
-                  status="Completed"
-                  statusType="completed-loan"
-                  statusTitle="Loan Completed"
-                  orderDetails={getOrderDetails()}
-                  additonalInfo={getAdditionalInfo()}
-                />
-              </div>
-              <div className="orderlist-card">
-                <h4 className="card-title">Orders</h4>
-                <AccordionCard
-                  orderId={"321234"}
-                  healthFactor={"1.2"}
-                  paymentType={"Single Payment"}
-                  status="Cancelled"
-                  statusType="cancelled-loan"
-                  statusTitle="Loan Cancelled"
-                  orderDetails={getOrderDetails()}
+                  orderDetails={getLendBorrowProjects()}
                   additonalInfo={getAdditionalInfo()}
                 />
               </div>
@@ -177,4 +128,4 @@ const LendTab = (collapsed) => {
   );
 };
 
-export default LendTab;
+export default LendTabLB;
