@@ -6,7 +6,9 @@ import { Provider, createClient } from "wagmi";
 // import { applyMiddleware, createStore } from "redux";
 import App from "./App";
 
-const client = createClient();
+const client = createClient({
+	autoConnect: true,
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

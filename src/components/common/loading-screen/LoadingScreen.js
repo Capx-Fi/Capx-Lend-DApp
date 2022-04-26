@@ -1,16 +1,25 @@
-// import React from "react";
-// // import LendLogo from "../../../assets/images/svg/lend-logo.svg";
+import React from "react";
+import SvgSprite from "../../../utils/SvgSpriteLoader";
+import SvgIcon from "../svg-icon/svg-icon";
+import svgFile from "../../../assets/images/svg/svg-sprite.svg";
+import "./LoadingScreen.less";
 
-// function LoadingScreen() {
-// 	return (
-// 		<div className='align-middle justify-center justify-items-center bg-dark-400 flex h-screen'>
-// 			<img
-// 				alt='logo'
-// 				src={LendLogo}
-// 				className='animate-pulse phone:w-55v breakpoint:w-20v h-auto align-middle justify-center m-auto'
-// 			/>
-// 		</div>
-// 	);
-// }
+function LoadingScreen() {
+	return (
+		<>
+			<SvgSprite url={svgFile} />
+			<div className="mainContainer">
+				<SvgIcon
+					name="lend-logo"
+					viewbox="0 0 2130 552"
+					className="lend-logo"
+					fill="none"
+					width="20rem"
+					height="20rem"
+				/>
+			</div>
+		</>
+	);
+}
 
-// export default LoadingScreen;
+export default LoadingScreen;
