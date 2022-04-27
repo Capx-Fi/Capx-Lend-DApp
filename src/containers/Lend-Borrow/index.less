@@ -6,16 +6,6 @@
     .lendborrow-left{
         width: 100%;
         padding-right: 50px;
-        .best-offer-link{
-            font-weight: normal;
-            padding: 0;
-            color: @text-color-secondary;
-            font-size: @font-size-base - 1;
-            line-height: 1.1;
-            span{
-                border-bottom: 1px solid @text-color-secondary;
-            }
-        }
         .groupwith-select{
             .ant-input{
                 border-radius: 8px 0 0 8px;
@@ -172,6 +162,7 @@
                     padding: 3px 24px;
                     width: 100%;
                     font-size: 15px;
+                    color: @text-white;
                     label{
                         font-weight: normal;
                     }
@@ -212,5 +203,17 @@
                 }
             }
         }
+    }
+}
+
+.best-offer-link{
+    font-weight: normal;
+    padding: 0;
+    color: @text-color-secondary;
+    font-size: @font-size-base - 1;
+    line-height: 1.1;
+    span{
+        border-bottom: 1px solid @text-color-secondary;
+        color: @text-color-secondary;
     }
 }
