@@ -48,7 +48,7 @@ function AccordionCard({
             )}
           </div>
         </div>
-        <div className="ordercard-bottom">
+        <div className={`ordercard-bottom-${orderDetails.length}`}>
           <ul>
             {orderDetails.map((item, index) => {
               return (

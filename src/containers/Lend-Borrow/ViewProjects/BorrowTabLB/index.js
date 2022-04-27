@@ -14,6 +14,7 @@ import { NavLink } from "react-router-dom";
 //import LendBorrow from "../../NewOffer";
 import LendBorrowComponent from "../../LendBorrowComponent";
 import { getOrderDetails } from "../../../../utils/getOrderDetails";
+import { getLendBorrowProjects } from "../../../../utils/getLendBorrowProjects";
 
 const { Option } = Select;
 
@@ -86,7 +87,7 @@ const BorrowTabLB = () => {
                   orderId={"321234"}
                   healthFactor={"1.2"}
                   paymentType={"Single Payment"}
-                  orderDetails={getOrderDetails()}
+                  orderDetails={getLendBorrowProjects()}
                   additonalInfo={getAdditionalInfo()}
                 />
               </div>

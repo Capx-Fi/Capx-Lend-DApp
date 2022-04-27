@@ -183,7 +183,7 @@
         opacity: 1;
         display: block;
     }
-    .ordercard-bottom{
+    .ordercard-bottom-5{
         position: relative;
         width: 100%;
         .arrow-collapse{
@@ -204,6 +204,46 @@
             margin-bottom: 0;
             display: grid;
             grid-template-columns: repeat(5, 1fr);
+            margin-top: 26px;
+            li{
+                padding-left: 30px;
+                position: relative;
+                &:first-child{
+                    padding-left: 0;
+                }
+                p{
+                    font-size: 15px;
+                    margin-bottom: 0;
+                }
+                h4{
+                    font-size: 17px;
+                    margin-bottom: 0;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+    .ordercard-bottom-7{
+        position: relative;
+        width: 100%;
+        .arrow-collapse{
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            transition: all ease-in 0.2s;
+            .icon{
+                fill: #B6E2C5;
+            }
+            &.up{
+                transform: rotate(-180deg);
+            }
+        }
+        ul{
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 0;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
             margin-top: 26px;
             li{
                 padding-left: 30px;

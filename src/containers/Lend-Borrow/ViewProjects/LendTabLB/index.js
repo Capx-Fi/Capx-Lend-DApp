@@ -13,6 +13,7 @@ import { getAdditionalInfo } from "../../../../utils/getAdditionalInfo";
 //import LendBorrow from "../../NewOffer";
 import LendBorrowComponent from "../../LendBorrowComponent";
 import { getOrderDetails } from "../../../../utils/getOrderDetails";
+import { getLendBorrowProjects } from "../../../../utils/getLendBorrowProjects";
 
 const { Option } = Select;
 
@@ -91,11 +92,11 @@ const LendTabLB = (collapsed) => {
                   orderId={"321234"}
                   healthFactor={"1.2"}
                   paymentType={"Single Payment"}
-                  orderDetails={getOrderDetails()}
+                  orderDetails={getLendBorrowProjects()}
                   additonalInfo={getAdditionalInfo()}
                 />
               </div>
-              <div className="orderlist-card">
+              {/* <div className="orderlist-card">
                 <h4 className="card-title">Funded</h4>
                 <AccordionCard
                   orderId={"321234"}
@@ -104,7 +105,7 @@ const LendTabLB = (collapsed) => {
                   orderDetails={getOrderDetails()}
                   additonalInfo={getAdditionalInfo()}
                 />
-              </div>
+              </div> */}
               {/* <div className="orderlist-card">
                 <h4 className="card-title">Upcoming Orders</h4>
                 <AccordionCard
