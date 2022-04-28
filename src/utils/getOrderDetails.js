@@ -9,7 +9,7 @@ export const getOrderDetails = () => {
       value: "3 months",
     },
     {
-      label: "3 Months",
+      label: "End Time",
       value: "22/09/2022",
     },
     {
