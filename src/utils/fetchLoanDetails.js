@@ -164,7 +164,9 @@ export const fetchLoanDetails = async (GRAPH_LEND_URL, masterContract, oracleCon
                     payOffAmt : _payOffAmt,
                     totalInterest : _totalInterest,
                     marketPrice : _marketPrice,
-                    collateralVal : _collateralValue
+                    collateralVal : _collateralValue,
+                    borrowerAddress : loan?.borrowerAddress,
+                    lenderAddress : loan?.lenderAddress
                 };
             })
             .flat();

@@ -13,7 +13,7 @@ export const approveAcceptLoan = async(
     LEND_CONTRACT_ADDRESS,
     loanID,
     isBorrower, // Determining which function to call.
-    amount, // WVT in case of Borrower accepting the loan else SC.
+    amount, // Stable coin amount of loan in case of Borrower accepting the loan else WVT amount of the loan.
     wvtAddress,
     scAddress,
     ltv,
