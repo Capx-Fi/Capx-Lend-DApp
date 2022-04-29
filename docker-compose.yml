@@ -1,0 +1,8 @@
+version: '3'
+services:
+  lend-app:
+    container_name: lend
+    restart: always
+    build: ./
+    ports:
+      - '3000:3000'
