@@ -2,6 +2,10 @@ import React from "react";
 import { SvgIcon } from "../../common";
 import { Button, Select } from "antd";
 import "./index.less";
+import { useMetamask } from "../../../metamaskReactHook";
+
+import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
+import { injected } from "../../../utils/connector";
 
 // import { useAccount, useDisconnect, useConnect } from "wagmi";
 
@@ -12,6 +16,18 @@ const NavigationBar = () => {
   // const address = account?.address;
   // // const { disconnect } = useDisconnect();
   // const isConnected = true;
+
+  const { active, account, library, connector, activate, deactivate, chainId } =
+    useWeb3React();
+  async function connect() {
+    try {
+      await activate(injected);
+    } catch (ex) {
+      if (ex instanceof UnsupportedChainIdError) {
+        console.log(ex);
+      }
+    }
+  }
   return (
     <>
       <div className="logo">
@@ -43,10 +59,11 @@ const NavigationBar = () => {
               </div>
             </Option>
           </Select>
-          <div className="wallet-address">
+          <div className="wallet-address" onClick={connect}>
             <Button
               icon={<SvgIcon name="logout" viewbox="0 0 15.501 15.383" />}
             >
+              {active ? "12345" : "Connect"}{" "}
               {/* {address?.slice(0, 6)}...{address?.slice(-4)} */}23232
             </Button>
           </div>

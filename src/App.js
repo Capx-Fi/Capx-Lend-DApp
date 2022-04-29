@@ -1,6 +1,5 @@
 import React from "react";
 import SvgSprite from "./utils/SvgSpriteLoader";
-import { useRoutes } from "react-router-dom";
 import { Layout, Button } from "antd";
 
 import SideBar from "./components/layout/SideBar";
@@ -18,17 +17,12 @@ import "./App.less";
 // import { useConnect } from "wagmi";
 import { LoadingScreen, SvgIcon } from "./components/common";
 import ViewLendBorrow from "./containers/Lend-Borrow/ViewProjects";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
+import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 
 const { Header, Content, Sider, Footer } = Layout;
-
-const Routes = () => {
-  let routes = useRoutes([
-    { path: "/", element: <Dashboard /> },
-    { path: "/lend-borrow/*", element: <ViewLendBorrow /> },
-    { path: "/liquidation", element: <Dashboard /> },
-  ]);
-  return routes;
-};
 
 const App = () => {
   const [collapsed, setCollapsed] = React.useState(false);
@@ -43,57 +37,65 @@ const App = () => {
     setLoading(false);
   }, 3500);
 
+  const { active, account, library, connector, activate, deactivate, chainId } =
+    useWeb3React();
+
   return (
     <>
       {!loading ? (
         <>
           <SvgSprite url={svgFile} />
-          <Layout>
-            <Header className="header">
-              <NavigationBar />
-            </Header>
-            <Layout className="main-content">
-              {true ? (
-                <>
-                  <Sider
-                    width={290}
-                    className="capx-sider"
-                    collapsed={collapsed}
-                  >
-                    <SideBar />
-                    <Button
-                      className="menu-link"
-                      type="link"
-                      onClick={toggleCollapsed}
-                      style={{ marginBottom: 16 }}
+          <Router>
+            <Layout>
+              <Header className="header">
+                <NavigationBar />
+              </Header>
+              <Layout className="main-content">
+                {active ? (
+                  <>
+                    <Sider
+                      width={290}
+                      className="capx-sider"
+                      collapsed={collapsed}
                     >
-                      {collapsed ? (
-                        <SvgIcon
-                          name="chevron-right"
-                          viewbox="0 0 5.333 9.333"
-                        />
-                      ) : (
-                        <SvgIcon
-                          name="chevron-left"
-                          viewbox="0 0 5.333 9.333"
-                        />
-                      )}
-                    </Button>
-                  </Sider>
+                      <SideBar />
+
+                      <Button
+                        className="menu-link"
+                        type="link"
+                        onClick={toggleCollapsed}
+                        style={{ marginBottom: 16 }}
+                      >
+                        {collapsed ? (
+                          <SvgIcon
+                            name="chevron-right"
+                            viewbox="0 0 5.333 9.333"
+                          />
+                        ) : (
+                          <SvgIcon
+                            name="chevron-left"
+                            viewbox="0 0 5.333 9.333"
+                          />
+                        )}
+                      </Button>
+                    </Sider>
+                    <Content className="right-content-wrapper">
+                      <Switch>
+                        <Route path="/" component={Dashboard} />
+                      </Switch>
+                    </Content>
+                  </>
+                ) : (
                   <Content className="right-content-wrapper">
-                    <Routes />
+                    <Metamask />
                   </Content>
-                </>
-              ) : (
-                <Content className="right-content-wrapper">
-                  <Metamask />
-                </Content>
-              )}
+                )}
+              </Layout>
+              <Footer className="main-footer">
+                © 2021 Capx All rights reserved.
+              </Footer>
             </Layout>
-            <Footer className="main-footer">
-              © 2021 Capx All rights reserved.
-            </Footer>
-          </Layout>
+          </Router>
         </>
       ) : (
         <LoadingScreen />

@@ -8,7 +8,8 @@ import { getAdditionalInfo } from "../../../utils/getAdditionalInfo";
 
 const { Option } = Select;
 
-const BorrowTab = (collapsed) => {
+const BorrowTab = ({ loans }) => {
+  console.log(loans);
   return (
     <>
       <Row>
@@ -92,79 +93,23 @@ const BorrowTab = (collapsed) => {
       </Row>
       <Row>
         <Col>
-          <CapxScrollbars style={{ height: "59vh" }}>
-            <div className="order-list">
-              <div className="orderlist-card">
-                <h4 className="card-title">Expired</h4>
-                <AccordionCard
-                  orderId={"321234"}
-                  healthFactor={"1.2"}
-                  paymentType={"Single Payment"}
-                  status="Expired"
-                  orderDetails={getOrderDetails()}
-                  additonalInfo={getAdditionalInfo()}
-                />
-              </div>
-              <div className="orderlist-card">
-                <h4 className="card-title">Funded</h4>
-                <AccordionCard
-                  orderId={"321234"}
-                  healthFactor={"1.2"}
-                  paymentType={"Single Payment"}
-                  status="Funded"
-                  orderDetails={getOrderDetails()}
-                  additonalInfo={getAdditionalInfo()}
-                />
-              </div>
-              <div className="orderlist-card">
-                <h4 className="card-title">Upcoming Orders</h4>
-                <AccordionCard
-                  orderId={"321234"}
-                  healthFactor={"1.2"}
-                  paymentType={"Single Payment"}
-                  status="Active"
-                  orderDetails={getOrderDetails()}
-                  additonalInfo={getAdditionalInfo()}
-                />
-              </div>
-              <div className="orderlist-card">
-                <AccordionCard
-                  orderId={"321234"}
-                  healthFactor={"1.2"}
-                  paymentType={"Installment"}
-                  status="Active"
-                  orderDetails={getOrderDetails()}
-                  additonalInfo={getAdditionalInfo()}
-                />
-              </div>
-              <div className="orderlist-card">
-                <h4 className="card-title">Orders</h4>
-                <AccordionCard
-                  orderId={"321234"}
-                  healthFactor={"1.2"}
-                  paymentType={"Single Payment"}
-                  status="Completed"
-                  statusType="completed-loan"
-                  statusTitle="Loan Completed"
-                  orderDetails={getOrderDetails()}
-                  additonalInfo={getAdditionalInfo()}
-                />
-              </div>
-              <div className="orderlist-card">
-                <h4 className="card-title">Orders</h4>
-                <AccordionCard
-                  orderId={"321234"}
-                  healthFactor={"1.2"}
-                  paymentType={"Single Payment"}
-                  status="Cancelled"
-                  statusType="cancelled-loan"
-                  statusTitle="Loan Cancelled"
-                  orderDetails={getOrderDetails()}
-                  additonalInfo={getAdditionalInfo()}
-                />
-              </div>
-            </div>
-          </CapxScrollbars>
+          <div className="order-list">
+            {loans.map(function (loan) {
+              return (
+                <div className="orderlist-card">
+                  {/* <h4 className="card-title">Expired</h4> */}
+                  <AccordionCard
+                    orderId={loan.loanID}
+                    healthFactor={"1.2"}
+                    paymentType={loan.repaymentType}
+                    status={loan.status}
+                    orderDetails={getOrderDetails()}
+                    additonalInfo={getAdditionalInfo()}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </Col>
       </Row>
     </>

@@ -209,7 +209,7 @@ export const fetchLoanDetails = async (
             ? fetchLoanRepayAmt(masterContract, loan?.loanID)
             : new BigNumber(
                 getTotalInterest(
-                  _scAmt.mul(loan?.stableCoinDecimal),
+                  _scAmt * loan?.stableCoinDecimal,
                   loan?.interestRate,
                   loan?.endTime
                 )
