@@ -1,16 +1,94 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Select } from "antd";
-import { SvgIcon, Row, Col, CapxScrollbars } from "../../../components/common";
+import {
+  SvgIcon,
+  Row,
+  Col,
+  CapxScrollbars,
+  LoadingScreen,
+} from "../../../components/common";
 import "./index.less";
 import AccordionCard from "../../../components/common/accordion-card/AccordionCard";
 import { getOrderDetails } from "../../../utils/getOrderDetails";
 import { getAdditionalInfo } from "../../../utils/getAdditionalInfo";
-
+import Web3 from "web3";
+import { MASTER_ABI } from "../../../contracts/Master";
+import { ORACLE_ABI } from "../../../contracts/Oracle";
+import { fetchBorrowerLoans } from "../../../utils/fetchBorrowerLoans";
+import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 const { Option } = Select;
 
-const BorrowTab = ({ loans }) => {
-  console.log(loans);
-  return (
+const BorrowTab = () => {
+  const [loans, setLoans] = useState(null);
+  const [filteredLoans, setFilteredLoans] = useState(null);
+  const web3 = new Web3(Web3.givenProvider);
+
+  const masterContract = new web3.eth.Contract(
+    MASTER_ABI,
+    "0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
+  );
+
+  const oracleContract = new web3.eth.Contract(
+    ORACLE_ABI,
+    "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
+  );
+
+  const { active, account } = useWeb3React();
+
+  useEffect(() => {
+    active &&
+      fetchBorrowerLoans(
+        account,
+        "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
+        masterContract,
+        oracleContract
+      ).then((loans) => {
+        console.log(loans);
+        setFilteredLoans(loans);
+        setLoans(loans);
+      });
+  }, []);
+
+  function totalAmount(loans) {
+    let total = 0;
+    loans.forEach((loan) => {
+      if (loan.stableCoinAmt !== "NaN") total += parseFloat(loan.stableCoinAmt);
+    });
+    return total;
+  }
+
+  function totalInterest(loans) {
+    let total = 0;
+    loans.forEach((loan) => {
+      if (loan.status === "Completed") total += parseFloat(loan.totalInterest);
+    });
+    return total;
+  }
+
+  function totalPaidOff(loans) {
+    let total = 0;
+    loans.forEach((loan) => {
+      if (loan.status === "Completed") total += parseFloat(loan.payOffAmt);
+    });
+    return total;
+  }
+
+  function availableLoanStatus(loans) {
+    let status = [];
+    loans.forEach((loan) => {
+      if (!status.includes(loan.status)) status.push(loan.status);
+    });
+
+    return status;
+  }
+
+  function filterLoansByStatus(loans, status) {
+    if (status !== "")
+      setFilteredLoans(loans.filter((loan) => loan.status === status));
+    else setFilteredLoans(loans);
+  }
+
+  return loans ? (
     <>
       <Row>
         <Col>
@@ -18,19 +96,19 @@ const BorrowTab = ({ loans }) => {
             <ul>
               <li>
                 <p>Borrowed Amount</p>
-                <h4>125567.11 </h4>
+                <h4>{totalAmount(loans)} </h4>
               </li>
               <li>
                 <p>Active loans</p>
-                <h4>3</h4>
+                <h4>{loans.length}</h4>
               </li>
               <li>
                 <p>Interest Paid</p>
-                <h4>$560.00</h4>
+                <h4>${totalInterest(loans)}</h4>
               </li>
               <li>
                 <p>Loan Amount Repayed</p>
-                <h4>$560.00</h4>
+                <h4>${totalPaidOff(loans)}</h4>
               </li>
             </ul>
           </div>
@@ -70,9 +148,12 @@ const BorrowTab = ({ loans }) => {
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Loan Status"
             bordered={false}
+            onChange={(e) => filterLoansByStatus(loans, e)}
           >
-            <Option value="1">Loan Status</Option>
-            <Option value="2">Loan Status</Option>
+            <Option value={""}>All</Option>
+            {["Initiated", "Completed", "Cancelled"].map(function (status) {
+              return <Option value={status}>{status}</Option>;
+            })}
           </Select>
         </Col>
         <Col className="right-col">
@@ -94,18 +175,24 @@ const BorrowTab = ({ loans }) => {
       <Row>
         <Col>
           <div className="order-list">
-            {loans.map(function (loan) {
+            {availableLoanStatus(filteredLoans).map(function (status) {
               return (
                 <div className="orderlist-card">
-                  {/* <h4 className="card-title">Expired</h4> */}
-                  <AccordionCard
-                    orderId={loan.loanID}
-                    healthFactor={"1.2"}
-                    paymentType={loan.repaymentType}
-                    status={loan.status}
-                    orderDetails={getOrderDetails()}
-                    additonalInfo={getAdditionalInfo()}
-                  />
+                  <h4 className="card-title">{status}</h4>
+                  {filteredLoans.map(function (loan) {
+                    return (
+                      loan.status === status && (
+                        <AccordionCard
+                          orderId={loan.loanID}
+                          healthFactor={"1.2"}
+                          paymentType={loan.repaymentType}
+                          status={loan.status}
+                          orderDetails={getOrderDetails(loan)}
+                          additonalInfo={getAdditionalInfo(loan)}
+                        />
+                      )
+                    );
+                  })}
                 </div>
               );
             })}
@@ -113,6 +200,8 @@ const BorrowTab = ({ loans }) => {
         </Col>
       </Row>
     </>
+  ) : (
+    <LoadingScreen />
   );
 };
 

@@ -1,24 +1,24 @@
-export const getOrderDetails = () => {
+export const getOrderDetails = (loan) => {
   return [
     {
       label: "Loan Amount",
-      value: "$1,000.00",
+      value: loan.stableCoinAmt.toString(),
     },
     {
-      label: "Loan Period",
-      value: "3 months",
+      label: loan.timeRepresentationType,
+      value: loan.timeRepresentation,
     },
-    {
-      label: "End Time",
-      value: "22/09/2022",
-    },
+    // {
+    //   label: "End Time",
+    //   value: "22/09/2022",
+    // },
     {
       label: "Interest Rate",
-      value: "1.2%",
+      value: loan.interestRate.toString(),
     },
     {
       label: "Collateral Asset",
-      value: "$1233.00",
+      value: loan.collateralVal.toString(),
     },
   ];
 };

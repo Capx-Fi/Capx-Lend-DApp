@@ -24,7 +24,7 @@ function AccordionCard({
   const [isCollapsed, setIsCollapsed] = useState(true);
   return (
     <div>
-      <div className="capx-card">
+      <div className="capx-card" style={{ marginBottom: 20 }}>
         <div className="ordercard-upper">
           <div className="upper-left">
             <b>Order ID: {orderId}</b>

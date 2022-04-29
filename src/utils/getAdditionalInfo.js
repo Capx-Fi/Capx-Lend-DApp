@@ -1,32 +1,31 @@
 import { discountTooltip, marketPriceTooltip } from "../constants/toolTips";
-
-export const getAdditionalInfo = () => {
+export function getAdditionalInfo(loan) {
   return [
     {
       label: "Market Price",
-      value: "xxx %",
+      value: loan.marketPrice.toString(),
       tooltip: marketPriceTooltip,
     },
     {
       label: "Discount",
-      value: "xxx %",
+      value: loan.discount.toString(),
       tooltip: discountTooltip,
     },
     {
       label: "Collateral Amount",
-      value: "xxx %",
+      value: loan.collateralAmt.toString(),
     },
     {
       label: "Total Interest",
-      value: "$500",
+      value: loan.totalInterest.toString(),
     },
-    {
-      label: "Interest Accrued",
-      value: "$500",
-    },
+    // {
+    //   label: "Interest Accrued",
+    //   value: "$500",
+    // },
     {
       label: "Pay-off Amount",
-      value: "$500",
+      value: loan.payOffAmt.toString(),
     },
   ];
-};
+}

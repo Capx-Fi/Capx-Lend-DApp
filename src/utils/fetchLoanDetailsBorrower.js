@@ -12,7 +12,6 @@ BigNumber.config({
   DECIMAL_PLACES: 18,
   EXPONENTIAL_AT: [-18, 36],
 });
-
 function getLoanStatus(
   stageOfLoan,
   initiationTime,
@@ -47,20 +46,17 @@ function getLoanStatus(
   }
   return status;
 }
-
 function getTotalInterest(scAmt, interestRate, duration) {
   let num = scAmt * interestRate * duration;
   let den = 10000 * 86400 * 365;
   let val = Math.floor(num / den);
   return val;
 }
-
 function getLoanPeriod(endTime) {
   var DateDiff = {
     inDays: function (d1, d2) {
       var t2 = d2.getTime();
       var t1 = d1.getTime();
-
       return parseInt((t2 - t1) / (86400 * 1000));
     },
     inMonths: function (d1, d2) {
@@ -68,14 +64,12 @@ function getLoanPeriod(endTime) {
       var d2Y = d2.getFullYear();
       var d1M = d1.getMonth();
       var d2M = d2.getMonth();
-
       return d2M + 12 * d2Y - (d1M + 12 * d1Y);
     },
     inYears: function (d1, d2) {
       return d2.getFullYear() - d1.getFullYear();
     },
   };
-
   var d1 = new Date();
   var d2 = new Date();
   d2.setDate(d2.getDate() + Math.floor(endTime / 86400));
@@ -85,7 +79,6 @@ function getLoanPeriod(endTime) {
   var dy = DateDiff.inDays(d1, d2) - days;
   return DateDiff.inYears(d1, d2) + " Y " + month + " M " + dy + " D";
 }
-
 function convertToDate(timestamp) {
   const unixTime = timestamp;
   const date = new Date(unixTime * 1000);
@@ -101,8 +94,7 @@ function convertToDate(timestamp) {
   let displayGraphDate = `${unlockDay} ${unlockMonth}, ${unlockYear}`;
   return displayGraphDate;
 }
-
-export const fetchLoanDetails = async (
+export const fetchLoanDetailsBorrower = async (
   GRAPH_LEND_URL,
   masterContract,
   oracleContract
@@ -112,9 +104,8 @@ export const fetchLoanDetails = async (
     uri: GRAPH_LEND_URL,
     cache: new InMemoryCache(),
   });
-
   const query = `query {
-        loanEntities {
+        loanEntities (where: {stageOfLoan : "2" }) {
             id
             loanID
             wvtAddress
@@ -130,7 +121,6 @@ export const fetchLoanDetails = async (
             liquidationThreshold
             endTime
             initiationTime
-            interestRate
             externalLiquidation
             stageOfLoan
             description
@@ -145,7 +135,6 @@ export const fetchLoanDetails = async (
     const { data } = await client.query({
       query: gql(query),
     });
-
     loans = data.loanEntities
       .map((loan) => {
         const _scAmt =
@@ -191,51 +180,39 @@ export const fetchLoanDetails = async (
           masterContract
         );
         const _representationType =
-          _status === "Initiated" ||
-          _status === "Cancelled" ||
-          _status === "Funded"
+          _status === "Initiated" || _status === "Cancelled"
             ? "Loan Duration"
             : "End Time";
         const _representation =
-          _status === "Initiated" ||
-          _status === "Cancelled" ||
-          _status === "Funded"
+          _status === "Initiated" || _status === "Cancelled"
             ? getLoanPeriod(loan?.endTime)
             : convertToDate(loan?.endTime);
         const _interestRate = new BigNumber(loan?.interestRate)
           .dividedBy(Math.pow(10, 2))
           .toString(10);
-        let _marketPrice = fetchMarketPrice(oracleContract, loan?.wvtAddress)
-          .then()
-          .then((res) => {
-            console.log(res);
-            return res;
-          });
+        const _marketPrice = fetchMarketPrice(oracleContract, loan?.wvtAddress);
         const _discount = new BigNumber(loan?.discount)
           .dividedBy(Math.pow(10, 2))
           .toString(10);
         const _totalInterest =
-          loan?.stageOfLoan !== "4"
-            ? new BigNumber(
+          loan?.stageOfLoan === "4"
+            ? fetchLoanRepayAmt(masterContract, loan?.loanID)
+            : new BigNumber(
                 getTotalInterest(
-                  new BigNumber(_scAmt).multipliedBy(
-                    Math.pow(10, loan?.stableCoinDecimal)
-                  ),
+                  _scAmt * loan?.stableCoinDecimal,
                   loan?.interestRate,
-                  loan?.endTime - loan?.initiationTime
+                  loan?.endTime
                 )
-              ).dividedBy(Math.pow(10, loan?.stableCoinDecimal))
-            : fetchLoanRepayAmt(masterContract, loan?.loanID);
+              ).dividedBy(Math.pow(10, loan?.stableCoinDecimal));
         const _collateralValue =
           _wvtAmt * Math.floor((_marketPrice * _discount) / 100);
-        const _payOffAmt = _totalInterest.plus(_scAmt);
+        const _payOffAmt = _totalInterest + _scAmt;
         const _ltv = new BigNumber(loan?.loanToValue)
           .dividedBy(Math.pow(10, 2))
           .toString(10);
         const _lt = new BigNumber(loan?.liquidationThreshold)
           .dividedBy(Math.pow(10, 2))
           .toString(10);
-
         return {
           loanID: loan?.loanID,
           status: _status,
@@ -256,8 +233,8 @@ export const fetchLoanDetails = async (
           timeRepresentationType: _representationType,
           timeRepresentation: _representation,
           externalLiquidation: loan?.externalLiquidation,
-          payOffAmt: _payOffAmt.toString(10),
-          totalInterest: _totalInterest.toString(10),
+          payOffAmt: _payOffAmt,
+          totalInterest: _totalInterest,
           marketPrice: _marketPrice,
           collateralVal: _collateralValue,
           borrowerAddress: loan?.borrowerAddress,
