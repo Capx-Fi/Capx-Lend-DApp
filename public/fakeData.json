@@ -1,0 +1,222 @@
+[
+  {
+    "id": 1,
+    "address": "Obedient Blood Mule",
+    "position": [
+      -80.794322,
+      35.198926
+    ],
+    "speed": 200,
+    "country":"United States",
+    "countryCode": "US"
+  },
+  {
+    "id": 2,
+    "address": "Soft Orange Boar",
+    "position": [
+      -117.990449,
+      33.715403
+    ],
+    "speed": 180,
+    "country":"United States",
+    "countryCode": "US"
+  },
+  {
+    "id": 3,
+    "address": "Magic Neon Wolf",
+    "position": [
+      -84.225895,
+      30.540208
+    ],
+    "speed": 160,
+    "country":"United States",
+    "countryCode": "US"
+  },
+  {
+    "id": 4,
+    "address": "Porter Street, Alton",
+    "position": [
+      -90.13069,
+      38.88851
+    ],
+    "speed": 160,
+    "country":"United States",
+    "countryCode": "US"
+  },
+  {
+    "id": 5,
+    "address": "Exotic Topaz Tapir",
+    "position": [
+      -0.144228881,
+      51.51811784
+    ],
+    "speed": 160,
+    "country":"United States",
+    "countryCode": "US"
+  },
+  {
+    "id": 6,
+    "address": "Muleshoe, Texas",
+    "position": [
+      -102.7238,
+      34.2265
+    ],
+    "speed": 155,
+    "country":"United States",
+    "countryCode": "US"
+  },
+  {
+    "id": 7,
+    "address": "Radio Colony, Indore",
+    "position": [
+      75.888279,
+      22.69623
+    ],
+    "speed": 138,
+    "country":"India",
+    "countryCode": "IN"
+  },
+  {
+    "id": 8,
+    "address": "Karve Nagar, Pune",
+    "position": [
+      73.817515, 
+      18.48918
+    ],
+    "speed": 120,
+    "country":"India",
+    "countryCode": "IN"
+  },
+  {
+    "id": 9,
+    "address": "Nagavara, Bengaluru",
+    "position": [
+      77.6226, 
+      13.036
+    ],
+    "speed": 140,
+    "country":"India",
+    "countryCode": "IN"
+  },
+  {
+    "id": 10,
+    "address": "Dewas, M.P",
+    "position": [
+      76.391243,
+      22.543496
+    ],
+    "speed": 140,
+    "country":"India",
+    "countryCode": "IN"
+  },
+ {
+    "id": 11,
+    "address": "River Street , Clerkenwell",
+    "position": [
+      -0.109970527,
+      51.52916347
+    ],
+    "speed": 120,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  },
+ {
+    "id": 12,
+    "address": "Phillimore Gardens, Kensington",
+    "position": [
+      -0.197574246,
+      51.49960695
+    ],
+    "speed": 188,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  },
+ {
+    "id": 13,
+    "address": "Christopher Street, Liverpool Street",
+    "position": [
+      -0.084605692,
+      51.52128377
+    ],
+    "speed": 190,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  },
+ {
+    "id": 14,
+    "address": "St. Chad's Street, King's Cross",
+    "position": [
+      -0.120973687,
+      51.53005939
+    ],
+    "speed": 160,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  },
+ {
+    "id": 15,
+    "address": "Sedding Street, Sloane Square",
+    "position": [
+      -0.156876,
+      51.49313
+    ],
+    "speed": 130,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  },
+ {
+    "id": 16,
+    "address": "Broadcasting House, Marylebone",
+    "position": [
+      -0.144228881,
+      51.51811784
+    ],
+    "speed": 140,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  },
+ {
+    "id": 17,
+    "address": "Charlbert Street, St. John's Wood",
+    "position": [
+      -0.1680743,
+      51.53430039
+    ],
+    "speed": 150,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  },
+ {
+    "id": 18,
+    "address": "Maida Vale, Maida Vale",
+    "position": [
+      -0.18348604,
+      51.529857
+    ],
+    "speed": 380,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  },
+ {
+    "id": 19,
+    "address": "New Globe Walk, Bankside",
+    "position": [
+      -0.096440751,
+      51.5073853
+    ],
+    "speed": 230,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  },
+  {
+    "id": 20,
+    "address": "Park Street, Bankside",
+    "position": [
+      -0.092754157,
+      51.50597426
+    ],
+    "speed": 290,
+    "country": "United Kingdom",
+    "countryCode": "GB"
+  }
+]

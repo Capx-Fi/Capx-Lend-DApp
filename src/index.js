@@ -1,20 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import { Provider, createClient } from "wagmi";
-// import { Provider } from "react-redux";
-// import { applyMiddleware, createStore } from "redux";
-import App from "./App";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store  from './store/store';
+import App from './App';
 
-const client = createClient({
-	autoConnect: true,
-});
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-	<Provider client={client}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</Provider>
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
 );
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+

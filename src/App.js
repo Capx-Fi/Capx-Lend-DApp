@@ -1,50 +1,40 @@
-import React from "react";
-import SvgSprite from "./utils/SvgSpriteLoader";
-import { useRoutes } from "react-router-dom";
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import Landing from "./components/views/Landing";
+import routes from "./routes";
+import SvgSprite from "./utility/SvgSpriteLoader";
 import { Layout, Button } from "antd";
-
-import SideBar from "./components/layout/SideBar";
-import NavigationBar from "./components/layout/NavigationBar";
-import Dashboard from "./containers/Dashboard";
-import LendBorrow from "./containers/Lend-Borrow";
-import Metamask from "./containers/Metamask";
+import { LoadingScreen, SvgIcon } from "./components/common";
+import './App.less';
+import history from './common/history';
 
 //Svg Sprite
-import svgFile from "./assets/images/svg/svg-sprite.svg";
-
-// Metamask imports
-
-import "./App.less";
-import { useConnect } from "wagmi";
-import { LoadingScreen, SvgIcon } from "./components/common";
-import ViewLendBorrow from "./containers/Lend-Borrow/ViewProjects";
+import svgFile from './assets/images/svg/svg-sprite.svg';
 
 const { Header, Content, Sider, Footer } = Layout;
 
-const Routes = () => {
-  let routes = useRoutes([
-    { path: "/", element: <Dashboard /> },
-    { path: "/lend-borrow/*", element: <ViewLendBorrow /> },
-    { path: "/liquidation", element: <Dashboard /> },
-  ]);
-  return routes;
-};
-
-const App = () => {
-  const [collapsed, setCollapsed] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-  const isConnected = useConnect();
-  console.log(isConnected.isConnected);
-
-  setTimeout(() => {
-    setLoading(false);
-  }, 3500);
-
+// A special wrapper for <Route> that knows how to
+// handle "sub"-routes by passing them in a `routes`
+// prop to the component it renders.
+function RouteWithSubRoutes(route) {
   return (
-    <>
+    <Route
+      path={route.path}
+      render={props => (
+        // pass the sub-routes down to keep nesting
+        <route.component {...props} routes={route.routes} />
+      )}
+    />
+  );
+}
+class App extends React.Component { 
+  render(){
+    return (
+      <React.Fragment>        
       {!loading ? (
         <>
           <SvgSprite url={svgFile} />
@@ -81,7 +71,16 @@ const App = () => {
                     </Button>
                   </Sider>
                   <Content className="right-content-wrapper">
-                    <Routes />
+                    <Router history={history}>
+                        <Switch>
+                          {routes.map((route, i) => (
+                            <RouteWithSubRoutes exact key={i} {...route} />
+                          ))}
+                          <Route path="*">
+                            <Landing />
+                          </Route>
+                        </Switch>
+                    </Router>
                   </Content>
                 </>
               ) : (
@@ -98,8 +97,9 @@ const App = () => {
       ) : (
         <LoadingScreen />
       )}
-    </>
-  );
-};
+      </React.Fragment>
+    );
+  }
+}
 
 export default App;
