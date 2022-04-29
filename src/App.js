@@ -5,13 +5,17 @@ import {
   Route,
 } from "react-router-dom";
 import routes from "./routes";
-import SvgSprite from "./utility/SvgSpriteLoader";
+import SvgSprite from "./utils/SvgSpriteLoader";
 import { Layout, Button } from "antd";
 import { LoadingScreen, SvgIcon } from "./components/common";
 import SideBar from "./components/layout/SideBar";
 import NavigationBar from "./components/layout/NavigationBar";
-import './App.less';
 import history from './common/history';
+import Dashaboard from "./components/views/Dashboard";
+import Metamask from "./components/views/Metamask";
+import { useConnect } from "wagmi";
+import './App.less';
+
 
 //Svg Sprite
 import svgFile from './assets/images/svg/svg-sprite.svg';
@@ -32,8 +36,18 @@ function RouteWithSubRoutes(route) {
     />
   );
 }
-class App extends React.Component { 
-  render(){
+const App = () => {
+  const [collapsed, setCollapsed] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+  const isConnected = useConnect();
+  console.log(isConnected.isConnected);
+
+  setTimeout(() => {
+    setLoading(false);
+  }, 3500);
     return (
       <React.Fragment>        
       {!loading ? (
@@ -78,7 +92,7 @@ class App extends React.Component {
                             <RouteWithSubRoutes exact key={i} {...route} />
                           ))}
                           <Route path="*">
-                            <Landing />
+                            <Dashaboard />
                           </Route>
                         </Switch>
                     </Router>
@@ -101,6 +115,5 @@ class App extends React.Component {
       </React.Fragment>
     );
   }
-}
 
 export default App;

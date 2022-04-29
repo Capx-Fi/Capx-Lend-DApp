@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Select } from "antd";
-import { SvgIcon, Row, Col, CapxScrollbars } from "../../../components/common";
+import { SvgIcon, Row, Col, CapxScrollbars } from "../../../common";
 import "./index.less";
-import AccordionCard from "../../../components/common/accordion-card/AccordionCard";
-import { getOrderDetails } from "../../../utils/getOrderDetails";
-import { getAdditionalInfo } from "../../../utils/getAdditionalInfo";
+import AccordionCard from "../../../common/accordion-card/AccordionCard";
+import { getOrderDetails } from "../../../../utils/getOrderDetails";
+import { getAdditionalInfo } from "../../../../utils/getAdditionalInfo";
 
 const { Option } = Select;
 

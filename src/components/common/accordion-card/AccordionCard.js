@@ -1,7 +1,6 @@
 import { Button, Col, Row, Tooltip } from "antd";
 import React, { useState } from "react";
 import SvgIcon from "../svg-icon/svg-icon";
-import "../../../containers/Dashboard/index.less";
 import {
   healthFactorTooltip,
   marketPriceTooltip,

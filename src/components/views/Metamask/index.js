@@ -1,9 +1,9 @@
 import React from "react";
 import "./index.less";
-import firefox from "../../assets/images/FirefoxIllustration.png";
-import { SvgIcon } from "../../components/common";
+import { SvgIcon } from "../../common";
 import { useConnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
+import firefox from "../../../assets/images/FirefoxIllustration.png";
 
 const Metamask = () => {
 	const { connect } = useConnect({

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tabs, Button } from "antd";
-import { Row, Col } from "../../components/common";
+import { Row, Col } from "../../common";
 import LendBorrowComponent from "./LendBorrowComponent";
 import "./index.less";
 import Summary from "./Summary";

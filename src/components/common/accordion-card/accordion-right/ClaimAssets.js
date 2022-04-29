@@ -1,7 +1,7 @@
 import { Button, Col, Row, Tooltip } from "antd";
 import React from "react";
 import { claimAssetsTooltip } from "../../../../constants/toolTips";
-import SvgIcon from "../../svg-icon/svg-icon";
+import { SvgIcon } from "../../../common";
 
 function ClaimAssets({ amount, penalty }) {
   return (

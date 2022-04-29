@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Radio, Input, Select, Slider, Tooltip, Checkbox } from "antd";
-import { Row, Col, SvgIcon } from "../../../components/common";
+import { Row, Col, SvgIcon } from "../../../common";
 import Summary from "../Summary";
 
 const { Option } = Select;

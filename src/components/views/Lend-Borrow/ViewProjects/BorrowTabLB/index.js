@@ -5,9 +5,9 @@ import {
   Row,
   Col,
   CapxScrollbars,
-} from "../../../../components/common";
+} from "../../../../common";
 import "./index.less";
-import AccordionCard from "../../../../components/common/accordion-card/AccordionCard";
+import AccordionCard from "../../../../common/accordion-card/AccordionCard";
 import { getAdditionalInfo } from "../../../../utils/getAdditionalInfo";
 //import { getLendBorrowProjects } from "../../../../utils/getLendBorrowProjects";
 import { NavLink } from "react-router-dom";

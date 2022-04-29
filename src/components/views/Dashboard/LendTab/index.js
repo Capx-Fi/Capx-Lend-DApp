@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Select, Tooltip, Radio } from "antd";
-import { SvgIcon, Row, Col, CapxScrollbars } from "../../../components/common";
+import { SvgIcon, Row, Col, CapxScrollbars } from "../../../common";
 import "./index.less";
 
 const { Option } = Select;
