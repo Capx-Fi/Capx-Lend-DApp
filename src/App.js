@@ -4,11 +4,12 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import Landing from "./components/views/Landing";
 import routes from "./routes";
 import SvgSprite from "./utility/SvgSpriteLoader";
 import { Layout, Button } from "antd";
 import { LoadingScreen, SvgIcon } from "./components/common";
+import SideBar from "./components/layout/SideBar";
+import NavigationBar from "./components/layout/NavigationBar";
 import './App.less';
 import history from './common/history';
 
