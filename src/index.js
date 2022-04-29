@@ -1,20 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { Provider, createClient } from "wagmi";
+// import { Provider, createClient } from "wagmi";
 // import { Provider } from "react-redux";
 // import { applyMiddleware, createStore } from "redux";
 import App from "./App";
 
-const client = createClient({
-	autoConnect: true,
-});
+// const client = createClient({
+//   autoConnect: true,
+// });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-	<Provider client={client}>
-		<BrowserRouter>
-			<App />
-		</BrowserRouter>
-	</Provider>
+  // <Provider client={client}>
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+  // </Provider>
 );

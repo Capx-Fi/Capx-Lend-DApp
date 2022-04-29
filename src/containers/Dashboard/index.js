@@ -13,7 +13,9 @@ import { ORACLE_ABI } from "../../contracts/Oracle";
 const { TabPane } = Tabs;
 
 const Dashboard = () => {
-  const masterContract = new Web3.eth.Contract(
+  console.log(Web3.eth);
+  const web3 = new Web3(Web3.givenProvider);
+  const masterContract = new web3.eth.Contract(
     MASTER_ABI,
     "0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
   );

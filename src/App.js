@@ -15,7 +15,7 @@ import svgFile from "./assets/images/svg/svg-sprite.svg";
 // Metamask imports
 
 import "./App.less";
-import { useConnect } from "wagmi";
+// import { useConnect } from "wagmi";
 import { LoadingScreen, SvgIcon } from "./components/common";
 import ViewLendBorrow from "./containers/Lend-Borrow/ViewProjects";
 
@@ -36,7 +36,7 @@ const App = () => {
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
-  const isConnected = useConnect();
+  const isConnected = true;
   console.log(isConnected.isConnected);
 
   setTimeout(() => {
@@ -53,7 +53,7 @@ const App = () => {
               <NavigationBar />
             </Header>
             <Layout className="main-content">
-              {isConnected.isConnected ? (
+              {true ? (
                 <>
                   <Sider
                     width={290}
