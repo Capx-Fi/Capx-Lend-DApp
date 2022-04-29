@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { SvgIcon } from "../../common";
 import "./index.less";
 
@@ -9,8 +9,8 @@ const SideBar = () => {
 			<div className="sidebar-menu">
 				<ul>
 					<li>
-						<NavLink
-							to="/lend-borrow"
+						<div
+							// to="/lend-borrow"
 							className={(navData) => (navData.isActive ? "selected" : "")}
 						>
 							<SvgIcon
@@ -19,11 +19,11 @@ const SideBar = () => {
 								viewbox="0 0 48 48"
 							/>{" "}
 							Lend/Borrow
-						</NavLink>
+						</div>
 					</li>
 					<li>
-						<NavLink
-							to="/"
+						<div
+							// to="/"
 							className={(navData) => (navData.isActive ? "selected" : "")}
 						>
 							<SvgIcon
@@ -33,11 +33,11 @@ const SideBar = () => {
 								fill="none"
 							/>{" "}
 							Dashboard
-						</NavLink>
+						</div>
 					</li>
 					<li>
-						<NavLink
-							to="/Liquidation"
+						<div
+							// to="/Liquidation"
 							className={(navData) => (navData.isActive ? "selected" : "")}
 						>
 							<SvgIcon
@@ -46,7 +46,7 @@ const SideBar = () => {
 								viewbox="0 0 48 48"
 							/>{" "}
 							Liquidation
-						</NavLink>
+						</div>
 					</li>
 				</ul>
 			</div>

@@ -36,7 +36,7 @@ const LendBorrow = () => {
 							</TabPane>
 						</Tabs>
 					</div>
-					<div className="lendborrow-right">
+					{/* <div className="lendborrow-right">
 						<Summary
 							loanamount="4000"
 							collateralamount="100"
@@ -54,7 +54,7 @@ const LendBorrow = () => {
 							paymentperinstallment="1000"
 							servicefee="2.5"
 						/>
-					</div>
+					</div> */}
 				</div>
 			</Col>
 		</Row>

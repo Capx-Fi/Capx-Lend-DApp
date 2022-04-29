@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Select } from "antd";
+import { Select } from "antd";
 import { SvgIcon, Row, Col, CapxScrollbars } from "../../../common";
 import "./index.less";
 import AccordionCard from "../../../common/accordion-card/AccordionCard";

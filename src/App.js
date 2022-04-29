@@ -50,7 +50,7 @@ const App = () => {
   }, 3500);
     return (
       <React.Fragment>        
-      {!loading ? (
+        {!loading ? (
         <>
           <SvgSprite url={svgFile} />
           <Layout>
@@ -59,7 +59,7 @@ const App = () => {
             </Header>
             <Layout className="main-content">
               {isConnected.isConnected ? (
-                <>
+                  <>
                   <Sider
                     width={290}
                     className="capx-sider"
@@ -97,8 +97,8 @@ const App = () => {
                         </Switch>
                     </Router>
                   </Content>
-                </>
-              ) : (
+                  </>
+                  ) : (
                 <Content className="right-content-wrapper">
                   <Metamask />
                 </Content>
