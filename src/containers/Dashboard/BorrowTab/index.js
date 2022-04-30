@@ -138,15 +138,15 @@ const BorrowTab = () => {
       </Row>
       <Row className="heading-row">
         <Col className="left-col">
-          <Select
+          {/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Loan Type"
             bordered={false}
           >
             <Option value="Single Repayment">Single Repayment</Option>
-            {/* <Option value="Instalment Repayment">Instalment Repayment</Option> */}
-          </Select>
+            <Option value="Instalment Repayment">Instalment Repayment</Option>
+          </Select> */}
           <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
@@ -179,7 +179,7 @@ const BorrowTab = () => {
             onChange={(e) => filterLoansByStatus(loans, e)}
           >
             <Option value={""}>All</Option>
-            {["Initiated", "Completed", "Cancelled"].map(function (status) {
+            {["Initiated", "Completed", "Cancelled", , "Expired", "Defaulted", "Funded", "Active"].map(function (status) {
               return <Option value={status}>{status}</Option>;
             })}
           </Select>

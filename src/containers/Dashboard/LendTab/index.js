@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
 import { Button, Select, Tooltip, Radio } from "antd";
 import {
   SvgIcon,
@@ -12,7 +13,7 @@ import Web3 from "web3";
 import { MASTER_ABI } from "../../../contracts/Master";
 import { ORACLE_ABI } from "../../../contracts/Oracle";
 import { fetchLenderLoans } from "../../../utils/fetchLenderLoans";
-
+import { getFilterValues } from "../../../utils/getFilterValues";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import AccordionCard from "../../../components/common/accordion-card/AccordionCard";
 import { getOrderDetails } from "../../../utils/getOrderDetails";
@@ -22,6 +23,7 @@ const { Option } = Select;
 
 const LendTab = (collapsed) => {
   const [loans, setLoans] = useState(null);
+  const [filteredLoans, setFilteredLoans] = useState(null);
   const web3 = new Web3(Web3.givenProvider);
 
   const masterContract = new web3.eth.Contract(
@@ -36,19 +38,38 @@ const LendTab = (collapsed) => {
 
   const { active, account } = useWeb3React();
 
+  // useEffect(() => {
+  //   active &&
+  //     fetchLenderLoans(
+  //       account,
+  //       "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
+  //       "https://api.thegraph.com/subgraphs/name/chester-king/lendnftsubgraph",
+  //       masterContract,
+  //       oracleContract
+  //     ).then((loans) => {
+  //       setLoans(loans);
+  //     });
+  // }, []);
   useEffect(() => {
     active &&
-      fetchLenderLoans(
-        account,
-        "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
-        "https://api.thegraph.com/subgraphs/name/chester-king/lendnftsubgraph",
-        masterContract,
-        oracleContract
-      ).then((loans) => {
+      getLoans().then((loans) => {
+        console.log(loans);
+        setFilteredLoans(loans);
         setLoans(loans);
       });
   }, []);
-
+  const getLoans = async() => {
+    const _loans = await fetchLenderLoans(
+    "0xBC7a2925D5C194D1DbEdeB99F13c326851dC8230",
+    "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
+    "https://api.thegraph.com/subgraphs/name/chester-king/lendnftsubgraph",
+    masterContract,
+    oracleContract
+    );
+    console.log("L",_loans);
+    console.log("Filters", getFilterValues(_loans,"stableCoinTicker"));
+    return _loans;
+}
   function totalAmount(loans) {
     let total = 0;
     loans.forEach((loan) => {
@@ -72,7 +93,32 @@ const LendTab = (collapsed) => {
     });
     return total;
   }
+  function filterLoansByCompanyAsset(loans, companyAsset) {
+    if (companyAsset !== "") {
+      setFilteredLoans(loans.filter((loan) => loan.collateralTicker === companyAsset));
+    } else setFilteredLoans(loans);
+  }
 
+  function filterLoansByLendAsset(loans, lendAsset) {
+    if (lendAsset !== "") {
+      setFilteredLoans(loans.filter((loan) => loan.stableCoinTicker === lendAsset));
+    } else setFilteredLoans(loans);
+  }
+
+  function filterLoansByStatus(loans, status) {
+    if (status !== "")
+      setFilteredLoans(loans.filter((loan) => loan.status === status));
+    else setFilteredLoans(loans);
+  }
+
+  function availableLoanStatus(loans) {
+    let status = [];
+    loans.forEach((loan) => {
+      if (!status.includes(loan.status)) status.push(loan.status);
+    });
+
+    return status;
+  }
   return loans ? (
     <>
       <Row>
@@ -81,7 +127,7 @@ const LendTab = (collapsed) => {
             <ul>
               <li>
                 <p>Lent Amount</p>
-                <h4>{totalAmount(loans)}</h4>
+                <h4>{convertToInternationalCurrencySystem(totalAmount(loans))}</h4>
               </li>
               <li>
                 <p>Number of loans</p>
@@ -89,11 +135,11 @@ const LendTab = (collapsed) => {
               </li>
               <li>
                 <p>Interest Accured</p>
-                <h4>${totalInterest(loans)}</h4>
+                <h4>${convertToInternationalCurrencySystem(totalInterest(loans))}</h4>
               </li>
               <li>
                 <p>Interest Pending</p>
-                <h4>${totalPending(loans)}</h4>
+                <h4>${convertToInternationalCurrencySystem(totalPending(loans))}</h4>
               </li>
             </ul>
           </div>
@@ -101,7 +147,7 @@ const LendTab = (collapsed) => {
       </Row>
       <Row className="heading-row">
         <Col className="left-col">
-          <Select
+          {/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Loan Type"
@@ -109,33 +155,42 @@ const LendTab = (collapsed) => {
           >
             <Option value="1">Loan Type</Option>
             <Option value="2">Loan Type</Option>
-          </Select>
+          </Select> */}
           <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Company Asset"
             bordered={false}
+            onChange={(e) => filterLoansByCompanyAsset(loans, e)}
           >
-            <Option value="1">Company Asset</Option>
-            <Option value="2">Company Asset</Option>
+            <Option value={""}>All</Option>
+            {getFilterValues(loans, "collateralTicker").map(function (wvt_asset) {
+              return <Option value={wvt_asset}>{wvt_asset}</Option>;
+            })}
           </Select>
           <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Lending Asset"
             bordered={false}
+            onChange={(e) => filterLoansByLendAsset(loans, e)}
           >
-            <Option value="1">Lending Asset</Option>
-            <Option value="2">Lending Asset</Option>
+            <Option value={""}>All</Option>
+            {getFilterValues(loans, "stableCoinTicker").map(function (wvt_asset) {
+              return <Option value={wvt_asset}>{wvt_asset}</Option>;
+            })}
           </Select>
           <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Loan Status"
             bordered={false}
+            onChange={(e) => filterLoansByStatus(loans, e)}
           >
-            <Option value="1">Loan Status</Option>
-            <Option value="2">Loan Status</Option>
+            <Option value={""}>All</Option>
+            {["Initiated", "Completed", "Cancelled", , "Expired", "Defaulted", "Funded", "Active"].map(function (status) {
+              return <Option value={status}>{status}</Option>;
+            })}
           </Select>
         </Col>
         <Col className="right-col">
@@ -157,10 +212,25 @@ const LendTab = (collapsed) => {
       <Row>
         <Col>
           <div className="order-list">
-            {loans.map(function (loan) {
+            {availableLoanStatus(filteredLoans).map(function (status) {
               return (
                 <div className="orderlist-card">
-                  {/* <h4 className="card-title">Expired</h4> */}
+                  {filteredLoans.map(function (loan) {
+                    return (
+                      loan.status === status && (
+                        <AccordionCard
+                          orderId={loan.loanID}
+                          healthFactor={loan.healthFactor}
+                          paymentType={loan.repaymentType}
+                          status={loan.status}
+                          orderDetails={getOrderDetails(loan)}
+                          additonalInfo={getAdditionalInfo(loan)}
+                        />
+                      )
+                    );
+                  })}
+                  {/* <h4 className="card-title">{status}</h4>
+                  { <h4 className="card-title">Expired</h4> }
                   <AccordionCard
                     orderId={loan.loanID}
                     healthFactor={"1.2"}
@@ -168,7 +238,7 @@ const LendTab = (collapsed) => {
                     status={loan.status}
                     orderDetails={getOrderDetails(loan)}
                     additonalInfo={getAdditionalInfo(loan)}
-                  />
+                  /> */}
                 </div>
               );
             })}
