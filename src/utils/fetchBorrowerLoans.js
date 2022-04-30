@@ -63,6 +63,21 @@ function getTotalInterest(scAmt, interestRate, penalty, duration, flag) {
     return val;
 }
 
+async function getHealthFactor(oracleContract, scAmt, scDecimal, wvtAmt, wvtAddress, wvtDecimal, discount, lt) {
+  let price = await fetchMarketPrice(oracleContract, wvtAddress);
+  let collateralVal = ( 
+    price 
+    * Math.pow(10,scDecimal) 
+    * (new BigNumber(wvtAmt).multipliedBy(Math.pow(10, wvtDecimal)))
+    * discount )
+  / (
+    10000
+    * Math.pow(10, wvtDecimal)
+  );
+  let healthFactor = (collateralVal)*lt/(10000 * new BigNumber(scAmt).multipliedBy(Math.pow(10, scDecimal)));
+  return healthFactor;
+}
+
 function getLoanPeriod(endTime) {
   var DateDiff = {
     inDays: function (d1, d2) {
@@ -245,6 +260,8 @@ export const fetchBorrowerLoans = async (
         const _collateralValue =
           _wvtAmt * Math.floor((_marketPrice * _discount) / 100);
         const _payOffAmt = _totalInterest.plus(_scAmt);
+        const _healthFactor = await getHealthFactor(oracleContract, _scAmt, loan?.stableCoinDecimal, _wvtAmt, loan?.wvtAddress ,loan?.wvtDecimal, loan?.discount, loan?.liquidationThreshold);
+        console.log("Health Factor",_healthFactor, loan?.loanID);
         const _ltv = new BigNumber(loan?.loanToValue)
           .dividedBy(Math.pow(10, 2))
           .toString(10);
@@ -270,6 +287,7 @@ export const fetchBorrowerLoans = async (
           loanToValue: _ltv,
           discount: _discount,
           liquidationThreshold: _lt,
+          healthFactor: _healthFactor,
           timeRepresentationType: _representationType,
           timeRepresentation: _representation,
           externalLiquidation: loan?.externalLiquidation,

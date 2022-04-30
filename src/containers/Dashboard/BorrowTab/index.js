@@ -16,6 +16,8 @@ import { MASTER_ABI } from "../../../contracts/Master";
 import { ORACLE_ABI } from "../../../contracts/Oracle";
 import { fetchBorrowerLoans } from "../../../utils/fetchBorrowerLoans";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
+import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
+
 const { Option } = Select;
 
 const BorrowTab = () => {
@@ -101,7 +103,7 @@ const BorrowTab = () => {
             <ul>
               <li>
                 <p>Borrowed Amount</p>
-                <h4>{totalAmount(loans)} </h4>
+                <h4>{convertToInternationalCurrencySystem(totalAmount(loans))} </h4>
               </li>
               <li>
                 <p>Active loans</p>
@@ -109,11 +111,11 @@ const BorrowTab = () => {
               </li>
               <li>
                 <p>Interest Paid</p>
-                <h4>${totalInterest(loans)}</h4>
+                <h4>${convertToInternationalCurrencySystem(totalInterest(loans))}</h4>
               </li>
               <li>
                 <p>Loan Amount Repayed</p>
-                <h4>${totalPaidOff(loans)}</h4>
+                <h4>${convertToInternationalCurrencySystem(totalPaidOff(loans))}</h4>
               </li>
             </ul>
           </div>
@@ -189,7 +191,7 @@ const BorrowTab = () => {
                       loan.status === status && (
                         <AccordionCard
                           orderId={loan.loanID}
-                          healthFactor={"1.2"}
+                          healthFactor={loan.healthFactor}
                           paymentType={loan.repaymentType}
                           status={loan.status}
                           orderDetails={getOrderDetails(loan)}
