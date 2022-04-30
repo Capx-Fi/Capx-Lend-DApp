@@ -8,6 +8,7 @@ import {
   LoadingScreen,
 } from "../../../components/common";
 import "./index.less";
+import { LEND_ABI } from "../../../contracts/Lend";
 import AccordionCard from "../../../components/common/accordion-card/AccordionCard";
 import { getOrderDetails } from "../../../utils/getOrderDetails";
 import { getAdditionalInfo } from "../../../utils/getAdditionalInfo";
@@ -34,6 +35,11 @@ const BorrowTab = () => {
   const oracleContract = new web3.eth.Contract(
     ORACLE_ABI,
     "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
+  );
+
+  const lendContract = new web3.eth.Contract(
+    LEND_ABI,
+    "0x309D0Ff4b655bAD183A3FA88A0547b41e877DcF1"
   );
 
   const { active, account } = useWeb3React();
@@ -217,6 +223,9 @@ const BorrowTab = () => {
                           status={loan.status}
                           orderDetails={getOrderDetails(loan)}
                           additonalInfo={getAdditionalInfo(loan)}
+                          loan={loan}
+                          isBorrower={true}
+                          lendContract = {lendContract}
                         />
                       )
                     );

@@ -89,6 +89,7 @@ const BorrowTabLB = () => {
                   paymentType={"Single Payment"}
                   orderDetails={getLendBorrowProjects()}
                   additonalInfo={getAdditionalInfo()}
+                  loan
                 />
               </div>
               {/* <div className="orderlist-card">

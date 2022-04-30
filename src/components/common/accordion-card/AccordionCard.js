@@ -9,7 +9,9 @@ import {
 import ClaimAssets from "./accordion-right/ClaimAssets";
 import AcceptLoanOffer from "./accordion-right/AcceptLoanOffer";
 import RepayLoan from "./accordion-right/RepayLoan";
+import CancelLoan from "./accordion-right/CancelLoan";
 import StatusText from "./accordion-right/StatusText";
+import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
 
 function AccordionCard({
   orderId,
@@ -20,6 +22,9 @@ function AccordionCard({
   additonalInfo,
   statusTitle,
   statusType,
+  loan,
+  isBorrower,
+  lendContract
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   return (
@@ -102,7 +107,7 @@ function AccordionCard({
             <div className="additionalinfo-right">
               <div className="additionalinfo-right-inner">
                 {status === "Expired" && (
-                  <ClaimAssets amount={"$1300"} penalty={"3%"} />
+                  <ClaimAssets lendContract={lendContract} loan={loan} amount={isBorrower ? convertToInternationalCurrencySystem(loan?.collateralAmt).toString() + " " + loan?.collateralTicker : convertToInternationalCurrencySystem(loan?.stableCoinAmt).toString() + " " + loan?.stableCoinTicker} penalty={(loan?.penalty).toString() + " %"} />
                 )}
                 {status === "Funded" && (
                   <AcceptLoanOffer loanAmount={"$1300"} />
@@ -111,6 +116,11 @@ function AccordionCard({
                   <RepayLoan
                     repayAmount={"$3000"}
                     isInstallment={paymentType === "Installment"}
+                  />
+                )}
+                {status === "Initiated" && (
+                  <CancelLoan
+                  lendContract={lendContract} loan={loan}
                   />
                 )}
                 {statusType && (
