@@ -1,23 +1,24 @@
 import { discountTooltip, marketPriceTooltip } from "../constants/toolTips";
+import { convertToInternationalCurrencySystem } from "./convertToInternationalCurrencySystem";
 export function getAdditionalInfo(loan) {
   return [
     {
       label: "Market Price",
-      value: loan.marketPrice.toString(),
+      value: "$ "+convertToInternationalCurrencySystem(loan.marketPrice).toString(),
       tooltip: marketPriceTooltip,
     },
     {
       label: "Discount",
-      value: loan.discount.toString(),
+      value: loan.discount.toString() + " %",
       tooltip: discountTooltip,
     },
     {
       label: "Collateral Amount",
-      value: loan.collateralAmt.toString(),
+      value: convertToInternationalCurrencySystem(loan.collateralAmt).toString() + "  " + loan.collateralTicker.toString(),
     },
     {
       label: "Total Interest",
-      value: loan.totalInterest.toString(),
+      value: "$ " + convertToInternationalCurrencySystem(loan.totalInterest).toString(),
     },
     // {
     //   label: "Interest Accrued",
@@ -25,7 +26,7 @@ export function getAdditionalInfo(loan) {
     // },
     {
       label: "Pay-off Amount",
-      value: loan.payOffAmt.toString(),
+      value: "$ " + convertToInternationalCurrencySystem(loan.payOffAmt).toString(),
     },
   ];
 }

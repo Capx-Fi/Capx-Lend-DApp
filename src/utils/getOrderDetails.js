@@ -3,7 +3,7 @@ export const getOrderDetails = (loan) => {
   return [
     {
       label: "Loan Amount",
-      value: "$" + convertToInternationalCurrencySystem(loan.stableCoinAmt).toString(),
+      value: "$ " + convertToInternationalCurrencySystem(loan.stableCoinAmt).toString(),
     },
     {
       label: loan.timeRepresentationType,

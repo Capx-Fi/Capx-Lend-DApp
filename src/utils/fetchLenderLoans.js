@@ -8,7 +8,7 @@ export const fetchLenderLoans = async (
     masterContract,
     oracleContract
 ) => {
-    let allLoans = fetchLoanDetails(GRAPH_LEND_URL, masterContract, oracleContract);
+    let allLoans = await fetchLoanDetails(GRAPH_LEND_URL, masterContract, oracleContract);
     let lenderLoans = [];
     const client = new ApolloClient({
         uri: GRAPH_NFT_URL,
