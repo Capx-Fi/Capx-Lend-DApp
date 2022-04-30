@@ -1,31 +1,28 @@
-import BigNumber from "bignumber.js";
-
 export const fetchLoanRepayAmt = async( masterContract, loanID ) => {
     let result = null;
     try {
         result = await masterContract.methods
             .loanRepaymentAmount(loanID)
             .call()
-            .then((result) => {
+        if (result) {
                 console.log("Loan Repayment Amt :", result);
                 return result.toString(10);
-            })
-        
+        };
     } catch (error) {
         console.log(error);
     }
 }
 
 export const fetchHealthFactor = async( masterContract, loanID ) => {
+    let result = null;
     try {
-        await masterContract.methods
+        result = await masterContract.methods
             .healthFactor(loanID)
             .call()
-            .then( (result) => {
+        if (result){
                 console.log("Health Factor :", result);
                 return result.toString(10);
-            }
-            );
+            };
     } catch (error) {
         console.log(error);
     }
@@ -42,10 +39,10 @@ export const fetchWVTAmt = async (masterContract, scAmt, wvtAddress, scAddress, 
             ltv,
             discount
         ).call()
-        .then((result) => {
+        if(result) {
             console.log("WVT Amount :", result);
             return result.toString(10);
-        })
+        }
     } catch (error) {
         console.log(error);
     }
@@ -62,10 +59,22 @@ export const fetchSCAmt = async (masterContract, wvtAmount, wvtAddress, scAddres
             ltv,
             discount
         ).call()
-        .then((result) => {
-            console.log("Stable Coin Amount :", result);
+        if(result) {
             return result.toString(10);
-        })
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const fetchPenalty = async (masterContract) => {
+    let result = null;
+    try {
+        result = await masterContract.methods
+        .penalty().call()
+        if(result) {
+            return result.toString(10);
+        }
     } catch (error) {
         console.log(error);
     }

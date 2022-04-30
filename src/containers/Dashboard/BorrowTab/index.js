@@ -37,17 +37,22 @@ const BorrowTab = () => {
 
   useEffect(() => {
     active &&
-      fetchBorrowerLoans(
-        account,
-        "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
-        masterContract,
-        oracleContract
-      ).then((loans) => {
+      getLoans().then((loans) => {
         console.log(loans);
         setFilteredLoans(loans);
         setLoans(loans);
       });
   }, []);
+
+  const getLoans = async() => {
+    const _loans = await fetchBorrowerLoans(
+    "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
+    masterContract,
+    oracleContract
+    );
+    console.log("L",_loans);
+    return _loans;
+}
 
   function totalAmount(loans) {
     let total = 0;
