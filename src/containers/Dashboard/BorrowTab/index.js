@@ -15,7 +15,6 @@ import { getAdditionalInfo } from "../../../utils/getAdditionalInfo";
 import Web3 from "web3";
 import { MASTER_ABI } from "../../../contracts/Master";
 import { ORACLE_ABI } from "../../../contracts/Oracle";
-import { fetchLoanDetails } from "../../../utils/fetchLoanDetails";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
 import { getFilterValues } from "../../../utils/getFilterValues";

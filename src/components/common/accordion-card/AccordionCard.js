@@ -12,6 +12,7 @@ import RepayLoan from "./accordion-right/RepayLoan";
 import CancelLoan from "./accordion-right/CancelLoan";
 import StatusText from "./accordion-right/StatusText";
 import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
+import StartLoanOffer from "./accordion-right/StartLoanOffer";
 
 function AccordionCard({
   orderId,
@@ -26,6 +27,7 @@ function AccordionCard({
   isBorrower,
   lendContract
 }) {
+  console.log("------",loan)
   const [isCollapsed, setIsCollapsed] = useState(true);
   return (
     <div>
@@ -110,7 +112,7 @@ function AccordionCard({
                   <ClaimAssets lendContract={lendContract} loan={loan} amount={isBorrower ? convertToInternationalCurrencySystem(loan?.collateralAmt).toString() + " " + loan?.collateralTicker : convertToInternationalCurrencySystem(loan?.stableCoinAmt).toString() + " " + loan?.stableCoinTicker} penalty={(loan?.penalty).toString() + " %"} />
                 )}
                 {status === "Funded" && (
-                  <AcceptLoanOffer loanAmount={"$1300"} />
+                  <StartLoanOffer lendContract={lendContract} loan={loan} />
                 )}
                 {status === "Active" && (
                   <RepayLoan

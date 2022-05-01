@@ -79,34 +79,38 @@ async function getHealthFactor(oracleContract, scAmt, scDecimal, wvtAmt, wvtAddr
 }
 
 function getLoanPeriod(endTime) {
-  var DateDiff = {
-    inDays: function (d1, d2) {
-      var t2 = d2.getTime();
-      var t1 = d1.getTime();
+  var unixTime = Math.floor(Math.floor(Date.now() / 1000) / 86400) * 86400;
+  var startDate = new Date(new Date(unixTime * 1000).toISOString().substr(0, 10));
+  console.log("EndDate", unixTime);
+  var endingDate = new Date(( (unixTime + Number(endTime)) * 1000)).toISOString().substr(0, 10); // need date in YYYY-MM-DD format
+  var endDate = new Date(endingDate);
+  if (startDate > endDate) {
+    var swap = startDate;
+    startDate = endDate;
+    endDate = swap;
+  }
+  var startYear = startDate.getFullYear();
+  var february = (startYear % 4 === 0 && startYear % 100 !== 0) || startYear % 400 === 0 ? 29 : 28;
+  var daysInMonth = [31, february, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-      return parseInt((t2 - t1) / (86400 * 1000));
-    },
-    inMonths: function (d1, d2) {
-      var d1Y = d1.getFullYear();
-      var d2Y = d2.getFullYear();
-      var d1M = d1.getMonth();
-      var d2M = d2.getMonth();
+  var yearDiff = endDate.getFullYear() - startYear;
+  var monthDiff = endDate.getMonth() - startDate.getMonth();
+  if (monthDiff < 0) {
+    yearDiff--;
+    monthDiff += 12;
+  }
+  var dayDiff = endDate.getDate() - startDate.getDate();
+  if (dayDiff < 0) {
+    if (monthDiff > 0) {
+      monthDiff--;
+    } else {
+      yearDiff--;
+      monthDiff = 11;
+    }
+    dayDiff += daysInMonth[startDate.getMonth()];
+  }
 
-      return d2M + 12 * d2Y - (d1M + 12 * d1Y);
-    },
-    inYears: function (d1, d2) {
-      return d2.getFullYear() - d1.getFullYear();
-    },
-  };
-
-  var d1 = new Date();
-  var d2 = new Date();
-  d2.setDate(d2.getDate() + Math.floor(endTime / 86400));
-  var months = DateDiff.inYears(d1, d2) * 12;
-  var month = DateDiff.inMonths(d1, d2) - months;
-  var days = DateDiff.inYears(d1, d2) * 365;
-  var dy = DateDiff.inDays(d1, d2) - days;
-  return DateDiff.inYears(d1, d2) + " Y " + month + " M " + dy + " D";
+  return yearDiff + 'Y ' + monthDiff + 'M ' + dayDiff + 'D';
 }
 
 function convertToDate(timestamp) {

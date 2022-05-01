@@ -4,7 +4,6 @@ import { cancelLoanTooltip } from "../../../../constants/toolTips";
 import SvgIcon from "../../svg-icon/svg-icon";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
-import { pullAssets } from "../../../../utils/pullAssets";
 import { cancelLoan } from "../../../../utils/cancelLoan";
 function CancelLoan({ lendContract, loan }) {
   const web3 = new Web3(Web3.givenProvider);
