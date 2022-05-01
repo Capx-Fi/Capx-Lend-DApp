@@ -16,7 +16,6 @@ import { getAdditionalInfo } from "../../../../utils/getAdditionalInfo";
 import Web3 from "web3";
 import AccordionCard from "../../../../components/common/accordion-card/AccordionCard";
 import {fetchLoanDetailsBorrower} from "../../../../utils/fetchLoanDetailsBorrower";
-import { NavLink } from "react-router-dom";
 import NewLendOfferComponent from "../../NewLendOfferComponent";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { getFilterValues } from "../../../../utils/getFilterValues";

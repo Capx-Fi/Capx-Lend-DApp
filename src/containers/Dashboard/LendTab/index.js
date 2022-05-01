@@ -127,6 +127,8 @@ const LendTab = (collapsed) => {
   }
   return loans ? (
     <>
+    <br></br> 
+    <h1>Overview</h1>
       <Row>
         <Col>
           <div className="capx-card-secondary dashboard-statics-card">
@@ -221,6 +223,7 @@ const LendTab = (collapsed) => {
             {availableLoanStatus(filteredLoans).map(function (status) {
               return (
                 <div className="orderlist-card">
+                  <h4 className="card-title">{status}</h4>
                   {filteredLoans.map(function (loan) {
                     return (
                       loan.status === status && (
