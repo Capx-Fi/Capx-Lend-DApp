@@ -29,7 +29,7 @@ const marks = {
 	100: { label: "100%", style: {fontSize: '13px'} },
   };
 
-const LendBorrowComponent = (props) => {
+const NewLendOfferComponent = (props) => {
 	const [value, setValue] = React.useState(1);
 	const onChange = (e) => {
 		setValue(e.target.value);
@@ -280,4 +280,4 @@ const LendBorrowComponent = (props) => {
 	);
 };
 
-export default LendBorrowComponent;
+export default NewLendOfferComponent;

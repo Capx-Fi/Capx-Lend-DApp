@@ -36,7 +36,11 @@ function AccordionCard({
           <div className="upper-left">
             <b>Order ID: {orderId}</b>
             <span className="ml-4 helthfactor-title">
-              Health Factor : <b>{healthFactor}</b>
+              Health Factor : <b>{
+                loan?.status === "Cancelled" 
+                ? "N/A"
+                : convertToInternationalCurrencySystem(healthFactor)
+              }</b>
               <Tooltip
                 className="tooltip-icon"
                 placement="top"

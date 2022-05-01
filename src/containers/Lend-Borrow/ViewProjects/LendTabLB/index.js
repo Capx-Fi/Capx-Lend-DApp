@@ -11,7 +11,7 @@ import AccordionCard from "../../../../components/common/accordion-card/Accordio
 //import { getLendBorrowProjects } from "../../../../utils/getLendBorrowProjects";
 import { getAdditionalInfo } from "../../../../utils/getAdditionalInfo";
 //import LendBorrow from "../../NewOffer";
-import LendBorrowComponent from "../../LendBorrowComponent";
+import NewLendOfferComponent from "../../NewLendOfferComponent";
 import { getOrderDetails } from "../../../../utils/getOrderDetails";
 import { getLendBorrowProjects } from "../../../../utils/getLendBorrowProjects";
 
@@ -86,7 +86,7 @@ const LendTabLB = (collapsed) => {
         <Col>
           <CapxScrollbars style={{ height: "70vh" }}>
             <div className="order-list">
-              <div className="orderlist-card">
+              {/* <div className="orderlist-card">
                 <h4 className="card-title">Expired</h4>
                 <AccordionCard
                   orderId={"321234"}
@@ -96,7 +96,7 @@ const LendTabLB = (collapsed) => {
                   additonalInfo={getAdditionalInfo()}
                   loan
                 />
-              </div>
+              </div> */}
               {/* <div className="orderlist-card">
                 <h4 className="card-title">Funded</h4>
                 <AccordionCard
@@ -132,7 +132,7 @@ const LendTabLB = (collapsed) => {
       </Row>
     </>
   ) : (
-    <LendBorrowComponent lend_loan_assets />
+    <NewLendOfferComponent lend_loan_assets />
   );
 };
 

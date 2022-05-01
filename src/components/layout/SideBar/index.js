@@ -10,7 +10,7 @@ const SideBar = () => {
         <ul>
           <li>
             <NavLink
-              to="/lend-borrow"
+              to="/market"
               className={(navData) => (navData.isActive ? "selected" : "")}
             >
               <SvgIcon

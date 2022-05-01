@@ -14,14 +14,14 @@ const ViewLendBorrow = () => {
     right: pathname.includes("new") ? (
       <Button
         type="link"
-        onClick={() => navigate.push("/lend-borrow")}
+        onClick={() => navigate.push("/market")}
         className="best-offer-link"
       >
         Back to Lend Offers
       </Button>
     ) : (
       <Button
-        onClick={() => navigate.push("/lend-borrow/newborrow")}
+        onClick={() => navigate.push("/market/newLoan")}
         className="action-outline-btn"
       >
         Create Loan Offer
@@ -35,7 +35,7 @@ const ViewLendBorrow = () => {
         defaultActiveKey="1"
         type="card"
         tabBarExtraContent={operations}
-        onChange={() => navigate.push("/lend-borrow")}
+        onChange={() => navigate.push("/market")}
       >
         <TabPane tab="Borrow" key="1">
           <BorrowTabLB />

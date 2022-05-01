@@ -21,6 +21,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
+import Liquidation from "./containers/Liquidation";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -81,7 +82,9 @@ const App = () => {
                     </Sider>
                     <Content className="right-content-wrapper">
                       <Switch>
-                        <Route path="/" component={Dashboard} />
+                        <Route path="/" component={ViewLendBorrow} />
+                        {/* <Route path="/liquidation" component={Liquidation} /> */}
+                        {/* <Route path="/market" component={ViewLendBorrow} /> */}
                       </Switch>
                     </Content>
                   </>
