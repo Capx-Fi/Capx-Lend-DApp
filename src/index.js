@@ -13,15 +13,15 @@ import { MetamaskStateProvider } from "./metamaskReactHook/index";
 import Web3 from "web3";
 
 function getLibrary(provider) {
-  return new Web3(provider);
+	return new Web3(provider);
 }
 ReactDOM.render(
-  <Web3ReactProvider getLibrary={getLibrary}>
-    <MetamaskStateProvider>
-      <App />
-      {/* <MetamaskModal /> */}
-      {/* <VestingOverview/> */}
-    </MetamaskStateProvider>
-  </Web3ReactProvider>,
-  document.getElementById("root")
+	<Web3ReactProvider getLibrary={getLibrary}>
+		<MetamaskStateProvider>
+			<App />
+			{/* <MetamaskModal /> */}
+			{/* <VestingOverview/> */}
+		</MetamaskStateProvider>
+	</Web3ReactProvider>,
+	document.getElementById("root")
 );
