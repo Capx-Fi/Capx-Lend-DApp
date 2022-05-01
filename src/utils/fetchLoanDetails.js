@@ -81,7 +81,6 @@ async function getHealthFactor(oracleContract, scAmt, scDecimal, wvtAmt, wvtAddr
 function getLoanPeriod(endTime) {
   var unixTime = Math.floor(Math.floor(Date.now() / 1000) / 86400) * 86400;
   var startDate = new Date(new Date(unixTime * 1000).toISOString().substr(0, 10));
-  console.log("EndDate", unixTime);
   var endingDate = new Date(( (unixTime + Number(endTime)) * 1000)).toISOString().substr(0, 10); // need date in YYYY-MM-DD format
   var endDate = new Date(endingDate);
   if (startDate > endDate) {
@@ -237,9 +236,9 @@ export const fetchLoanDetails = async (
           .toString(10);
         const _completedAtTime = Math.floor(loan?.completedAtTime / 86400) * 86400;
         const _penalty = await fetchPenalty(masterContract);
-        const _totalInterest =
+        let _totalInterest =
             loan?.stageOfLoan === "4" 
-            ? await fetchLoanRepayAmt(masterContract, loan?.loanID)
+            ? await fetchLoanRepayAmt(masterContract, loan?.loanID, loan)
             : loan?.stageOfLoan === "5" && _completedAtTime !== loan?.endTime
             ? new BigNumber(
                 getTotalInterest(
@@ -263,9 +262,13 @@ export const fetchLoanDetails = async (
             ).dividedBy(Math.pow(10, loan?.stableCoinDecimal));
         const _collateralValue =
           _wvtAmt * Math.floor((_marketPrice * _discount) / 100);
+
+        if(loan?.stageOfLoan === "4"){
+          _totalInterest = _totalInterest/ Math.pow(10,loan?.stableCoinDecimal)
+          _totalInterest = (new BigNumber (_totalInterest)).minus(new BigNumber (_scAmt))
+        }
         const _payOffAmt = _totalInterest.plus(_scAmt);
         const _healthFactor = await getHealthFactor(oracleContract, _scAmt, loan?.stableCoinDecimal, _wvtAmt, loan?.wvtAddress ,loan?.wvtDecimal, loan?.discount, loan?.liquidationThreshold);
-        console.log("Health Factor",_healthFactor, loan?.loanID);
         const _ltv = new BigNumber(loan?.loanToValue)
           .dividedBy(Math.pow(10, 2))
           .toString(10);
@@ -307,7 +310,7 @@ export const fetchLoanDetails = async (
       .flat();
       returnLoans = await Promise.all(loans);
   } catch (error) {
-    console.log(error);
+    console.log("Error while fetching loan details", error);
   }
   return returnLoans;
 };

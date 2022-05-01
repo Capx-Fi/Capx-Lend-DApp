@@ -25,9 +25,9 @@ function AccordionCard({
   statusType,
   loan,
   isBorrower,
-  lendContract
+  lendContract,
+  masterContract
 }) {
-  console.log("------",loan)
   const [isCollapsed, setIsCollapsed] = useState(true);
   return (
     <div>
@@ -116,8 +116,9 @@ function AccordionCard({
                 )}
                 {status === "Active" && (
                   <RepayLoan
-                    repayAmount={"$3000"}
-                    isInstallment={paymentType === "Installment"}
+                    lendContract = {lendContract} loan = {loan} masterContract = {masterContract} 
+                  // repayAmount={"$3000"}
+                    // isInstallment={paymentType === "Installment"}
                   />
                 )}
                 {status === "Initiated" && (

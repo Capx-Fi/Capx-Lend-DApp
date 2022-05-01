@@ -1,10 +1,11 @@
 import BigNumber from "bignumber.js";
-
-BigNumber.config({
-    ROUNDING_MODE: 3,
-    DECIMAL_PLACES: 18,
-    EXPONENTIAL_AT: [-18, 36],
-  });
+import Web3 from "web3";
+import { MASTER_ABI } from "../contracts/Master";
+// BigNumber.config({
+//     ROUNDING_MODE: 3,
+//     DECIMAL_PLACES: 18,
+//     EXPONENTIAL_AT: [-18, 36],
+//   });
 
 export const approveRepaymentLoan = async(
     masterContract,
@@ -16,7 +17,6 @@ export const approveRepaymentLoan = async(
 ) => {
     let result = null
     const web3 = new Web3(Web3.givenProvider);
-
     // Getting the value to be approved by the user.
     let approvalAmt = null;
     try {
@@ -29,7 +29,6 @@ export const approveRepaymentLoan = async(
     } catch (error) {
         console.log("Master - Fetch Liquidation Amount ERR: \n", error);
     }
-
     // Approving the tokens
     let approvalResult = null;
     try {

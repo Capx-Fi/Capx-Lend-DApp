@@ -1,4 +1,4 @@
-export const fetchLoanRepayAmt = async( masterContract, loanID ) => {
+export const fetchLoanRepayAmt = async( masterContract, loanID , loan) => {
     let result = null;
     try {
         result = await masterContract.methods
@@ -9,7 +9,7 @@ export const fetchLoanRepayAmt = async( masterContract, loanID ) => {
                 return result.toString(10);
         };
     } catch (error) {
-        console.log(error);
+        console.log("ERROR",error);
     }
 }
 

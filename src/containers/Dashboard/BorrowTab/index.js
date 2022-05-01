@@ -46,12 +46,10 @@ const BorrowTab = () => {
   useEffect(() => {
     active &&
       getLoans().then((loans) => {
-        console.log(loans);
         setFilteredLoans(loans);
         setLoans(loans);
       });
   }, []);
-
   const getLoans = async() => {
     const _loans = await fetchBorrowerLoans(
     "0xBC7a2925D5C194D1DbEdeB99F13c326851dC8230",
@@ -224,7 +222,8 @@ const BorrowTab = () => {
                           additonalInfo={getAdditionalInfo(loan)}
                           loan={loan}
                           isBorrower={true}
-                          lendContract = {lendContract}
+                          lendContract={lendContract}
+                          masterContract={masterContract}
                         />
                       )
                     );

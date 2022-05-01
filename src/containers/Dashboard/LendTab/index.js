@@ -231,9 +231,10 @@ const LendTab = (collapsed) => {
                           status={loan.status}
                           orderDetails={getOrderDetails(loan)}
                           additonalInfo={getAdditionalInfo(loan)}
-                          loan = {loan}
+                          loan={loan}
                           isBorrower={false}
-                          lendContract = {lendContract}
+                          lendContract={lendContract}
+                          masterContract={masterContract}
                         />
                       )
                     );
