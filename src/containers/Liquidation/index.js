@@ -18,32 +18,27 @@ import { ORACLE_ABI } from "../../contracts/Oracle";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { convertToInternationalCurrencySystem } from "../../utils/convertToInternationalCurrencySystem";
 import { getFilterValues } from "../../utils/getFilterValues";
-import { fetchLiquidationLoans } from "../../utils/fetchLiquidationLoans";
+// import { fetchLiquidationLoans } from "../../utils/fetchLiquidationLoans";
 import { fetchLoanDetails } from "../../utils/fetchLoanDetails";
+import { fetchLiquidationLoans } from "../../utils/fetchLiquidationLoans";
 const { Option } = Select;
-
 const Liquidation = () => {
   const [loans, setLoans] = useState(null);
   const [filteredLoans, setFilteredLoans] = useState(null);
   const web3 = new Web3(Web3.givenProvider);
-
   const masterContract = new web3.eth.Contract(
     MASTER_ABI,
     "0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
   );
-
   const oracleContract = new web3.eth.Contract(
     ORACLE_ABI,
     "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
   );
-
   const lendContract = new web3.eth.Contract(
     LEND_ABI,
     "0x309D0Ff4b655bAD183A3FA88A0547b41e877DcF1"
   );
-
   const { active, account } = useWeb3React();
-
   useEffect(() => {
     active &&
       getLoans().then((loans) => {
@@ -52,7 +47,7 @@ const Liquidation = () => {
       });
   }, []);
   const getLoans = async() => {
-    const _loans = await fetchLoanDetails(
+    const _loans = await fetchLiquidationLoans(
     "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
     masterContract,
     oracleContract
@@ -61,84 +56,30 @@ const Liquidation = () => {
     console.log("Filters", getFilterValues(_loans,"stableCoinTicker"));
     return _loans;
 }
-
-  function totalAmount(loans) {
-    let total = 0;
-    loans.forEach((loan) => {
-      if (loan.stableCoinAmt !== "NaN") total += parseFloat(loan.stableCoinAmt);
-    });
-    return total;
-  }
-
-  function totalInterest(loans) {
-    let total = 0;
-    loans.forEach((loan) => {
-      if (loan.status === "Completed") total += parseFloat(loan.totalInterest);
-    });
-    return total;
-  }
-
-  function totalPaidOff(loans) {
-    let total = 0;
-    loans.forEach((loan) => {
-      if (loan.status === "Completed") total += parseFloat(loan.payOffAmt);
-    });
-    return total;
-  }
-
   function availableLoanStatus(loans) {
     let status = [];
     loans.forEach((loan) => {
       if (!status.includes(loan.status)) status.push(loan.status);
     });
-
     return status;
   }
-
   function filterLoansByCompanyAsset(loans, companyAsset) {
     if (companyAsset !== "") {
       setFilteredLoans(loans.filter((loan) => loan.collateralTicker === companyAsset));
     } else setFilteredLoans(loans);
   }
-
   function filterLoansByLendAsset(loans, lendAsset) {
     if (lendAsset !== "") {
       setFilteredLoans(loans.filter((loan) => loan.stableCoinTicker === lendAsset));
     } else setFilteredLoans(loans);
   }
-
   function filterLoansByStatus(loans, status) {
     if (status !== "")
       setFilteredLoans(loans.filter((loan) => loan.status === status));
     else setFilteredLoans(loans);
   }
-
   return loans ? (
     <>
-      {/* <Row>
-        <Col>
-          <div className="capx-card-secondary dashboard-statics-card">
-            <ul>
-              <li>
-                <p>Borrowed Amount</p>
-                <h4>$ {convertToInternationalCurrencySystem(totalAmount(loans))} </h4>
-              </li>
-              <li>
-                <p>Active loans</p>
-                <h4>{loans.length}</h4>
-              </li>
-              <li>
-                <p>Interest Paid</p>
-                <h4>$ {convertToInternationalCurrencySystem(totalInterest(loans))}</h4>
-              </li>
-              <li>
-                <p>Loan Amount Repayed</p>
-                <h4>$ {convertToInternationalCurrencySystem(totalPaidOff(loans))}</h4>
-              </li>
-            </ul>
-          </div>
-        </Col>
-      </Row> */}
       <Row className="heading-row">
         <Col sm="12" >
           <h2>Liquidation Market</h2>
@@ -178,7 +119,7 @@ const Liquidation = () => {
               return <Option value={wvt_asset}>{wvt_asset}</Option>;
             })}
           </Select>
-          <Select
+          {/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Loan Status"
@@ -189,7 +130,7 @@ const Liquidation = () => {
             {["Initiated", "Completed", "Cancelled", , "Expired", "Defaulted", "Funded", "Active"].map(function (status) {
               return <Option value={status}>{status}</Option>;
             })}
-          </Select>
+          </Select> */}
         </Col>
         <Col className="right-col">
           <Select
@@ -218,7 +159,6 @@ const Liquidation = () => {
                           orderId={loan.loanID}
                           healthFactor={loan.healthFactor}
                           paymentType={loan.repaymentType}
-                        //   status={loan.status}
                           orderDetails={getOrderDetails(loan)}
                           additonalInfo={getAdditionalInfo(loan)}
                           loan={loan}
@@ -240,5 +180,5 @@ const Liquidation = () => {
     <LoadingScreen />
   );
 };
-
 export default Liquidation;
+

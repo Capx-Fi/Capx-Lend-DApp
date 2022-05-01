@@ -82,9 +82,9 @@ const App = () => {
                     </Sider>
                     <Content className="right-content-wrapper">
                       <Switch>
-                        <Route path="/" component={ViewLendBorrow} />
-                        {/* <Route path="/liquidation" component={Liquidation} /> */}
-                        {/* <Route path="/market" component={ViewLendBorrow} /> */}
+                        <Route path="/liquidation" component={Liquidation} />
+                        <Route path="/market" component={ViewLendBorrow} />
+                        <Route path="/" component={Dashboard} />
                       </Switch>
                     </Content>
                   </>
