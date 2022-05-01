@@ -4,10 +4,9 @@ import { repaymentLoan, approveRepaymentLoan } from "../../../../utils/repayment
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { ERC20_ABI } from "../../../../contracts/ERC20";
-import { convertToInternationalCurrencySystem } from "../../../../utils/convertToInternationalCurrencySystem";
 
 
-function RepayLoan({ lendContract, loan , masterContract}) {
+function LiquidateLoan({ lendContract, loan , masterContract}) {
   const [value, setValue] = React.useState(1);
   const onChange = (e) => {
     setValue(e.target.value);
@@ -28,17 +27,17 @@ function RepayLoan({ lendContract, loan , masterContract}) {
       )} */}
       <Row className="mb-2">
         <Col sm="12">
-          <b>Repay Loan</b>
+          <b>Liquidate Loan</b>
         </Col>
       </Row>
       <Row>
-        <Col sm="7">Amount to be paid :</Col>
+        <Col sm="7">Amount to be paid : &nbsp;</Col>
         <Col sm="5" className="text-right">
-          <b>&nbsp;$&nbsp;{convertToInternationalCurrencySystem(loan?.payOffAmt).toString()}</b>
+          <b>{loan?.liquidationAmt.toString()}</b>
         </Col>
       </Row>
       <Button className="action-btn mt-3" block
-        onClick={() => approveRepaymentLoan(
+        onClick={() => approveLiquidation(
           masterContract,
           account,
           loan?.loanID,
@@ -47,15 +46,15 @@ function RepayLoan({ lendContract, loan , masterContract}) {
           loan?.stableCoinAddress
         )}
       >
-        Approve Loan Repayment
+        Approve Loan Liquidation
       </Button>
       <Button className="action-btn mt-3" block
-        onClick={() => repaymentLoan(lendContract, account, loan?.loanID)}
+        onClick={() => liquidation(lendContract, account, loan?.loanID)}
       >
-        Repay Loan
+        Liquidate Loan
       </Button>
     </div>
   );
 }
 
-export default RepayLoan;
+export default LiquidateLoan;

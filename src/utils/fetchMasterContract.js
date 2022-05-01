@@ -13,6 +13,21 @@ export const fetchLoanRepayAmt = async( masterContract, loanID , loan) => {
     }
 }
 
+export const fetchLiquidationAmt = async( masterContract, loanID) => {
+    let result = null;
+    try {
+        result = await masterContract.methods
+            .liquidationAmount(loanID)
+            .call()
+        if (result) {
+                console.log("Loan Repayment Amt :", result['0'].toString(10));
+                return result['0'].toString(10);
+        };
+    } catch (error) {
+        console.log("ERROR",error);
+    }
+}
+
 export const fetchHealthFactor = async( masterContract, loanID ) => {
     let result = null;
     try {

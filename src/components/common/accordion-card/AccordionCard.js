@@ -111,6 +111,9 @@ function AccordionCard({
                 {status === "Expired" && (
                   <ClaimAssets lendContract={lendContract} loan={loan} amount={isBorrower ? convertToInternationalCurrencySystem(loan?.collateralAmt).toString() + " " + loan?.collateralTicker : convertToInternationalCurrencySystem(loan?.stableCoinAmt).toString() + " " + loan?.stableCoinTicker} penalty={(loan?.penalty).toString() + " %"} />
                 )}
+                {status === "Defaulted" && (
+                  <ClaimAssets lendContract={lendContract} loan={loan} amount={isBorrower ? convertToInternationalCurrencySystem(loan?.collateralAmt).toString() + " " + loan?.collateralTicker : convertToInternationalCurrencySystem(loan?.stableCoinAmt).toString() + " " + loan?.stableCoinTicker} penalty={(loan?.penalty).toString() + " %"} />
+                )}
                 {status === "Funded" && (
                   <StartLoanOffer lendContract={lendContract} loan={loan} />
                 )}

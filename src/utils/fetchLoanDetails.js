@@ -5,7 +5,8 @@ import {
   fetchHealthFactor,
   fetchSCAmt,
   fetchWVTAmt,
-  fetchPenalty
+  fetchPenalty,
+  fetchLiquidationAmt
 } from "./fetchMasterContract";
 import { fetchMarketPrice } from "./fetchOracleContract";
 BigNumber.config({
@@ -236,6 +237,10 @@ export const fetchLoanDetails = async (
           .toString(10);
         const _completedAtTime = Math.floor(loan?.completedAtTime / 86400) * 86400;
         const _penalty = await fetchPenalty(masterContract);
+        let _liquidationAmount = null
+        if (loan?.stageOfLoan === "4"){
+          _liquidationAmount = await fetchLiquidationAmt(masterContract, loan?.loanID)
+        }
         let _totalInterest =
             loan?.stageOfLoan === "4" 
             ? await fetchLoanRepayAmt(masterContract, loan?.loanID, loan)
@@ -304,6 +309,7 @@ export const fetchLoanDetails = async (
           collateralVal: _collateralValue.toString(),
           borrowerAddress: loan?.borrowerAddress,
           lenderAddress: loan?.lenderAddress,
+          liquidationAmt: _liquidationAmount,
         };
         return data;
       })
