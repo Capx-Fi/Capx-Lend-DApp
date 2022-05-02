@@ -142,9 +142,10 @@ const LendTabLB = (collapsed) => {
                           orderDetails={getOrderDetails(loan)}
                           additonalInfo={getAdditionalInfo(loan)}
                           loan={loan}
-                          isBorrower={true}
+                          isBorrower={false}
                           lendContract={lendContract}
                           masterContract={masterContract}
+                          externalLiquidation={true} // needs to be updated from the UI
                         />
                       )
                     );

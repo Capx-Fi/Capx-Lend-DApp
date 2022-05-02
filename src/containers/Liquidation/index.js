@@ -162,7 +162,7 @@ const Liquidation = () => {
                           orderDetails={getOrderDetails(loan)}
                           additonalInfo={getAdditionalInfo(loan)}
                           loan={loan}
-                          isBorrower={true}
+                          isBorrower={false}
                           lendContract={lendContract}
                           masterContract={masterContract}
                         />
