@@ -16,7 +16,7 @@ const NavigationBar = () => {
 		useWeb3React();
 
 	const disconnect = deactivate;
-	console.log(injected.isAuthorized());
+	// console.log(injected.isAuthorized());
 	return (
 		<>
 			<div className="logo">
