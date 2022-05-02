@@ -254,7 +254,7 @@ export const fetchLoanDetails = async (
                   true
                 )
               ).dividedBy(Math.pow(10, loan?.stableCoinDecimal))
-            : _status === "Initiated" || _status === "Cancelled" || _status === "Funded" || _status === "Expired"
+            :  _status === "Cancelled" ||  _status === "Expired"
             ? new BigNumber("0")
             : new BigNumber(
               getTotalInterest(

@@ -135,7 +135,7 @@ const LendTab = (collapsed) => {
             <ul>
               <li>
                 <p>Lent Amount</p>
-                <h4>{convertToInternationalCurrencySystem(totalAmount(loans))}</h4>
+                <h4>$ {convertToInternationalCurrencySystem(totalAmount(loans))}</h4>
               </li>
               <li>
                 <p>Number of loans</p>
@@ -143,11 +143,11 @@ const LendTab = (collapsed) => {
               </li>
               <li>
                 <p>Interest Accured</p>
-                <h4>${convertToInternationalCurrencySystem(totalInterest(loans))}</h4>
+                <h4>$ {convertToInternationalCurrencySystem(totalInterest(loans))}</h4>
               </li>
               <li>
                 <p>Interest Pending</p>
-                <h4>${convertToInternationalCurrencySystem(totalPending(loans))}</h4>
+                <h4>$ {convertToInternationalCurrencySystem(totalPending(loans))}</h4>
               </li>
             </ul>
           </div>
