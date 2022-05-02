@@ -12,12 +12,8 @@ export const approveAcceptLoan = async(
     ERC20_ABI, 
     LEND_CONTRACT_ADDRESS,
     loanID,
-    isBorrower, // Determining which function to call.
-    amount, // Stable coin amount of loan in case of Borrower accepting the loan else WVT amount of the loan.
-    wvtAddress,
-    scAddress,
-    ltv,
-    discount
+    isBorrower, // Stable coin amount of loan in case of Borrower accepting the loan else WVT amount of the loan.
+    loan,
 ) => {
     let result = null;
     const web3 = new Web3(Web3.givenProvider);
@@ -27,11 +23,11 @@ export const approveAcceptLoan = async(
         if(isBorrower){
             result = await masterContract.methods
                 .wvtAmountCalculation(
-                    amount,
-                    wvtAddress,
-                    scAddress,
-                    ltv,
-                    discount
+                    new BigNumber(loan?.stableCoinAmt).multipliedBy(Math.pow(10, loan?.stableCoinDecimal).toString(10)),
+                    loan?.collateralAddress,
+                    loan?.stableCoinAddress,
+                    new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
+                    new BigNumber(loan?.discount).multipliedBy(100).toString(10)
                 ).call();
             if (result) {
                 approvalAmt = result.toString(10);
@@ -39,11 +35,11 @@ export const approveAcceptLoan = async(
         } else {
             result = await masterContract.methods
                 .stablecoinAmountCalculation(
-                    amount,
-                    wvtAddress,
-                    scAddress,
-                    ltv,
-                    discount
+                    new BigNumber(loan?.collateralAmt).multipliedBy(Math.pow(10, loan?.collateralDecimal).toString(10)),
+                    loan?.collateralAddress,
+                    loan?.stableCoinAddress,
+                    new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
+                    new BigNumber(loan?.discount).multipliedBy(100).toString(10)
                 ).call();
             if (result) {
                 approvalAmt = result.toString(10);
@@ -52,15 +48,14 @@ export const approveAcceptLoan = async(
     } catch (error) {
         console.log("Master - Accept Loan Amount ERR: \n", error);
     }
-
     // Approving the tokens
     let approvalResult = null;
     try {
         let erc20Contract = null;
         if(isBorrower) {
-            erc20Contract = new web3.eth.Contract(ERC20_ABI, wvtAddress);
+            erc20Contract = new web3.eth.Contract(ERC20_ABI, loan?.collateralAddress);
         } else {
-            erc20Contract = new web3.eth.Contract(ERC20_ABI, scAddress);
+            erc20Contract = new web3.eth.Contract(ERC20_ABI, loan?.stableCoinAddress);
         }
         approvalResult = await erc20Contract.methods
             .approve(LEND_CONTRACT_ADDRESS, approvalAmt)

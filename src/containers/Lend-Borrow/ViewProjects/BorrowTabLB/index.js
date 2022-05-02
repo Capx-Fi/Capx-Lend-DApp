@@ -146,6 +146,7 @@ const BorrowTabLB = () => {
                           isBorrower={true}
                           lendContract={lendContract}
                           masterContract={masterContract}
+                          externalLiquidation={false} // externalLiquidation does not have any affect on borrower accepting loan 
                         />
                       )
                     );
