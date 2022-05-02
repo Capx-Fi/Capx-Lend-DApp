@@ -15,7 +15,7 @@ import { getOrderDetails } from "../../../../utils/getOrderDetails";
 import { getAdditionalInfo } from "../../../../utils/getAdditionalInfo";
 import Web3 from "web3";
 import AccordionCard from "../../../../components/common/accordion-card/AccordionCard";
-import {fetchLoanDetailsLender} from "../../../../utils/fetchLoanDetailsLender";
+import {fetchLoanDetailsBorrower} from "../../../../utils/fetchLoanDetailsBorrower";
 import NewLendOfferComponent from "../../NewLendOfferComponent";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { getFilterValues } from "../../../../utils/getFilterValues";
@@ -47,7 +47,7 @@ const LendTabLB = (collapsed) => {
       });
   }, []);
   const getLoans = async() => {
-    const _loans = await fetchLoanDetailsLender(
+    const _loans = await fetchLoanDetailsBorrower(
     account,
     "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
     masterContract,
