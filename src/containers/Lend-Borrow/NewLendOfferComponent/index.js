@@ -74,11 +74,9 @@ const NewLendOfferComponent = (props) => {
 	};
 
 	const [collateral, setCollateral] = useState(10);
-		const [collatCurrency, setCollatCurrency] = useState(null);
-
-		const [marketPrice, setMarketPrice] = useState(1);
-		
-		const [userWVTs, setUserWVTs] = useState(null);
+	const [collatCurrency, setCollatCurrency] = useState(null);
+	const [marketPrice, setMarketPrice] = useState(1);	
+	const [userWVTs, setUserWVTs] = useState(null);
 	const { active, account } = useWeb3React();
 
 	const [loanAsset, setLoanAsset] = useState(null);
@@ -239,16 +237,6 @@ const NewLendOfferComponent = (props) => {
     if (active && userWVTs?.length > 0) {
       const index = userWVTs.findIndex((wvt) => wvt.asset === collatCurrency);
 		if (isNumeric(collateral) && parseFloat(collateral) > 0 && index >= 0) {
-			console.log(
-        "PARAMETERS",
-        marketPrice,
-        parseFloat(stableCoinList[currentCoinIndex].stableCoinDecimal),
-        collateral,
-        userWVTs[index].tokenDecimal,
-        loanToValue,
-        discount,
-        true
-      );
         setLoanAsset(
           getLoanAmt(
             marketPrice,
@@ -300,7 +288,7 @@ const NewLendOfferComponent = (props) => {
                 <Col className="mb-4">
                   <label className="lb-label">
                     Collateral Amount{" "}
-                    <small className="align-right">Bal: {balance}</small>
+                    <small className="align-right">Bal: {convertToInternationalCurrencySystem(balance)}</small>
                   </label>
                   <Input.Group
                     className="groupwith-select"
