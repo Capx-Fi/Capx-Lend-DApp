@@ -26,85 +26,86 @@ import Liquidation from "./containers/Liquidation";
 const { Header, Content, Sider, Footer } = Layout;
 
 const App = () => {
-  const [collapsed, setCollapsed] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
-  const isConnected = true;
-  console.log(isConnected.isConnected);
+	const [collapsed, setCollapsed] = React.useState(false);
+	const [loading, setLoading] = React.useState(true);
+	const toggleCollapsed = () => {
+		setCollapsed(!collapsed);
+	};
+	const isConnected = true;
+	console.log(isConnected.isConnected);
 
-  setTimeout(() => {
-    setLoading(false);
-  }, 3500);
+	setTimeout(() => {
+		setLoading(false);
+	}, 3500);
 
-  const { active, account, library, connector, activate, deactivate, chainId } =
-    useWeb3React();
+	const { active, account, library, connector, activate, deactivate, chainId } =
+		useWeb3React();
 
-  return (
-    <>
-      {!loading ? (
-        <>
-          <SvgSprite url={svgFile} />
-          <Router>
-            <Layout>
-              <Header className="header">
-                <NavigationBar />
-              </Header>
-              <Layout className="main-content">
-                {active ? (
-                  <>
-                    <Sider
-                      width={290}
-                      className="capx-sider"
-                      collapsed={collapsed}
-                    >
-                      <SideBar />
+	return (
+		<>
+			{!loading ? (
+				<>
+					<SvgSprite url={svgFile} />
+					<Router>
+						<Layout>
+							<Header className="header">
+								<NavigationBar />
+							</Header>
+							<Layout className="main-content">
+								{active ? (
+									<>
+										<Sider
+											width={290}
+											className="capx-sider"
+											collapsed={collapsed}
+											position="sticky"
+										>
+											<SideBar />
 
-                      <Button
-                        className="menu-link"
-                        type="link"
-                        onClick={toggleCollapsed}
-                        style={{ marginBottom: 16 }}
-                      >
-                        {collapsed ? (
-                          <SvgIcon
-                            name="chevron-right"
-                            viewbox="0 0 5.333 9.333"
-                          />
-                        ) : (
-                          <SvgIcon
-                            name="chevron-left"
-                            viewbox="0 0 5.333 9.333"
-                          />
-                        )}
-                      </Button>
-                    </Sider>
-                    <Content className="right-content-wrapper">
-                      <Switch>
-                        <Route path="/liquidation" component={Liquidation} />
-                        <Route path="/market" component={ViewLendBorrow} />
-                        <Route path="/" component={Dashboard} />
-                      </Switch>
-                    </Content>
-                  </>
-                ) : (
-                  <Content className="right-content-wrapper">
-                    <Metamask />
-                  </Content>
-                )}
-              </Layout>
-              <Footer className="main-footer">
-                © 2021 Capx All rights reserved.
-              </Footer>
-            </Layout>
-          </Router>
-        </>
-      ) : (
-        <LoadingScreen />
-      )}
-    </>
-  );
+											<Button
+												className="menu-link"
+												type="link"
+												onClick={toggleCollapsed}
+												style={{ marginBottom: 16 }}
+											>
+												{collapsed ? (
+													<SvgIcon
+														name="chevron-right"
+														viewbox="0 0 5.333 9.333"
+													/>
+												) : (
+													<SvgIcon
+														name="chevron-left"
+														viewbox="0 0 5.333 9.333"
+													/>
+												)}
+											</Button>
+										</Sider>
+										<Content className="right-content-wrapper">
+											<Switch>
+												<Route path="/liquidation" component={Liquidation} />
+												<Route path="/market" component={ViewLendBorrow} />
+												<Route path="/" component={Dashboard} />
+											</Switch>
+										</Content>
+									</>
+								) : (
+									<Content className="right-content-wrapper">
+										<Metamask />
+									</Content>
+								)}
+							</Layout>
+							<Footer className="main-footer">
+								© 2021 Capx All rights reserved.
+							</Footer>
+						</Layout>
+					</Router>
+				</>
+			) : (
+				<LoadingScreen />
+			)}
+		</>
+	);
 };
 
 export default App;

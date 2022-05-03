@@ -48,13 +48,21 @@
 		.ant-select {
 			.ant-select-selector {
 				color: #a1a1a1;
+				background-color: #a1a1a1;
+				width: 6rem;
+				margin: 0 0.5rem 0 1rem;
+				padding: 0 0 0 0.5rem;
 				.ant-select-selection-placeholder {
 					color: #a1a1a1;
+				}
+				&:hover &:active {
+					border: none;
 				}
 			}
 			.ant-select-arrow {
 				.icon {
 					fill: #a1a1a1;
+					margin: 2px;
 				}
 			}
 		}
@@ -85,6 +93,26 @@
 				font-size: 26px;
 				margin-bottom: 0;
 			}
+		}
+	}
+}
+
+.filter-container {
+	display: flex;
+	.select-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.capx-dropdown {
+			width: 10px;
+			&:hover {
+				border-color: none !important;
+				box-shadow: none !important;
+			}
+		}
+		p {
+			margin-bottom: 0;
 		}
 	}
 }
