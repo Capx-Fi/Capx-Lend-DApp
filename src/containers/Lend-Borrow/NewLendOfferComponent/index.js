@@ -141,7 +141,7 @@ const NewLendOfferComponent = (props) => {
 		}
 		}
 		
-	}, [userWVTs, collatCurrency, currentCoinIndex]);
+	}, [userWVTs, collatCurrency, currentCoinIndex, account]);
 
 	
 	const getUserWVTs = async () => {
