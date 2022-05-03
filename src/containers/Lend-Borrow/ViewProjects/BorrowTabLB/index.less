@@ -1,10 +1,26 @@
 @import "../../../../assets/less/_variables.less";
 
-.action-btn{
-    background: @btn-gradient;
-    color: @secondary-color;
-    font-weight: bold;
-    span{
-        color: @secondary-color;
-    }
+.action-btn {
+	background: @btn-gradient;
+	color: @secondary-color;
+	font-weight: bold;
+	span {
+		color: @secondary-color;
+	}
+}
+
+.filter-container {
+	display: flex;
+	.select-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.capx-dropdown {
+			width: 10px;
+		}
+		p {
+			margin-bottom: 0;
+		}
+	}
 }

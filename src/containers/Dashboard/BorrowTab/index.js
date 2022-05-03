@@ -250,7 +250,10 @@ const BorrowTab = () => {
 			</Row>
 			<Row>
 				<Col>
-					<div className="order-list">
+					<div
+						className="order-list"
+						style={{ maxHeight: "55vh", overflowY: "scroll" }}
+					>
 						{availableLoanStatus(filteredLoans).map(function (status) {
 							return (
 								<div className="orderlist-card">
