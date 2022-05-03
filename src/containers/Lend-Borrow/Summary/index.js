@@ -13,7 +13,7 @@ const Summary = (props) => {
           {props.loanamount && (
             <li>
               <label>Loan Amount</label>
-              <span>${props.loanamount}</span>
+              <span>{props.loanamount}</span>
             </li>
           )}
           {props.collateralamount && (
@@ -25,7 +25,7 @@ const Summary = (props) => {
           {props.marketprice && (
             <li>
               <label>Market Price</label>
-              <span>${props.marketprice}</span>
+              <span>{props.marketprice}</span>
             </li>
           )}
           {props.loantype && (
