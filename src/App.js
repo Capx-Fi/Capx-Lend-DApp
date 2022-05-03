@@ -22,6 +22,8 @@ import { Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import Liquidation from "./containers/Liquidation";
+import { useSelector } from "react-redux";
+import CapxModal from "./components/common/modals/CapxModal";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -41,6 +43,7 @@ const App = () => {
   const { active, account, library, connector, activate, deactivate, chainId } =
     useWeb3React();
 
+  const modal = useSelector((state) => state.modal);
   return (
     <>
       {!loading ? (
@@ -54,6 +57,7 @@ const App = () => {
               <Layout className="main-content">
                 {active ? (
                   <>
+                    {modal.modalType !== null && <CapxModal {...modal} />}
                     <Sider
                       width={290}
                       className="capx-sider"

@@ -5,9 +5,12 @@ import SvgIcon from "../../svg-icon/svg-icon";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { pullAssets } from "../../../../utils/pullAssets";
-function ClaimAssets({ lendContract, loan,amount, penalty }) {
+import { showModal } from "../../../../redux/features/modalSlice";
+import { useDispatch } from "react-redux";
+function ClaimAssets({ lendContract, loan, amount, penalty }) {
   const web3 = new Web3(Web3.givenProvider);
   const { active, account, chainId } = useWeb3React();
+  const dispatch = useDispatch();
   return (
     <div>
       <Row className="mb-2">
@@ -23,7 +26,7 @@ function ClaimAssets({ lendContract, loan,amount, penalty }) {
       </Row>
       <Row>
         <Col sm="7">
-          Penalty 
+          Penalty
           <Tooltip
             className="tooltip-icon"
             placement="top"
@@ -37,9 +40,19 @@ function ClaimAssets({ lendContract, loan,amount, penalty }) {
           <b>{penalty}</b>
         </Col>
       </Row>
-      <Button 
-        className="action-btn mt-3" block
-        onClick={() => pullAssets(lendContract,account, loan?.loanID)}
+      <Button
+        className="action-btn mt-3"
+        block
+        onClick={() =>
+          dispatch(
+            showModal({
+              modalType: "Claim",
+              modalTitle: "Claiming Assets..",
+              modalSubtitle: "Your assets are being claimed",
+              modalProps: { lottie: "YAY" },
+            })
+          ) && pullAssets(lendContract, account, loan?.loanID)
+        }
       >
         Claim Assets
       </Button>
