@@ -6,50 +6,50 @@ const Summary = (props) => {
     <>
       <div className="summary-head">
         <h3>Summary</h3>
-        <p>Authorise your loan before initiating the loan request</p>
+        <p>Authorize your loan before initiating the loan request</p>
       </div>
       <div className="summary-content">
         <ul>
-          {props.loanamount && (
+          {props.stableCoinAmount && (
             <li>
               <label>Loan Amount</label>
-              <span>{props.loanamount}</span>
+              <span>{props.stableCoinAmount}</span>
             </li>
           )}
-          {props.collateralamount && (
+          {props.collateralAmount && (
             <li>
               <label>Collateral Amount</label>
-              <span>{props.collateralamount}</span>
+              <span>{props.collateralAmount}</span>
             </li>
           )}
-          {props.marketprice && (
+          {props.marketPrice && (
             <li>
               <label>Market Price</label>
-              <span>{props.marketprice}</span>
+              <span>{props.marketPrice}</span>
             </li>
           )}
-          {props.loantype && (
+          {props.loanType && (
             <li>
               <label>Loan Type</label>
-              <span>{props.loantype}</span>
+              <span>{props.loanType}</span>
             </li>
           )}
-          {props.collateralprice && (
+          {props.collateralPrice && (
             <li>
               <label>Collateral Price</label>
-              <span>{props.collateralprice}</span>
+              <span>{props.collateralPrice}</span>
             </li>
           )}
           {props.loanToValue && (
             <li>
               <label>Loan-To-Value</label>
-              <span>{props.loanToValue}%</span>
+              <span>{props.loanToValue} %</span>
             </li>
           )}
-          {props.liquidationthreshold && (
+          {props.liquidationThreshold && (
             <li>
               <label>Liquidation Threshold</label>
-              <span>{props.liquidationthreshold}%</span>
+              <span>{props.liquidationThreshold} %</span>
             </li>
           )}
           {props.canLiquidateLoan && (
@@ -59,25 +59,25 @@ const Summary = (props) => {
             </li>
           )}
 
-          {props.interestrate && (
+          {props.interestRate && (
             <li>
               <label>Interest Rate</label>
-              <span>{props.interestrate}</span>
+              <span>{props.interestRate} %</span>
             </li>
           )}
           {props.discount && (
             <li>
               <label>Discount</label>
-              <span>{props.discount}</span>
+              <span>{props.discount} %</span>
             </li>
           )}
-          {props.loanterm && (
+          {props.loanTerm && (
             <li>
               <label>Loan Term</label>
-              <span>{props.loanterm}</span>
+              <span>{props.loanTerm}</span>
             </li>
           )}
-          {props.interestaccured && (
+          {/* {props.interestaccured && (
             <li>
               <label>Interest Accured</label>
               <span>${props.interestaccured}</span>
@@ -106,11 +106,11 @@ const Summary = (props) => {
               <label>Payment-Per-Installment</label>
               <span>${props.paymentperinstallment}</span>
             </li>
-          )}
-          {props.servicefee && (
+          )} */}
+          {props.serviceFee && (
             <li>
               <label>Service Fee</label>
-              <span>{props.servicefee}%</span>
+              <span>{props.serviceFee} %</span>
             </li>
           )}
         </ul>
