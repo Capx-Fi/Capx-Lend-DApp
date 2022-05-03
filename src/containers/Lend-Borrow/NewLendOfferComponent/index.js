@@ -13,13 +13,20 @@ import { Row, Col, SvgIcon } from "../../../components/common";
 import Summary from "../Summary";
 import isNumeric from "antd/lib/_util/isNumeric";
 import { fetchUserWVTs } from "../../../utils/fetchUserWVTs";
+import {fetchAllWVTs} from "../../../utils/fetchAllWVTs";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import Web3 from "web3";
 import { MASTER_ABI } from "../../../contracts/Master";
 import { ORACLE_ABI } from "../../../contracts/Oracle";
 import { getLoanAmt } from "../../../utils/fetchMasterContract";
 import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
-
+import { fetchUserBalance } from "../../../utils/fetchUserBalance";
+import BigNumber from "bignumber.js";
+BigNumber.config({
+  ROUNDING_MODE: 3,
+  DECIMAL_PLACES: 18,
+  EXPONENTIAL_AT: [-18, 36],
+});
 const { Option } = Select;
 
 const marks = {
@@ -74,12 +81,19 @@ const NewLendOfferComponent = (props) => {
 	};
 
 	const [collateral, setCollateral] = useState(10);
+	const [collateralLend, setCollateralLend] = useState(10);
 	const [collatCurrency, setCollatCurrency] = useState(null);
 	const [marketPrice, setMarketPrice] = useState(1);	
 	const [userWVTs, setUserWVTs] = useState(null);
 	const { active, account } = useWeb3React();
 
 	const [loanAsset, setLoanAsset] = useState(null);
+	const [loanAmount, setLoanAmount] = useState(10);
+	
+	const [canLiquidateLoan, setCanLiquidateLoan] = useState(false);
+	const onCanLiquidationChange = (e) => {
+		setCanLiquidateLoan(e.target.checked);
+	};
 
   useEffect(() => {
     active &&
@@ -94,14 +108,35 @@ const NewLendOfferComponent = (props) => {
   }, []);
 	
 	useEffect(() => {
-		if (userWVTs?.length > 0) {
+		if (props.lend_loan_assets) {
+			console.log(
+        "PARAMATERS",
+        account,
+        stableCoinList[currentCoinIndex].stableCoinAdd,
+        stableCoinList[currentCoinIndex].stableCoinDecimal
+      );
+			fetchUserBalance(account, stableCoinList[currentCoinIndex].stableCoinAdd, stableCoinList[currentCoinIndex].stableCoinDecimal).then((balance) => {
+				setBalance(balance);
+			});
+
+			if (userWVTs?.length > 0) {
+				const index = userWVTs.findIndex((wvt) => wvt.asset === collatCurrency);
+				if (index !== -1) {
+					setMarketPrice(userWVTs[index].marketPrice);
+				}
+			}
+			
+		} else {
+			if (userWVTs?.length > 0) {
 			const index = userWVTs.findIndex((wvt) => wvt.asset === collatCurrency);
 			if (index !== -1) {
-				setBalance(userWVTs[index].quantity);
-				setMarketPrice(userWVTs[index].marketPrice);
+			setBalance(userWVTs[index].quantity);
+			setMarketPrice(userWVTs[index].marketPrice);
 			}
 		}
-	}, [userWVTs, collatCurrency]);
+		}
+		
+	}, [userWVTs, collatCurrency, currentCoinIndex]);
 
 	
 	const getUserWVTs = async () => {
@@ -113,7 +148,11 @@ const NewLendOfferComponent = (props) => {
       ORACLE_ABI,
       "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
     );
-    const _WVTs = await fetchUserWVTs(
+		const _WVTs = props.lend_loan_assets ? await fetchAllWVTs(
+		"https://api.studio.thegraph.com/query/16341/liquid-original/v3.0.0",
+		masterContract,
+		oracleContract
+    ) : await fetchUserWVTs(
       account,
 		"https://api.studio.thegraph.com/query/16341/liquid-original/v3.0.0",
 		masterContract,
@@ -135,6 +174,14 @@ const NewLendOfferComponent = (props) => {
       return;
     }
     setCollateral(val);
+	};
+	
+	const onLoanAmountChange = (e) => {
+    const val = e.target.value;
+    if (isNaN(val) || val < 0 || val > balance) {
+      return;
+    }
+    setLoanAmount(val);
   };
 
   const [loanYears, setLoanYears] = useState(0);
@@ -202,10 +249,14 @@ const NewLendOfferComponent = (props) => {
   const [interestRate, setInterestRate] = useState(10);
   const onInterestRateChange = (e) => {
     const val = e.target.value;
-    if (isNaN(val) || val < 0 || val>100) {
+    if (isNaN(val) || val < 0) {
       return;
     }
-    setInterestRate(val);
+	if (val >= 100) {
+		
+	} else {
+		setInterestRate(val);
+	}
   };
 
   const [discount, setDiscount] = useState(10);
@@ -214,7 +265,8 @@ const NewLendOfferComponent = (props) => {
     if (isNaN(val) || val < 0) {
       return;
     }
-    if (val >= 100) {
+	  if (val >= 100) {
+		
     } else {
       setDiscount(val);
     }
@@ -237,22 +289,45 @@ const NewLendOfferComponent = (props) => {
     if (active && userWVTs?.length > 0) {
       const index = userWVTs.findIndex((wvt) => wvt.asset === collatCurrency);
 		if (isNumeric(collateral) && parseFloat(collateral) > 0 && index >= 0) {
-        setLoanAsset(
-          getLoanAmt(
-            marketPrice,
-            parseFloat(stableCoinList[currentCoinIndex].stableCoinDecimal),
-            collateral,
-            userWVTs[index].tokenDecimal,
-            loanToValue,
-            discount,
-            true
-          )
+    
+			const amount = getLoanAmt(
+        marketPrice,
+        parseFloat(stableCoinList[currentCoinIndex].stableCoinDecimal),
+        props.lend_loan_assets ? loanAmount : collateral,
+        userWVTs[index].tokenDecimal,
+        loanToValue,
+        discount,
+        props.lend_loan_assets ? false : true
+			);
+			if (props.lend_loan_assets) {
+				console.log(
+          "PARAMATERS ",
+          marketPrice,
+          parseFloat(stableCoinList[currentCoinIndex].stableCoinDecimal),
+          props.lend_loan_assets ? loanAmount : collateral,
+          userWVTs[index].tokenDecimal,
+          loanToValue,
+          discount,
+          props.lend_loan_assets ? false : true
         );
+				setCollateralLend(amount);
+			} else {
+				setLoanAsset(amount);
+			}
       } else {
         setLoanAsset(null);
       }
     }
-  }, [collateral, discount, loanToValue, marketPrice, userWVTs, currentCoinIndex]);
+	}, [collateral, loanAmount, discount, loanToValue, marketPrice, userWVTs, currentCoinIndex, collatCurrency, active]);
+	
+	function calculateCollateralVal(marketPrice, wvtAmt, discount) {
+		console.log("PARAMNATER", marketPrice, wvtAmt, discount);
+    return new BigNumber(marketPrice)
+      .multipliedBy(new BigNumber(wvtAmt))
+      .multipliedBy(new BigNumber(discount))
+      .dividedBy(new BigNumber(100))
+      .toString(10);
+  }
 
   return (
     <>
@@ -288,7 +363,9 @@ const NewLendOfferComponent = (props) => {
                 <Col className="mb-4">
                   <label className="lb-label">
                     Collateral Amount{" "}
-                    <small className="align-right">Bal: {convertToInternationalCurrencySystem(balance)}</small>
+                    <small className="align-right">
+                      Bal: {convertToInternationalCurrencySystem(balance)}
+                    </small>
                   </label>
                   <Input.Group
                     className="groupwith-select"
@@ -418,43 +495,151 @@ const NewLendOfferComponent = (props) => {
               <Col className="mb-4">
                 <label className="lb-label">
                   Loan Amount{" "}
-                  <small className="align-right">Bal: {balance} USDT</small>
+                  <small className="align-right">
+                    Bal: {convertToInternationalCurrencySystem(balance)}{" "}
+                    {stableCoinList[currentCoinIndex].stableCoin}
+                  </small>
                 </label>
-                <Input.Group className="loanassets-select">
-                  <Input style={{ width: "70%" }} defaultValue="100" />
-                  <Button
-                    icon={<SvgIcon name="tether-icon" viewbox="0 0 24 24" />}
-                    style={{ width: "30%" }}
-                    type="primary"
-                  >
-                    USDT
-                  </Button>
-                </Input.Group>
-                <div className="insufficient-loan-error">
-                  <SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
-                  Insufficient Loan Amount
-                </div>
-              </Col>
-              <Col className="mb-4">
-                <label className="lb-label">Collateral Amount</label>
-                <Input.Group className="groupwith-select">
-                  <Input style={{ width: "70%" }} defaultValue="100" />
+                <Input.Group
+                  className="loanassets-select"
+                  style={
+                    parseFloat(loanAmount) === 0
+                      ? { border: "2px solid #ff4d4f", borderRadius: "8px" }
+                      : { borderRadius: "8px" }
+                  }
+                >
+                  <Input
+                    style={
+                      globalDisabled !== 2
+                        ? {
+                            background: "#192229",
+                            color: "white",
+                            width: "70%",
+                          }
+                        : {
+                            width: "70%",
+                            background: "#233039",
+                            color: "white",
+                          }
+                    }
+                    value={loanAmount}
+                    disabled={globalDisabled !== 2}
+                    onChange={onLoanAmountChange}
+                  />
                   <Select
                     dropdownClassName="capx-dropdown"
+                    disabled={globalDisabled !== 2}
                     style={{ width: "30%" }}
-                    value={collatCurrency}
+                    onSelect={onCoinChange}
+                    value={stableCoinList[currentCoinIndex].stableCoin}
                     suffixIcon={
                       <SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
                     }
                   >
-                    <Option value="WVT">WVT</Option>
-                    <Option value="WVT2">WVT2</Option>
+                    {stableCoinList.map((val, index) => (
+                      <Option value={val.stableCoin} key={index}>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <div
+                            style={{
+                              paddingTop: "0.225rem",
+                              paddingRight: "0.4rem",
+                            }}
+                          >
+                            <SvgIcon name="tether-icon" viewbox="0 0 24 24" />
+                          </div>
+                          <div>{val.stableCoin}</div>
+                        </div>
+                      </Option>
+                    ))}
+                  </Select>
+                </Input.Group>
+                {isNumeric(loanAmount) && parseFloat(loanAmount) === 0 && (
+                  <div className="insufficient-loan-error">
+                    <SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
+                    Invalid Loan Amount
+                  </div>
+                )}
+              </Col>
+              <Col className="mb-4">
+                <label className="lb-label">Collateral Amount </label>
+                <Input.Group className="groupwith-select">
+                  <Input
+                    style={
+                      globalDisabled !== 2
+                        ? {
+                            background: "#192229",
+                            color: "white",
+                            width: "70%",
+                          }
+                        : {
+                            width: "70%",
+                            background: "#233039",
+                            color: "white",
+                          }
+                    }
+                    value={
+                      isNumeric(collateralLend) && collateralLend > 0
+                        ? parseFloat(collateralLend).toFixed(5)
+                        : "N/A"
+                    }
+                    disabled={true}
+                  />
+
+                  <Select
+                    dropdownClassName="capx-dropdown"
+                    value={collatCurrency}
+                    onSelect={onCollatCurrencyChange}
+                    disabled={globalDisabled !== 2}
+                    suffixIcon={
+                      <SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
+                    }
+                    style={
+                      globalDisabled !== 2
+                        ? {
+                            background: "#192229",
+                            color: "white",
+                            width: "30%",
+                          }
+                        : {
+                            width: "30%",
+                            background: "#233039",
+                            color: "white",
+                          }
+                    }
+                  >
+                    {userWVTs?.length > 0 &&
+                      userWVTs.map((val, index) => {
+                        return (
+                          <Option key={index} value={val.asset}>
+                            {val.asset}
+                          </Option>
+                        );
+                      })}
                   </Select>
                 </Input.Group>
               </Col>
             </Row>
           )}
-
+          {props.lend_loan_assets && (
+            <Col sm="6" className="mb-4 mt-2" style={{ padding: "0" }}>
+              <Checkbox
+                disabled={globalDisabled !== 2}
+                value={canLiquidateLoan}
+                onChange={onCanLiquidationChange}
+              >
+                <label className="lb-label">
+                  Can anyone liquidate the loan?
+                  <Tooltip
+                    className="tooltip-icon"
+                    placement="top"
+                    title="text" //update this tooltip text
+                  >
+                    <SvgIcon name="info" viewbox="0 0 22 22.001" />
+                  </Tooltip>
+                </label>
+              </Checkbox>
+            </Col>
+          )}
           <Row>
             <Col className="mb-4">
               <label className="lb-label">
@@ -783,16 +968,28 @@ const NewLendOfferComponent = (props) => {
         <div className="lendborrow-right">
           <Summary
             loanamount={
-              isNumeric(loanAsset) && loanAsset > 0
-                ? `$ ${convertToInternationalCurrencySystem(loanAsset)}`
-                : "N/A"
+              props.borrow_loan_assets
+                ? isNumeric(loanAsset) && loanAsset > 0
+                  ? `$ ${convertToInternationalCurrencySystem(loanAsset)}`
+                  : "N/A"
+                : isNumeric(loanAmount) && loanAmount > 0
+                ? `${convertToInternationalCurrencySystem(loanAmount)} ${
+                    stableCoinList[currentCoinIndex].stableCoin
+                  }`
+                : "-"
             }
             collateralamount={
-              collateral > balance
-                ? "-"
-                : `${convertToInternationalCurrencySystem(
-                    collateral
-                  )} ${collatCurrency}`
+              props.borrow_loan_assets
+                ? isNumeric(collateral) && collateral > 0
+                  ? `${convertToInternationalCurrencySystem(collateral)} ${
+                      collatCurrency !== null ? collatCurrency : ""
+                    }`
+                  : "-"
+                : isNumeric(collateralLend) && collateralLend > 0
+                ? `${convertToInternationalCurrencySystem(collateralLend)} ${
+                    collatCurrency !== null ? collatCurrency : ""
+                  }`
+                : "N/A"
             }
             marketprice={
               isNumeric(marketPrice)
@@ -800,8 +997,28 @@ const NewLendOfferComponent = (props) => {
                 : "-"
             }
             loantype="Single Repayment"
-            ltv="10"
-            collateralprice="400"
+            collateralprice={
+              isNumeric(
+                convertToInternationalCurrencySystem(
+                  calculateCollateralVal(
+                    marketPrice,
+                    props.lend_loan_assets ? collateralLend : collateral,
+                    discount
+                  )
+                )
+              )
+                ? `$ ${convertToInternationalCurrencySystem(
+                    calculateCollateralVal(
+                      marketPrice,
+                      props.lend_loan_assets ? collateralLend : collateral,
+                      discount
+                    )
+                  )}`
+                : "-"
+            }
+            canLiquidateLoan={
+              props.lend_loan_assets ? (canLiquidateLoan ? "Yes" : "No") : null
+            }
             loanToValue={loanToValue}
             liquidationthreshold={liquidationThreshold}
             interestrate={isNumeric(interestRate) ? `${interestRate} %` : "-"}
@@ -813,6 +1030,29 @@ const NewLendOfferComponent = (props) => {
             // repaymenttype="Principle + Interest"
             // paymentperinstallment="1000"
             servicefee="2.5"
+            collateralDecimal={
+              userWVTs &&
+              userWVTs[
+                userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
+              ].tokenDecimal
+            }
+            collateralAddress={
+              userWVTs &&
+              userWVTs[
+                userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
+              ].assetID
+            }
+            stableCoinDecimal={
+              stableCoinList[currentCoinIndex].stableCoinDecimal
+            }
+            stableCoinAddress={stableCoinList[currentCoinIndex].stableCoinAdd}
+            collateralTicker={
+              userWVTs &&
+               userWVTs[
+                userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
+              ].asset
+            }
+            stableCoinTicker={stableCoinList[currentCoinIndex].stableCoin}
           />
         </div>
       </div>
