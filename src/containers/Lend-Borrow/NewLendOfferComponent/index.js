@@ -145,7 +145,7 @@ const NewLendOfferComponent = (props) => {
 				}
 			}
 		}
-	}, [userWVTs, collatCurrency, currentCoinIndex]);
+	}, [userWVTs, collatCurrency, currentCoinIndex, account]);
 
 	const getUserWVTs = async () => {
 		const _WVTs = props.lend_loan_assets
@@ -270,13 +270,18 @@ const NewLendOfferComponent = (props) => {
 
 	const onLoanToValueChange = (val) => {
 		setLoanToValue(val);
-		if (liquidationThreshold < val) {
-			setLiquidationThreshold(val);
+		if (liquidationThreshold >= val + 5) {
+		} else {
+			setLiquidationThreshold(val + 5 > 100 ? 100 : val + 5);
 		}
 	};
 
 	const onLiquidationThresholdChange = (val) => {
-		setLiquidationThreshold(val <= loanToValue ? loanToValue : val);
+		if (val >= loanToValue + 5) {
+			setLiquidationThreshold(val);
+		} else {
+			setLiquidationThreshold(loanToValue + 5 > 100 ? 100 : loanToValue + 5);
+		}
 	};
 
 	useEffect(() => {
@@ -970,12 +975,7 @@ const NewLendOfferComponent = (props) => {
 				</div>
 				<div className="lendborrow-right">
 					<Summary
-						collateralTicker={
-							userWVTs &&
-							userWVTs[
-								userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
-							]?.asset
-						}
+						collateralTicker={collatCurrency}
 						collateralAddress={
 							userWVTs &&
 							userWVTs[
