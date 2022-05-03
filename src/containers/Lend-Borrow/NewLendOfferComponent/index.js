@@ -89,8 +89,19 @@ const NewLendOfferComponent = (props) => {
 
 	const [loanAsset, setLoanAsset] = useState(null);
 	const [loanAmount, setLoanAmount] = useState(10);
-	
+	const [interestRate, setInterestRate] = useState(10);
+  const [discount, setDiscount] = useState(10);
+  const [loanToValue, setLoanToValue] = useState(40);
+  const [liquidationThreshold, setLiquidationThreshold] = useState(45);
 	const [canLiquidateLoan, setCanLiquidateLoan] = useState(false);
+  const masterContract = new web3.eth.Contract(
+    MASTER_ABI,
+    "0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
+  );
+  const oracleContract = new web3.eth.Contract(
+    ORACLE_ABI,
+    "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
+  );
 	const onCanLiquidationChange = (e) => {
 		setCanLiquidateLoan(e.target.checked);
 	};
@@ -109,12 +120,6 @@ const NewLendOfferComponent = (props) => {
 	
 	useEffect(() => {
 		if (props.lend_loan_assets) {
-			console.log(
-        "PARAMATERS",
-        account,
-        stableCoinList[currentCoinIndex].stableCoinAdd,
-        stableCoinList[currentCoinIndex].stableCoinDecimal
-      );
 			fetchUserBalance(account, stableCoinList[currentCoinIndex].stableCoinAdd, stableCoinList[currentCoinIndex].stableCoinDecimal).then((balance) => {
 				setBalance(balance);
 			});
@@ -140,14 +145,6 @@ const NewLendOfferComponent = (props) => {
 
 	
 	const getUserWVTs = async () => {
-	  const masterContract = new web3.eth.Contract(
-      MASTER_ABI,
-      "0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
-    );
-    const oracleContract = new web3.eth.Contract(
-      ORACLE_ABI,
-      "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
-    );
 		const _WVTs = props.lend_loan_assets ? await fetchAllWVTs(
 		"https://api.studio.thegraph.com/query/16341/liquid-original/v3.0.0",
 		masterContract,
@@ -158,7 +155,6 @@ const NewLendOfferComponent = (props) => {
 		masterContract,
 		oracleContract
     );
-		console.log("WVTs", _WVTs);
 		if (_WVTs.length !== 0) {
 			setCollatCurrency(_WVTs[0]?.asset);
 		}
@@ -245,8 +241,6 @@ const NewLendOfferComponent = (props) => {
     }
     return text.length === 0 ? "-" : text;
   };
-
-  const [interestRate, setInterestRate] = useState(10);
   const onInterestRateChange = (e) => {
     const val = e.target.value;
     if (isNaN(val) || val < 0) {
@@ -259,7 +253,6 @@ const NewLendOfferComponent = (props) => {
 	}
   };
 
-  const [discount, setDiscount] = useState(10);
   const onDiscountChange = (e) => {
     const val = e.target.value;
     if (isNaN(val) || val < 0) {
@@ -272,7 +265,6 @@ const NewLendOfferComponent = (props) => {
     }
   };
 
-  const [loanToValue, setLoanToValue] = useState(40);
   const onLoanToValueChange = (val) => {
     setLoanToValue(val);
     if (liquidationThreshold < val) {
@@ -280,7 +272,6 @@ const NewLendOfferComponent = (props) => {
     }
   };
 
-  const [liquidationThreshold, setLiquidationThreshold] = useState(45);
   const onLiquidationThresholdChange = (val) => {
     setLiquidationThreshold(val <= loanToValue ? loanToValue : val);
 	};
@@ -967,92 +958,122 @@ const NewLendOfferComponent = (props) => {
         </div>
         <div className="lendborrow-right">
           <Summary
-            loanamount={
-              props.borrow_loan_assets
-                ? isNumeric(loanAsset) && loanAsset > 0
-                  ? `$ ${convertToInternationalCurrencySystem(loanAsset)}`
-                  : "N/A"
-                : isNumeric(loanAmount) && loanAmount > 0
-                ? `${convertToInternationalCurrencySystem(loanAmount)} ${
-                    stableCoinList[currentCoinIndex].stableCoin
-                  }`
-                : "-"
+            collateralTicker = {
+              userWVTs &&
+                     userWVTs[
+                      userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
+                    ].asset
             }
-            collateralamount={
+            collateralAddress = {
+              userWVTs &&
+                    userWVTs[
+                      userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
+                    ].assetID
+            }
+            collateralDecimal = {
+              userWVTs &&
+                    userWVTs[
+                      userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
+                    ].tokenDecimal
+            }
+            collateralAmount = {
               props.borrow_loan_assets
-                ? isNumeric(collateral) && collateral > 0
-                  ? `${convertToInternationalCurrencySystem(collateral)} ${
+                  ? isNumeric(collateral) && collateral > 0
+                      ? `${convertToInternationalCurrencySystem(collateral)} ${
+                          collatCurrency !== null ? collatCurrency : ""
+                      }`
+                      : "N/A"
+                  : isNumeric(collateralLend) && collateralLend > 0
+                  ? `${convertToInternationalCurrencySystem(collateralLend)} ${
                       collatCurrency !== null ? collatCurrency : ""
-                    }`
-                  : "-"
-                : isNumeric(collateralLend) && collateralLend > 0
-                ? `${convertToInternationalCurrencySystem(collateralLend)} ${
-                    collatCurrency !== null ? collatCurrency : ""
-                  }`
-                : "N/A"
+                      }`
+                  : "N/A"
             }
-            marketprice={
-              isNumeric(marketPrice)
-                ? `$ ${convertToInternationalCurrencySystem(marketPrice)}`
-                : "-"
+            collateralActualAmount = {
+              props.borrow_loan_assets
+                  ? isNumeric(collateral) && collateral > 0
+                      ? collateral : null
+                  : isNumeric(collateralLend) && collateralLend > 0
+                      ? collateralLend : null
             }
-            loantype="Single Repayment"
-            collateralprice={
-              isNumeric(
-                convertToInternationalCurrencySystem(
-                  calculateCollateralVal(
-                    marketPrice,
-                    props.lend_loan_assets ? collateralLend : collateral,
-                    discount
-                  )
-                )
-              )
-                ? `$ ${convertToInternationalCurrencySystem(
-                    calculateCollateralVal(
-                      marketPrice,
-                      props.lend_loan_assets ? collateralLend : collateral,
-                      discount
-                    )
-                  )}`
-                : "-"
+            stableCoinTicker = {
+              stableCoinList[currentCoinIndex].stableCoin
             }
-            canLiquidateLoan={
-              props.lend_loan_assets ? (canLiquidateLoan ? "Yes" : "No") : null
+            stableCoinAddress = {
+              stableCoinList[currentCoinIndex].stableCoinAdd
             }
-            loanToValue={loanToValue}
-            liquidationthreshold={liquidationThreshold}
-            interestrate={isNumeric(interestRate) ? `${interestRate} %` : "-"}
-            discount={isNumeric(discount) ? `${discount} %` : "-"}
-            loanterm={getLoanDurationText()}
-            // interestaccured="250"
-            // noofinstallments="4"
-            // defaultscenario="2"
-            // repaymenttype="Principle + Interest"
-            // paymentperinstallment="1000"
-            servicefee="2.5"
-            collateralDecimal={
-              userWVTs &&
-              userWVTs[
-                userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
-              ].tokenDecimal
-            }
-            collateralAddress={
-              userWVTs &&
-              userWVTs[
-                userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
-              ].assetID
-            }
-            stableCoinDecimal={
+            stableCoinDecimal = {
               stableCoinList[currentCoinIndex].stableCoinDecimal
             }
-            stableCoinAddress={stableCoinList[currentCoinIndex].stableCoinAdd}
-            collateralTicker={
-              userWVTs &&
-               userWVTs[
-                userWVTs.findIndex((wvt) => wvt.asset === collatCurrency)
-              ].asset
+            stableCoinAmount = {
+              props.borrow_loan_assets
+                  ? isNumeric(loanAsset) && loanAsset > 0
+                      ? `$ ${convertToInternationalCurrencySystem(loanAsset)}`
+                      : "N/A"
+                  : isNumeric(loanAmount) && loanAmount > 0
+                  ? `${convertToInternationalCurrencySystem(loanAmount)} ${
+                      stableCoinList[currentCoinIndex].stableCoin
+                      }`
+                  : "N/A"
             }
-            stableCoinTicker={stableCoinList[currentCoinIndex].stableCoin}
+            stableCoinActualAmount = {
+              props.borrow_loan_assets 
+                  ? isNumeric(loanAsset) && loanAsset > 0 
+                      ? loanAsset : null
+                  : isNumeric(loanAmount) && loanAmount > 0
+                      ? loanAmount : null
+            }
+            interestRate = {
+              isNumeric(interestRate) 
+                  ? interestRate : null
+            }
+            loanToValue = {
+              loanToValue
+            }
+            liquidationThreshold = {
+              liquidationThreshold
+            }
+            loanTerm = {
+              getLoanDurationText()
+            }
+            discount = {
+              isNumeric(discount)
+                  ? discount : null
+            }
+            collateralPrice = {
+              isNumeric(
+                      calculateCollateralVal(
+                          marketPrice,
+                          props.lend_loan_assets ? parseFloat(collateralLend) : parseFloat(collateral),
+                          parseFloat(discount)
+                        )
+                  )
+                  ? `$ ${convertToInternationalCurrencySystem(
+                      calculateCollateralVal(
+                        marketPrice,
+                        props.lend_loan_assets ? parseFloat(collateralLend) : parseFloat(collateral),
+                        parseFloat(discount)
+                      )
+                    )}`
+                  : "-"
+            }
+            canLiquidateLoan = {
+              props.lend_loan_assets 
+                  ? canLiquidateLoan 
+                      ? "Yes" : "No"
+                  : null
+            }
+            marketPrice = {
+              isNumeric(marketPrice)
+                  ? `$ ${convertToInternationalCurrencySystem(marketPrice)}`
+                  : "N/A"
+            }
+            serviceFee = "2.5"
+            loanType = "Single Repayment"
+            isBorrower = {
+              props.lend_loan_assets 
+                ? false : true
+            }
           />
         </div>
       </div>
