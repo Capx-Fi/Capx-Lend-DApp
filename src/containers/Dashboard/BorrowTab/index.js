@@ -120,13 +120,12 @@ const BorrowTab = () => {
   function sortBy(key) {
     let arrayCopy = [...filteredLoans];
     arrayCopy.sort((a, b) => {
-      if (a[key] < b[key]) return -1;
-      if (a[key] > b[key]) return 1;
+      if (parseFloat(a[key]) < parseFloat(b[key])) return -1;
+      if (parseFloat(a[key]) > parseFloat(b[key])) return 1;
       return 0;
     });
     setFilteredLoans(arrayCopy);
   }
-
   return loans ? (
     <>
       <br></br>
