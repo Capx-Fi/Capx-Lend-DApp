@@ -1,6 +1,6 @@
 import React from "react";
 import { SvgIcon } from "../../common";
-import { Button, Select } from "antd";
+import { Button, Select, Tooltip } from "antd";
 import "./index.less";
 import { useMetamask } from "../../../metamaskReactHook";
 
@@ -27,7 +27,9 @@ const NavigationBar = () => {
 					<div className="notifications">
 						<div className="bell-icon">
 							<span></span>
-							<SvgIcon name="bell" viewbox="0 0 20.03 21.997" />
+							<Tooltip title="Notifications Coming Soon!">
+								<SvgIcon name="bell" viewbox="0 0 20.03 21.997" />
+							</Tooltip>
 						</div>
 					</div>
 					<Select

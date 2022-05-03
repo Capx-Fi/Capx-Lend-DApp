@@ -27,12 +27,12 @@ function AccordionCard({
 	isBorrower,
 	lendContract,
 	masterContract,
-  externalLiquidation,
+	externalLiquidation,
 }) {
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	return (
 		<div>
-			<div className="capx-card">
+			<div className="capx-card" style={{ marginBottom: "20px" }}>
 				<div className="ordercard-upper">
 					<div className="upper-left">
 						<b>Order ID: {orderId}</b>
@@ -114,10 +114,29 @@ function AccordionCard({
 						</div>
 						<div className="additionalinfo-right">
 							<div className="additionalinfo-right-inner">
-                {!status && loan?.status === "Initiated" && (
-                  <AcceptLoanOffer masterContract = {masterContract} lendContract={lendContract} loan={loan} amount={isBorrower ? convertToInternationalCurrencySystem(loan?.collateralAmt).toString() + " " + loan?.collateralTicker : convertToInternationalCurrencySystem(loan?.stableCoinAmt).toString() + " " + loan?.stableCoinTicker} isBorrower = {isBorrower} externalLiquidation = {externalLiquidation}/>
-                )}
-                {status === "Expired" && (
+								{!status && loan?.status === "Initiated" && (
+									<AcceptLoanOffer
+										masterContract={masterContract}
+										lendContract={lendContract}
+										loan={loan}
+										amount={
+											isBorrower
+												? convertToInternationalCurrencySystem(
+														loan?.collateralAmt
+												  ).toString() +
+												  " " +
+												  loan?.collateralTicker
+												: convertToInternationalCurrencySystem(
+														loan?.stableCoinAmt
+												  ).toString() +
+												  " " +
+												  loan?.stableCoinTicker
+										}
+										isBorrower={isBorrower}
+										externalLiquidation={externalLiquidation}
+									/>
+								)}
+								{status === "Expired" && (
 									<ClaimAssets
 										lendContract={lendContract}
 										loan={loan}
