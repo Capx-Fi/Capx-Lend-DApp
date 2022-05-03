@@ -1,4 +1,12 @@
-export const fetchLoanRepayAmt = async( masterContract, loanID , loan) => {
+import BigNumber from "bignumber.js";
+BigNumber.config({
+  ROUNDING_MODE: 3,
+  DECIMAL_PLACES: 18,
+  EXPONENTIAL_AT: [-18, 36],
+});
+
+
+export const fetchLoanRepayAmt = async (masterContract, loanID, loan) => {
     let result = null;
     try {
         result = await masterContract.methods
@@ -93,4 +101,41 @@ export const fetchPenalty = async (masterContract) => {
     } catch (error) {
         console.log(error);
     }
+}
+
+export const fetchIfValidWVT = async (masterContract, wvtAddress) => {
+  let result = null;
+  try {
+    result = await masterContract.methods.getValidWvt(wvtAddress).call();
+
+    if (result) {
+      return result.toString(10);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getLoanAmt = (price, scDecimal, amount, wvtDecimal, ltv, discount, isBorrower) => {
+    let loanAmt = null;
+    if(isBorrower) {
+        let num = price 
+            * Math.pow(10, scDecimal) 
+            * new BigNumber(amount).multipliedBy(Math.pow(10, wvtDecimal))
+            * (ltv*100)
+            * (discount*100)
+        let denom = 100000000 
+                * Math.pow(10, wvtDecimal);
+        loanAmt = new BigNumber(num / denom).dividedBy(Math.pow(10, scDecimal));
+    } else {
+        let num = 100000000 
+            * new BigNumber(amount).multipliedBy(Math.pow(10, scDecimal))
+            * Math.pow(10, wvtDecimal)
+        let denom = price
+                * (ltv*100)
+                * (discount*100)
+                * Math.pow(10, scDecimal);
+        loanAmt = new BigNumber(num / denom).dividedBy(Math.pow(10, wvtDecimal));
+    } 
+    return loanAmt.toString(10);
 }

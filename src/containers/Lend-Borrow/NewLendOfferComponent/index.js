@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Radio,
@@ -12,6 +12,13 @@ import {
 import { Row, Col, SvgIcon } from "../../../components/common";
 import Summary from "../Summary";
 import isNumeric from "antd/lib/_util/isNumeric";
+import { fetchUserWVTs } from "../../../utils/fetchUserWVTs";
+import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
+import Web3 from "web3";
+import { MASTER_ABI } from "../../../contracts/Master";
+import { ORACLE_ABI } from "../../../contracts/Oracle";
+import { getLoanAmt } from "../../../utils/fetchMasterContract";
+import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
 
 const { Option } = Select;
 
@@ -39,27 +46,100 @@ const marks = {
   100: { label: "100%", style: { fontSize: "13px" } },
 };
 
+const stableCoinList = [
+  {
+    stableCoin: "USDT",
+    stableCoinAdd: "0x96711f91eb24a3d1dfa3ed308a84380dfd4cc1c7",
+    stableCoinDecimal: "18",
+  },
+  {
+    stableCoin: "USDC",
+    stableCoinAdd: "0xd18062920706712ed789f81004780499dbe5d0c5",
+    stableCoinDecimal: "18",
+  },
+];
+
 const NewLendOfferComponent = (props) => {
-  const balance = 200; //FETCH THIS
-  const [value, setValue] = React.useState(1);
-  const onChange = (e) => {
-    setValue(e.target.value);
+	const web3 = new Web3(Web3.givenProvider);
+	const [globalDisabled, setGlobalDisabled] = useState(0); //0 is Loading, 1 is disabled due to empty wvt array, 2 is active
+	const [balance, setBalance] = useState(10);
+	const [value, setValue] = React.useState(1);
+	const onChange = (e) => {
+		setValue(e.target.value);
+	};
+
+	const [currentCoinIndex, setCurrentCoinIndex] = useState(0);
+	const onCoinChange = (val, e) => {
+		setCurrentCoinIndex(stableCoinList.findIndex((item) => item.stableCoin === val));
+	};
+
+	const [collateral, setCollateral] = useState(10);
+		const [collatCurrency, setCollatCurrency] = useState(null);
+
+		const [marketPrice, setMarketPrice] = useState(1);
+		
+		const [userWVTs, setUserWVTs] = useState(null);
+	const { active, account } = useWeb3React();
+
+	const [loanAsset, setLoanAsset] = useState(null);
+
+  useEffect(() => {
+    active &&
+		getUserWVTs().then((wvts) => {
+			if (wvts.length === 0) {
+			  setGlobalDisabled(1);
+			} else {
+				setGlobalDisabled(2);
+		  }
+        setUserWVTs(wvts);
+      });
+  }, []);
+	
+	useEffect(() => {
+		if (userWVTs?.length > 0) {
+			const index = userWVTs.findIndex((wvt) => wvt.asset === collatCurrency);
+			if (index !== -1) {
+				setBalance(userWVTs[index].quantity);
+				setMarketPrice(userWVTs[index].marketPrice);
+			}
+		}
+	}, [userWVTs, collatCurrency]);
+
+	
+	const getUserWVTs = async () => {
+	  const masterContract = new web3.eth.Contract(
+      MASTER_ABI,
+      "0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
+    );
+    const oracleContract = new web3.eth.Contract(
+      ORACLE_ABI,
+      "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
+    );
+    const _WVTs = await fetchUserWVTs(
+      account,
+		"https://api.studio.thegraph.com/query/16341/liquid-original/v3.0.0",
+		masterContract,
+		oracleContract
+    );
+		console.log("WVTs", _WVTs);
+		if (_WVTs.length !== 0) {
+			setCollatCurrency(_WVTs[0]?.asset);
+		}
+    return _WVTs;
   };
 
-  const [collateral, setCollateral] = useState(10);
-  const [collatCurrency, setCollatCurrency] = useState("WVT");
   const onCollatCurrencyChange = (val, e) => {
     setCollatCurrency(val);
   };
   const onCollateralChange = (e) => {
     const val = e.target.value;
-    if (isNaN(val) || val < 0) {
+    if (isNaN(val) || val < 0 || val>balance) {
       return;
     }
     setCollateral(val);
   };
 
-  const [loanYears, setLoanYears] = useState(1);
+  const [loanYears, setLoanYears] = useState(0);
   const onLoanYearsChange = (e) => {
     const val = e.target.value;
     if (isNaN(val) || val < 0) {
@@ -80,7 +160,7 @@ const NewLendOfferComponent = (props) => {
     }
   };
 
-  const [loanDays, setLoanDays] = useState(0);
+  const [loanDays, setLoanDays] = useState(2);
   const onLoanDaysChange = (e) => {
     const val = e.target.value;
     if (isNaN(val) || val < 0) {
@@ -124,7 +204,7 @@ const NewLendOfferComponent = (props) => {
   const [interestRate, setInterestRate] = useState(10);
   const onInterestRateChange = (e) => {
     const val = e.target.value;
-    if (isNaN(val) || val < 0) {
+    if (isNaN(val) || val < 0 || val>100) {
       return;
     }
     setInterestRate(val);
@@ -142,7 +222,7 @@ const NewLendOfferComponent = (props) => {
     }
   };
 
-  const [loanToValue, setLoanToValue] = useState(10);
+  const [loanToValue, setLoanToValue] = useState(40);
   const onLoanToValueChange = (val) => {
     setLoanToValue(val);
     if (liquidationThreshold < val) {
@@ -150,111 +230,200 @@ const NewLendOfferComponent = (props) => {
     }
   };
 
-  const [liquidationThreshold, setLiquidationThreshold] = useState(10);
+  const [liquidationThreshold, setLiquidationThreshold] = useState(45);
   const onLiquidationThresholdChange = (val) => {
     setLiquidationThreshold(val <= loanToValue ? loanToValue : val);
-  };
+	};
+	
+	useEffect(() => {
+    if (active && userWVTs?.length > 0) {
+      const index = userWVTs.findIndex((wvt) => wvt.asset === collatCurrency);
+		if (isNumeric(collateral) && parseFloat(collateral) > 0 && index >= 0) {
+			console.log(
+        "PARAMETERS",
+        marketPrice,
+        parseFloat(stableCoinList[currentCoinIndex].stableCoinDecimal),
+        collateral,
+        userWVTs[index].tokenDecimal,
+        loanToValue,
+        discount,
+        true
+      );
+        setLoanAsset(
+          getLoanAmt(
+            marketPrice,
+            parseFloat(stableCoinList[currentCoinIndex].stableCoinDecimal),
+            collateral,
+            userWVTs[index].tokenDecimal,
+            loanToValue,
+            discount,
+            true
+          )
+        );
+      } else {
+        setLoanAsset(null);
+      }
+    }
+  }, [collateral, discount, loanToValue, marketPrice, userWVTs, currentCoinIndex]);
 
   return (
     <>
       <div className="lendborrow-wrapper">
         <div className="lendborrow-left">
+          {globalDisabled !== 2 && (
+            <>
+              <div className="insufficient-loan-error mb-4">
+                <SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
+                <span>
+                  {globalDisabled === 0
+                    ? "Fetching data"
+                    : "No compatible assets found"}
+                </span>
+              </div>
+            </>
+          )}
           <Row>
             <Col sm="12" className="mb-4">
               <label className="lb-label">Loan type</label>
               <Radio.Group onChange={onChange} value={value}>
                 <Radio value={1}>Single Repayment</Radio>
-                <Radio value={2}>Installment-Based Repayment</Radio>
+                <Radio value={2} disabled={true}>
+                  Installment-Based Repayment
+                  <span style={{ fontStyle: "italic" }}> (Coming soon)</span>
+                </Radio>
               </Radio.Group>
             </Col>
           </Row>
           {props.borrow_loan_assets && (
-            <Row>
-              <Col className="mb-4">
-                <label className="lb-label">
-                  Collateral Amount{" "}
-                  <small className="align-right">Bal: {balance}</small>
-                </label>
-                <Input.Group
-                  className="groupwith-select"
-                  style={
-                    collateral > balance
-                      ? { border: "2px solid #ff4d4f", borderRadius: "8px" }
-                      : { borderRadius: "8px" }
-                  }
-                >
-                  <Input
+            <>
+              <Row>
+                <Col className="mb-4">
+                  <label className="lb-label">
+                    Collateral Amount{" "}
+                    <small className="align-right">Bal: {balance}</small>
+                  </label>
+                  <Input.Group
+                    className="groupwith-select"
                     style={
-                      collateral > balance
-                        ? { border: "none", width: "70%" }
-                        : { width: "70%" }
+                      parseFloat(collateral) === 0
+                        ? { border: "2px solid #ff4d4f", borderRadius: "8px" }
+                        : { borderRadius: "8px" }
                     }
-                    value={collateral}
-                    onChange={onCollateralChange}
-                  />
+                  >
+                    <Input
+                      style={
+                        globalDisabled !== 2
+                          ? {
+                              background: "#192229",
+                              color: "white",
+                              width: "70%",
+                            }
+                          : {
+                              width: "70%",
+                              background: "#233039",
+                              color: "white",
+                            }
+                      }
+                      value={collateral}
+                      onChange={onCollateralChange}
+                      disabled={globalDisabled !== 2}
+                    />
 
-                  <Select
-                    dropdownClassName="capx-dropdown"
-                    style={{ width: "30%" }}
-                    value={collatCurrency}
-                    onSelect={onCollatCurrencyChange}
-                    suffixIcon={
-                      <SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
-                    }
-                  >
-                    <Option value="WVT">WVT</Option>
-                    <Option value="WVT2">wvt2</Option>
-                  </Select>
-                </Input.Group>
-                {collateral > balance && (
-                  <div className="insufficient-loan-error">
-                    <SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
-                    <span>Insufficient Balance</span>
-                  </div>
-                )}
-              </Col>
-              <Col className="mb-4">
-                <label className="lb-label">Loan Asset</label>
-                <Input.Group className="loanassets-select">
-                  <Input style={{ width: "70%" }} defaultValue="100" />
-                  <Select
-                    dropdownClassName="capx-dropdown"
-                    style={{ width: "30%" }}
-                    defaultValue="usdt"
-                    suffixIcon={
-                      <SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
-                    }
-                  >
-                    <Option value="usdt">
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <div
-                          style={{
-                            paddingTop: "0.225rem",
-                            paddingRight: "0.4rem",
-                          }}
-                        >
-                          <SvgIcon name="tether-icon" viewbox="0 0 24 24" />
-                        </div>
-                        <div>USDT</div>
-                      </div>
-                    </Option>
-                    <Option value="usdt2">
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <div
-                          style={{
-                            paddingTop: "0.225rem",
-                            paddingRight: "0.4rem",
-                          }}
-                        >
-                          <SvgIcon name="tether-icon" viewbox="0 0 24 24" />
-                        </div>
-                        <div>USDT2</div>
-                      </div>
-                    </Option>
-                  </Select>
-                </Input.Group>
-              </Col>
-            </Row>
+                    <Select
+                      dropdownClassName="capx-dropdown"
+                      value={collatCurrency}
+                      onSelect={onCollatCurrencyChange}
+                      disabled={globalDisabled !== 2}
+                      suffixIcon={
+                        <SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
+                      }
+                      style={
+                        globalDisabled !== 2
+                          ? {
+                              background: "#192229",
+                              color: "white",
+                              width: "30%",
+                            }
+                          : {
+                              width: "30%",
+                              background: "#233039",
+                              color: "white",
+                            }
+                      }
+                    >
+                      {userWVTs?.length > 0 &&
+                        userWVTs.map((val, index) => {
+                          return (
+                            <Option key={index} value={val.asset}>
+                              {val.asset}
+                            </Option>
+                          );
+                        })}
+                    </Select>
+                  </Input.Group>
+                  {isNumeric(collateral) && parseFloat(collateral) === 0 && (
+                    <div className="insufficient-loan-error">
+                      <SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
+                      <span>Invalid Collateral Amount</span>
+                    </div>
+                  )}
+                </Col>
+                <Col className="mb-4">
+                  <label className="lb-label">Loan Asset</label>
+                  <Input.Group className="loanassets-select">
+                    <Input
+                      style={
+                        globalDisabled !== 2
+                          ? {
+                              background: "#192229",
+                              color: "white",
+                              width: "70%",
+                            }
+                          : {
+                              width: "70%",
+                              background: "#233039",
+                              color: "white",
+                            }
+                      }
+                      value={
+                        isNumeric(loanAsset) && loanAsset > 0
+                          ? parseFloat(loanAsset).toFixed(5)
+                          : "N/A"
+                      }
+                      disabled={true}
+                    />
+                    <Select
+                      dropdownClassName="capx-dropdown"
+                      disabled={globalDisabled !== 2}
+                      style={{ width: "30%" }}
+                      onSelect={onCoinChange}
+                      value={stableCoinList[currentCoinIndex].stableCoin}
+                      suffixIcon={
+                        <SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
+                      }
+                    >
+                      {stableCoinList.map((val, index) => (
+                        <Option value={val.stableCoin} key={index}>
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <div
+                              style={{
+                                paddingTop: "0.225rem",
+                                paddingRight: "0.4rem",
+                              }}
+                            >
+                              <SvgIcon name="tether-icon" viewbox="0 0 24 24" />
+                            </div>
+                            <div>{val.stableCoin}</div>
+                          </div>
+                        </Option>
+                      ))}
+                    </Select>
+                  </Input.Group>
+                </Col>
+              </Row>
+            </>
           )}
           {props.lend_loan_assets && (
             <Row>
@@ -297,9 +466,7 @@ const NewLendOfferComponent = (props) => {
               </Col>
             </Row>
           )}
-          <Col sm="6" className="mb-4 mt-2" style={{ padding: "0" }}>
-            <Checkbox disabled={true}>Payable by Collateral</Checkbox>
-          </Col>
+
           <Row>
             <Col className="mb-4">
               <label className="lb-label">
@@ -312,6 +479,7 @@ const NewLendOfferComponent = (props) => {
                 label={null}
                 className="slider-capx"
                 step={null}
+                disabled={globalDisabled !== 2}
                 marks={marks}
                 value={loanToValue}
                 onChange={onLoanToValueChange}
@@ -328,6 +496,7 @@ const NewLendOfferComponent = (props) => {
               </label>
               <Slider
                 label={null}
+                disabled={globalDisabled !== 2}
                 className="slider-capx"
                 step={null}
                 marks={marks}
@@ -345,10 +514,23 @@ const NewLendOfferComponent = (props) => {
                     <Col sm="3">
                       <Input.Group className="loanassets-group">
                         <Input
-                          style={{ width: "70%" }}
+                          style={
+                            globalDisabled !== 2
+                              ? {
+                                  background: "#192229",
+                                  color: "white",
+                                  width: "70%",
+                                }
+                              : {
+                                  width: "70%",
+                                  background: "#233039",
+                                  color: "white",
+                                }
+                          }
                           value={loanYears}
                           onChange={onLoanYearsChange}
                           placeholder="Years"
+                          disabled={globalDisabled !== 2}
                         />
                         <Button style={{ width: "30%" }} type="primary">
                           Y
@@ -358,10 +540,23 @@ const NewLendOfferComponent = (props) => {
                     <Col sm="3">
                       <Input.Group className="loanassets-group">
                         <Input
-                          style={{ width: "70%" }}
+                          style={
+                            globalDisabled !== 2
+                              ? {
+                                  background: "#192229",
+                                  color: "white",
+                                  width: "70%",
+                                }
+                              : {
+                                  width: "70%",
+                                  background: "#233039",
+                                  color: "white",
+                                }
+                          }
                           value={loanMonths}
                           onChange={onLoanMonthsChange}
                           placeholder="Months"
+                          disabled={globalDisabled !== 2}
                         />
                         <Button style={{ width: "30%" }} type="primary">
                           M
@@ -371,10 +566,23 @@ const NewLendOfferComponent = (props) => {
                     <Col sm="3">
                       <Input.Group className="loanassets-group">
                         <Input
-                          style={{ width: "70%" }}
+                          style={
+                            globalDisabled !== 2
+                              ? {
+                                  background: "#192229",
+                                  color: "white",
+                                  width: "70%",
+                                }
+                              : {
+                                  width: "70%",
+                                  background: "#233039",
+                                  color: "white",
+                                }
+                          }
                           value={loanDays}
                           onChange={onLoanDaysChange}
                           placeholder="Days"
+                          disabled={globalDisabled !== 2}
                         />
                         <Button style={{ width: "30%" }} type="primary">
                           D
@@ -382,8 +590,15 @@ const NewLendOfferComponent = (props) => {
                       </Input.Group>
                     </Col>
                   </Row>
+                  {getLoanDurationText() === "-" && (
+                    <div className="insufficient-loan-error">
+                      <SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
+                      <span>Invalid Loan Period</span>
+                    </div>
+                  )}
                 </Col>
               </Row>
+
               <Row>
                 <Col sm="3">
                   <label className="lb-label">
@@ -398,9 +613,22 @@ const NewLendOfferComponent = (props) => {
                   </label>
                   <Input.Group className="loanassets-group">
                     <Input
-                      style={{ width: "70%" }}
+                      style={
+                        globalDisabled !== 2
+                          ? {
+                              background: "#192229",
+                              color: "white",
+                              width: "70%",
+                            }
+                          : {
+                              width: "70%",
+                              background: "#233039",
+                              color: "white",
+                            }
+                      }
                       value={interestRate}
                       onChange={onInterestRateChange}
+                      disabled={globalDisabled !== 2}
                     />
                     <Button style={{ width: "30%" }} type="primary">
                       %
@@ -420,9 +648,22 @@ const NewLendOfferComponent = (props) => {
                   </label>
                   <Input.Group className="loanassets-group">
                     <Input
-                      style={{ width: "70%" }}
+                      style={
+                        globalDisabled !== 2
+                          ? {
+                              background: "#192229",
+                              color: "white",
+                              width: "70%",
+                            }
+                          : {
+                              width: "70%",
+                              background: "#233039",
+                              color: "white",
+                            }
+                      }
                       value={discount}
                       onChange={onDiscountChange}
+                      disabled={globalDisabled !== 2}
                     />
                     <Button style={{ width: "30%" }} type="primary">
                       %
@@ -547,20 +788,29 @@ const NewLendOfferComponent = (props) => {
                     <Radio value={4}>Principle + Interest</Radio>
                   </Radio.Group>
                 </Col>
-                <Col sm="4">
-                  <Checkbox>Payable by Collateral</Checkbox>
-                </Col>
               </Row>
             </>
           )}
         </div>
         <div className="lendborrow-right">
           <Summary
-            loanamount="4000"
-            collateralamount={
-              collateral > balance ? "-" : `${collateral} ${collatCurrency}`
+            loanamount={
+              isNumeric(loanAsset) && loanAsset > 0
+                ? `$ ${convertToInternationalCurrencySystem(loanAsset)}`
+                : "N/A"
             }
-            marketprice="1700"
+            collateralamount={
+              collateral > balance
+                ? "-"
+                : `${convertToInternationalCurrencySystem(
+                    collateral
+                  )} ${collatCurrency}`
+            }
+            marketprice={
+              isNumeric(marketPrice)
+                ? `$ ${convertToInternationalCurrencySystem(marketPrice)}`
+                : "-"
+            }
             loantype="Single Repayment"
             ltv="10"
             collateralprice="400"
@@ -569,11 +819,11 @@ const NewLendOfferComponent = (props) => {
             interestrate={isNumeric(interestRate) ? `${interestRate} %` : "-"}
             discount={isNumeric(discount) ? `${discount} %` : "-"}
             loanterm={getLoanDurationText()}
-            interestaccured="250"
-            noofinstallments="4"
-            defaultscenario="2"
-            repaymenttype="Principle + Interest"
-            paymentperinstallment="1000"
+            // interestaccured="250"
+            // noofinstallments="4"
+            // defaultscenario="2"
+            // repaymenttype="Principle + Interest"
+            // paymentperinstallment="1000"
             servicefee="2.5"
           />
         </div>
