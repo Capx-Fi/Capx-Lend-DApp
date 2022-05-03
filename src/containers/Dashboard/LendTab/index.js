@@ -64,18 +64,18 @@ const LendTab = (collapsed) => {
         setLoans(loans);
       });
   }, []);
-  const getLoans = async() => {
+  const getLoans = async () => {
     const _loans = await fetchLenderLoans(
-    "0xBC7a2925D5C194D1DbEdeB99F13c326851dC8230",
-    "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
-    "https://api.thegraph.com/subgraphs/name/chester-king/lendnftsubgraph",
-    masterContract,
-    oracleContract
+      "0xBC7a2925D5C194D1DbEdeB99F13c326851dC8230",
+      "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
+      "https://api.thegraph.com/subgraphs/name/chester-king/lendnftsubgraph",
+      masterContract,
+      oracleContract
     );
-    console.log("L",_loans);
-    console.log("Filters", getFilterValues(_loans,"stableCoinTicker"));
+    console.log("L", _loans);
+    console.log("Filters", getFilterValues(_loans, "stableCoinTicker"));
     return _loans;
-}
+  };
   function totalAmount(loans) {
     let total = 0;
     loans.forEach((loan) => {
@@ -101,13 +101,17 @@ const LendTab = (collapsed) => {
   }
   function filterLoansByCompanyAsset(loans, companyAsset) {
     if (companyAsset !== "") {
-      setFilteredLoans(loans.filter((loan) => loan.collateralTicker === companyAsset));
+      setFilteredLoans(
+        loans.filter((loan) => loan.collateralTicker === companyAsset)
+      );
     } else setFilteredLoans(loans);
   }
 
   function filterLoansByLendAsset(loans, lendAsset) {
     if (lendAsset !== "") {
-      setFilteredLoans(loans.filter((loan) => loan.stableCoinTicker === lendAsset));
+      setFilteredLoans(
+        loans.filter((loan) => loan.stableCoinTicker === lendAsset)
+      );
     } else setFilteredLoans(loans);
   }
 
@@ -115,6 +119,16 @@ const LendTab = (collapsed) => {
     if (status !== "")
       setFilteredLoans(loans.filter((loan) => loan.status === status));
     else setFilteredLoans(loans);
+  }
+
+  function sortBy(key) {
+    let arrayCopy = [...filteredLoans];
+    arrayCopy.sort((a, b) => {
+      if (parseFloat(a[key]) < parseFloat(b[key])) return -1;
+      if (parseFloat(a[key]) > parseFloat(b[key])) return 1;
+      return 0;
+    });
+    setFilteredLoans(arrayCopy);
   }
 
   function availableLoanStatus(loans) {
@@ -127,15 +141,17 @@ const LendTab = (collapsed) => {
   }
   return loans ? (
     <>
-    <br></br> 
-    <h1>Overview</h1>
+      <br></br>
+      <h1>Overview</h1>
       <Row>
         <Col>
           <div className="capx-card-secondary dashboard-statics-card">
             <ul>
               <li>
                 <p>Lent Amount</p>
-                <h4>$ {convertToInternationalCurrencySystem(totalAmount(loans))}</h4>
+                <h4>
+                  $ {convertToInternationalCurrencySystem(totalAmount(loans))}
+                </h4>
               </li>
               <li>
                 <p>Number of loans</p>
@@ -143,11 +159,15 @@ const LendTab = (collapsed) => {
               </li>
               <li>
                 <p>Interest Accured</p>
-                <h4>$ {convertToInternationalCurrencySystem(totalInterest(loans))}</h4>
+                <h4>
+                  $ {convertToInternationalCurrencySystem(totalInterest(loans))}
+                </h4>
               </li>
               <li>
                 <p>Interest Pending</p>
-                <h4>$ {convertToInternationalCurrencySystem(totalPending(loans))}</h4>
+                <h4>
+                  $ {convertToInternationalCurrencySystem(totalPending(loans))}
+                </h4>
               </li>
             </ul>
           </div>
@@ -172,7 +192,9 @@ const LendTab = (collapsed) => {
             onChange={(e) => filterLoansByCompanyAsset(loans, e)}
           >
             <Option value={""}>All</Option>
-            {getFilterValues(loans, "collateralTicker").map(function (wvt_asset) {
+            {getFilterValues(loans, "collateralTicker").map(function (
+              wvt_asset
+            ) {
               return <Option value={wvt_asset}>{wvt_asset}</Option>;
             })}
           </Select>
@@ -184,7 +206,9 @@ const LendTab = (collapsed) => {
             onChange={(e) => filterLoansByLendAsset(loans, e)}
           >
             <Option value={""}>All</Option>
-            {getFilterValues(loans, "stableCoinTicker").map(function (wvt_asset) {
+            {getFilterValues(loans, "stableCoinTicker").map(function (
+              wvt_asset
+            ) {
               return <Option value={wvt_asset}>{wvt_asset}</Option>;
             })}
           </Select>
@@ -196,7 +220,16 @@ const LendTab = (collapsed) => {
             onChange={(e) => filterLoansByStatus(loans, e)}
           >
             <Option value={""}>All</Option>
-            {["Initiated", "Completed", "Cancelled", , "Expired", "Defaulted", "Funded", "Active"].map(function (status) {
+            {[
+              "Initiated",
+              "Completed",
+              "Cancelled",
+              ,
+              "Expired",
+              "Defaulted",
+              "Funded",
+              "Active",
+            ].map(function (status) {
               return <Option value={status}>{status}</Option>;
             })}
           </Select>
@@ -207,10 +240,11 @@ const LendTab = (collapsed) => {
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Sort By"
             style={{ minWidth: 120 }}
+            onChange={(e) => sortBy(e)}
           >
-            <Option value="sb1">Order Status</Option>
-            <Option value="sb2">Order Type</Option>
-            <Option value="sb3">Health Factor</Option>
+            <Option value="stableCoinAmt">Loan Amount</Option>
+            <Option value="interestRate">Interest Rate</Option>
+            <Option value="loanToValue">Loan-To-Value</Option>
           </Select>
         </Col>
         <Col sm="12">
