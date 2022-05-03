@@ -34,16 +34,10 @@ const Summary = (props) => {
               <span>{props.loantype}</span>
             </li>
           )}
-          {props.ltv && (
-            <li>
-              <label>LTV</label>
-              <span>{props.ltv}%</span>
-            </li>
-          )}
           {props.collateralprice && (
             <li>
               <label>Collateral Price</label>
-              <span>${props.collateralprice}</span>
+              <span>{props.collateralprice}</span>
             </li>
           )}
           {props.loanToValue && (
@@ -58,6 +52,13 @@ const Summary = (props) => {
               <span>{props.liquidationthreshold}%</span>
             </li>
           )}
+          {props.canLiquidateLoan && (
+            <li>
+              <label>Can Liquidate Loan</label>
+              <span>{props.canLiquidateLoan}</span>
+            </li>
+          )}
+
           {props.interestrate && (
             <li>
               <label>Interest Rate</label>
