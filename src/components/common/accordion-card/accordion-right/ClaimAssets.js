@@ -47,9 +47,10 @@ function ClaimAssets({ lendContract, loan, amount, penalty }) {
           dispatch(
             showModal({
               modalType: "Claim",
-              modalTitle: "Claiming Assets..",
-              modalSubtitle: "Your assets are being claimed",
-              modalProps: { lottie: "YAY" },
+              modalIcon: <SvgIcon name="loading-icon" viewbox="0 0 216 216" />,
+              modalTitle: "We are adding the requested token pair for you!",
+              modalSubtitle: "Please do not refresh or close this page",
+              closable: false,
             })
           ) && pullAssets(lendContract, account, loan?.loanID)
         }

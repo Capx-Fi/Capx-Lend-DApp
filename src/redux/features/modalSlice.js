@@ -5,6 +5,8 @@ const initialState = {
   modalProps: {},
   modalTitle: "",
   modalSubtitle: "",
+  modalIcon: "",
+  closable: "",
 };
 
 const modalSlice = createSlice({
@@ -24,8 +26,16 @@ const modalSlice = createSlice({
         state.modalTitle = modal.modalTitle;
       }
 
+      if (modal.modalIcon) {
+        state.modalIcon = modal.modalIcon;
+      }
+
       if (modal.modalSubtitle) {
         state.modalSubtitle = modal.modalSubtitle;
+      }
+
+      if (modal.closable) {
+        state.closable = modal.closable;
       }
     },
     hideModal: (state) => {
@@ -33,6 +43,8 @@ const modalSlice = createSlice({
       state.modalProps = {};
       state.modalTitle = "";
       state.modalSubtitle = "";
+      state.modalIcon = "";
+      state.closable = "";
     },
   },
 });
