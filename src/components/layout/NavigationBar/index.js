@@ -133,7 +133,17 @@ const NavigationBar = () => {
 							chainChange(e.value).then(setChainName(chainNames[chainId]))
 						}
 					>
-						<Option key="1" value="Matic">
+						<Option key="1" value="Ethereum">
+							<div className="select-inner">
+								<div className="svg-icon">
+									<div className="svg-icon-inner">
+										<SvgIcon name="eth-icon" viewbox="0 0 38.3 33.7" />
+									</div>
+								</div>
+								<div className="name">Ethereum</div>
+							</div>
+						</Option>
+						<Option key="2" value="Matic">
 							<div className="select-inner">
 								<div className="svg-icon">
 									<div className="svg-icon-inner">
@@ -143,21 +153,11 @@ const NavigationBar = () => {
 								<div className="name">Matic</div>
 							</div>
 						</Option>
-						<Option key="2" value="Ethereum">
-							<div className="select-inner">
-								<div className="svg-icon">
-									<div className="svg-icon-inner">
-										<SvgIcon name="polygon" viewbox="0 0 38.3 33.7" />
-									</div>
-								</div>
-								<div className="name">Ethereum</div>
-							</div>
-						</Option>
 						<Option key="3" value="BSC">
 							<div className="select-inner">
 								<div className="svg-icon">
 									<div className="svg-icon-inner">
-										<SvgIcon name="polygon" viewbox="0 0 38.3 33.7" />
+										<SvgIcon name="bsc-icon" viewbox="0 0 38.3 33.7" />
 									</div>
 								</div>
 								<div className="name">BSC</div>
