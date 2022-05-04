@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { SvgIcon } from "../../common";
 import { Button, Select, Tooltip } from "antd";
 import "./index.less";
@@ -98,6 +98,16 @@ const NavigationBar = () => {
 			}
 		}
 	};
+
+	const [chainName, setChainName] = React.useState(
+		chainNames[chainId ? chainId : 1]
+	);
+
+	useEffect(() => {
+		if (chainId) {
+			setChainName(chainNames[chainId]);
+		}
+	}, [chainId, chainNames]);
 	return (
 		<>
 			<div className="logo">
@@ -117,9 +127,11 @@ const NavigationBar = () => {
 						labelInValue
 						className="coin-select"
 						dropdownClassName="coin-select-dropdown"
-						defaultValue={chainNames[chainId]}
+						value={chainName}
 						suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
-						onChange={(e) => chainChange(e.value)}
+						onChange={(e) =>
+							chainChange(e.value).then(setChainName(chainNames[chainId]))
+						}
 					>
 						<Option key="1" value="Matic">
 							<div className="select-inner">
