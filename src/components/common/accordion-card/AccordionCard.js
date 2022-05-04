@@ -36,7 +36,7 @@ function AccordionCard({
 				<div className="ordercard-upper">
 					<div className="upper-left">
 						<b>Order ID: {orderId}</b>
-						<span className="ml-4 helthfactor-title">
+						<span className="helthfactor-title">
 							Health Factor :{" "}
 							<b>
 								{loan?.status === "Cancelled"
