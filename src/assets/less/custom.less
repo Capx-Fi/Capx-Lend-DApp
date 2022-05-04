@@ -359,4 +359,34 @@ b {
 			border-color: @border-card;
 		}
 	}
+	&.nodata-modal{
+		.ant-modal-content{
+			background: radial-gradient(143.33% 143.33% at 82.41% -4.96%, rgba(132, 214, 164, 0.3) 0%, rgba(18, 28, 32, 0.93) 100%);
+			border-radius: 20px;
+			text-align: center;
+			box-shadow: none;
+			max-width: 480px;
+			.ant-modal-body{
+				padding: 24px 60px;
+			}
+			p{
+				font-size: @font-size-base + 2;
+			}
+			.modal-icon{
+				.icon{
+					width: 70px;
+					fill: @warning-color;
+				}
+				margin-bottom: 10px;
+			}
+			h4{
+				color: @text-white;
+				font-size: 22px;
+				font-weight: bold;
+			}
+		}
+		.ant-modal-footer{
+			border-color: @border-card;
+		}
+	}
 }

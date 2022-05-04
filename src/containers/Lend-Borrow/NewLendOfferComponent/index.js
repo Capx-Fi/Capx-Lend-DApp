@@ -8,6 +8,7 @@ import {
 	Tooltip,
 	Checkbox,
 	Form,
+	Modal
 } from "antd";
 import { Row, Col, SvgIcon } from "../../../components/common";
 import Summary from "../Summary";
@@ -28,6 +29,29 @@ BigNumber.config({
 	EXPONENTIAL_AT: [-18, 36],
 });
 const { Option } = Select;
+
+const CompatibleAssetsModal = () => {
+	const [isModalVisible, setIsModalVisible] = useState(true);
+
+	const showModal = () => {
+		setIsModalVisible(true);
+	};
+
+	const handleOk = () => {
+		setIsModalVisible(false);
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
+	return (
+		<Modal closable={false} centered footer={null} maskStyle={{ height: 'calc(100vh - 97px)', top: 61, background: 'rgba(21,21,23,0.9)' }} className="capx-modal nodata-modal" title={null} visible={isModalVisible} onOk={handleOk}>
+			<div className="modal-icon"><SvgIcon name="info" viewBox="0 0 22 22.001" /></div>
+			<p>No compatible assets found</p>
+			<Button type="secondary" size="small" onClick={handleCancel}>OK</Button>
+		</Modal>
+	);
+}
 
 const marks = {
 	0: { label: "0%", style: { fontSize: "13px" } },
@@ -347,18 +371,19 @@ const NewLendOfferComponent = (props) => {
 								className={`${
 									globalDisabled === 0
 										? "fetching-details-box"
-										: "insufficient-loan-error"
+										: ""
 								} mb-4`}
 							>
 								{globalDisabled === 0 ? (
 									<SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
 								) : (
-									<SvgIcon name="info" viewBox="0 0 22 22.001" />
+									""
 								)}
 								<span>
 									{globalDisabled === 0
 										? "Fetching Data"
-										: "No compatible assets found"}
+										// : "No compatible assets found"}
+										: <CompatibleAssetsModal />}
 								</span>
 							</div>
 						</>
