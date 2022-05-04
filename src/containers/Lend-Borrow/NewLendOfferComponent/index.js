@@ -343,8 +343,18 @@ const NewLendOfferComponent = (props) => {
 				<div className="lendborrow-left">
 					{globalDisabled !== 2 && (
 						<>
-							<div className="insufficient-loan-error mb-4">
-								<SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
+							<div
+								className={`${
+									globalDisabled === 0
+										? "fetching-details-box"
+										: "insufficient-loan-error"
+								} mb-4`}
+							>
+								{globalDisabled === 0 ? (
+									<SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
+								) : (
+									<SvgIcon name="info" viewBox="0 0 22 22.001" />
+								)}
 								<span>
 									{globalDisabled === 0
 										? "Fetching data"
