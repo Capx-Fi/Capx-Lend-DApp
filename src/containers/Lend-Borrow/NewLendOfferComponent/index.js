@@ -357,38 +357,183 @@ const NewLendOfferComponent = (props) => {
 								)}
 								<span>
 									{globalDisabled === 0
-										? "Fetching data"
+										? "Fetching Data"
 										: "No compatible assets found"}
 								</span>
 							</div>
 						</>
 					)}
-					<Row>
-						<Col sm="12" className="mb-4">
-							<label className="lb-label">Loan type</label>
-							<Radio.Group onChange={onChange} value={value}>
-								<Radio value={1}>Single Repayment</Radio>
-								<Radio value={2} disabled={true}>
-									Installment-Based Repayment
-									<span style={{ fontStyle: "italic" }}> (Coming soon)</span>
-								</Radio>
-							</Radio.Group>
-						</Col>
-					</Row>
-					{props.borrow_loan_assets && (
-						<>
+					<div
+						className={`lendborrow-left ${
+							globalDisabled === 0 ? "pulse-animate disabled" : ""
+						}`}
+					>
+						<Row>
+							<Col sm="12" className="mb-4">
+								<label className="lb-label">Loan type</label>
+								<Radio.Group onChange={onChange} value={value}>
+									<Radio value={1}>Single Repayment</Radio>
+									<Radio value={2} disabled={true}>
+										Installment-Based Repayment
+										<span style={{ fontStyle: "italic" }}> (Coming soon)</span>
+									</Radio>
+								</Radio.Group>
+							</Col>
+						</Row>
+						{props.borrow_loan_assets && (
+							<>
+								<Row>
+									<Col className="mb-4">
+										<label className="lb-label">
+											Collateral Amount{" "}
+											<small className="align-right">
+												Bal: {convertToInternationalCurrencySystem(balance)}
+											</small>
+										</label>
+										<Input.Group
+											className="groupwith-select"
+											style={
+												parseFloat(collateral) === 0
+													? { border: "2px solid #ff4d4f", borderRadius: "8px" }
+													: { borderRadius: "8px" }
+											}
+										>
+											<Input
+												style={
+													globalDisabled !== 2
+														? {
+																background: "#192229",
+																color: "white",
+																width: "70%",
+														  }
+														: {
+																width: "70%",
+																background: "#233039",
+																color: "white",
+														  }
+												}
+												value={collateral}
+												onChange={onCollateralChange}
+												disabled={globalDisabled !== 2}
+											/>
+
+											<Select
+												className="disabled"
+												dropdownClassName="capx-dropdown"
+												value={collatCurrency}
+												onSelect={onCollatCurrencyChange}
+												disabled={globalDisabled !== 2}
+												suffixIcon={
+													<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
+												}
+												style={
+													globalDisabled !== 2
+														? {
+																background: "#192229",
+																color: "white",
+																width: "30%",
+														  }
+														: {
+																width: "30%",
+																background: "#233039",
+																color: "white",
+														  }
+												}
+											>
+												{userWVTs?.length > 0 &&
+													userWVTs.map((val, index) => {
+														return (
+															<Option key={index} value={val.asset}>
+																{val.asset}
+															</Option>
+														);
+													})}
+											</Select>
+										</Input.Group>
+										{isNumeric(collateral) && parseFloat(collateral) === 0 && (
+											<div className="insufficient-loan-error">
+												<SvgIcon
+													name="error-icon"
+													viewbox="0 0 18.988 15.511"
+												/>
+												<span>Invalid Collateral Amount</span>
+											</div>
+										)}
+									</Col>
+									<Col className="mb-4">
+										<label className="lb-label">Loan Asset</label>
+										<Input.Group className="loanassets-select">
+											<Input
+												style={
+													globalDisabled !== 2
+														? {
+																background: "#192229",
+																color: "white",
+																width: "70%",
+														  }
+														: {
+																width: "70%",
+																background: "#233039",
+																color: "white",
+														  }
+												}
+												value={
+													isNumeric(loanAsset) && loanAsset > 0
+														? parseFloat(loanAsset).toFixed(5)
+														: "N/A"
+												}
+												disabled={true}
+											/>
+											<Select
+												dropdownClassName="capx-dropdown"
+												disabled={globalDisabled !== 2}
+												style={{ width: "30%" }}
+												onSelect={onCoinChange}
+												value={stableCoinList[currentCoinIndex].stableCoin}
+												suffixIcon={
+													<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
+												}
+											>
+												{stableCoinList.map((val, index) => (
+													<Option value={val.stableCoin} key={index}>
+														<div
+															style={{ display: "flex", alignItems: "center" }}
+														>
+															<div
+																style={{
+																	paddingTop: "0.225rem",
+																	paddingRight: "0.4rem",
+																}}
+															>
+																<SvgIcon
+																	name="tether-icon"
+																	viewbox="0 0 24 24"
+																/>
+															</div>
+															<div>{val.stableCoin}</div>
+														</div>
+													</Option>
+												))}
+											</Select>
+										</Input.Group>
+									</Col>
+								</Row>
+							</>
+						)}
+						{props.lend_loan_assets && (
 							<Row>
 								<Col className="mb-4">
 									<label className="lb-label">
-										Collateral Amount{" "}
+										Loan Amount{" "}
 										<small className="align-right">
-											Bal: {convertToInternationalCurrencySystem(balance)}
+											Bal: {convertToInternationalCurrencySystem(balance)}{" "}
+											{stableCoinList[currentCoinIndex].stableCoin}
 										</small>
 									</label>
 									<Input.Group
-										className="groupwith-select"
+										className="loanassets-select"
 										style={
-											parseFloat(collateral) === 0
+											parseFloat(loanAmount) === 0
 												? { border: "2px solid #ff4d4f", borderRadius: "8px" }
 												: { borderRadius: "8px" }
 										}
@@ -407,9 +552,69 @@ const NewLendOfferComponent = (props) => {
 															color: "white",
 													  }
 											}
-											value={collateral}
-											onChange={onCollateralChange}
+											value={loanAmount}
 											disabled={globalDisabled !== 2}
+											onChange={onLoanAmountChange}
+										/>
+										<Select
+											dropdownClassName="capx-dropdown"
+											disabled={globalDisabled !== 2}
+											style={{ width: "30%" }}
+											onSelect={onCoinChange}
+											value={stableCoinList[currentCoinIndex].stableCoin}
+											suffixIcon={
+												<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
+											}
+										>
+											{stableCoinList.map((val, index) => (
+												<Option value={val.stableCoin} key={index}>
+													<div
+														style={{ display: "flex", alignItems: "center" }}
+													>
+														<div
+															style={{
+																paddingTop: "0.225rem",
+																paddingRight: "0.4rem",
+															}}
+														>
+															<SvgIcon name="tether-icon" viewbox="0 0 24 24" />
+														</div>
+														<div>{val.stableCoin}</div>
+													</div>
+												</Option>
+											))}
+										</Select>
+									</Input.Group>
+									{isNumeric(loanAmount) && parseFloat(loanAmount) === 0 && (
+										<div className="insufficient-loan-error">
+											<SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
+											Invalid Loan Amount
+										</div>
+									)}
+								</Col>
+								<Col className="mb-4">
+									<label className="lb-label">Collateral Amount </label>
+									<Input.Group className="groupwith-select">
+										<Input
+											style={
+												globalDisabled !== 2
+													? {
+															background: "#192229",
+															color: "white",
+															width: "70%",
+													  }
+													: {
+															width: "70%",
+															background: "#233039",
+															color: "white",
+													  }
+											}
+											value={
+												isNumeric(collateralLend) && collateralLend > 0
+													? parseFloat(collateralLend).toFixed(5)
+													: "N/A"
+											}
+											disabled={true}
 										/>
 
 										<Select
@@ -444,546 +649,374 @@ const NewLendOfferComponent = (props) => {
 												})}
 										</Select>
 									</Input.Group>
-									{isNumeric(collateral) && parseFloat(collateral) === 0 && (
-										<div className="insufficient-loan-error">
-											<SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
-											<span>Invalid Collateral Amount</span>
-										</div>
-									)}
-								</Col>
-								<Col className="mb-4">
-									<label className="lb-label">Loan Asset</label>
-									<Input.Group className="loanassets-select">
-										<Input
-											style={
-												globalDisabled !== 2
-													? {
-															background: "#192229",
-															color: "white",
-															width: "70%",
-													  }
-													: {
-															width: "70%",
-															background: "#233039",
-															color: "white",
-													  }
-											}
-											value={
-												isNumeric(loanAsset) && loanAsset > 0
-													? parseFloat(loanAsset).toFixed(5)
-													: "N/A"
-											}
-											disabled={true}
-										/>
-										<Select
-											dropdownClassName="capx-dropdown"
-											disabled={globalDisabled !== 2}
-											style={{ width: "30%" }}
-											onSelect={onCoinChange}
-											value={stableCoinList[currentCoinIndex].stableCoin}
-											suffixIcon={
-												<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
-											}
-										>
-											{stableCoinList.map((val, index) => (
-												<Option value={val.stableCoin} key={index}>
-													<div
-														style={{ display: "flex", alignItems: "center" }}
-													>
-														<div
-															style={{
-																paddingTop: "0.225rem",
-																paddingRight: "0.4rem",
-															}}
-														>
-															<SvgIcon name="tether-icon" viewbox="0 0 24 24" />
-														</div>
-														<div>{val.stableCoin}</div>
-													</div>
-												</Option>
-											))}
-										</Select>
-									</Input.Group>
 								</Col>
 							</Row>
-						</>
-					)}
-					{props.lend_loan_assets && (
+						)}
+						{props.lend_loan_assets && (
+							<Col sm="6" className="mb-4 mt-2" style={{ padding: "0" }}>
+								<Checkbox
+									disabled={globalDisabled !== 2}
+									value={canLiquidateLoan}
+									onChange={onCanLiquidationChange}
+								>
+									<label className="lb-label">
+										Can anyone liquidate the loan?
+										<Tooltip
+											className="tooltip-icon"
+											placement="top"
+											title="text" //update this tooltip text
+										>
+											<SvgIcon name="info" viewbox="0 0 22 22.001" />
+										</Tooltip>
+									</label>
+								</Checkbox>
+							</Col>
+						)}
 						<Row>
 							<Col className="mb-4">
 								<label className="lb-label">
-									Loan Amount{" "}
-									<small className="align-right">
-										Bal: {convertToInternationalCurrencySystem(balance)}{" "}
-										{stableCoinList[currentCoinIndex].stableCoin}
-									</small>
-								</label>
-								<Input.Group
-									className="loanassets-select"
-									style={
-										parseFloat(loanAmount) === 0
-											? { border: "2px solid #ff4d4f", borderRadius: "8px" }
-											: { borderRadius: "8px" }
-									}
-								>
-									<Input
-										style={
-											globalDisabled !== 2
-												? {
-														background: "#192229",
-														color: "white",
-														width: "70%",
-												  }
-												: {
-														width: "70%",
-														background: "#233039",
-														color: "white",
-												  }
-										}
-										value={loanAmount}
-										disabled={globalDisabled !== 2}
-										onChange={onLoanAmountChange}
-									/>
-									<Select
-										dropdownClassName="capx-dropdown"
-										disabled={globalDisabled !== 2}
-										style={{ width: "30%" }}
-										onSelect={onCoinChange}
-										value={stableCoinList[currentCoinIndex].stableCoin}
-										suffixIcon={
-											<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
-										}
-									>
-										{stableCoinList.map((val, index) => (
-											<Option value={val.stableCoin} key={index}>
-												<div style={{ display: "flex", alignItems: "center" }}>
-													<div
-														style={{
-															paddingTop: "0.225rem",
-															paddingRight: "0.4rem",
-														}}
-													>
-														<SvgIcon name="tether-icon" viewbox="0 0 24 24" />
-													</div>
-													<div>{val.stableCoin}</div>
-												</div>
-											</Option>
-										))}
-									</Select>
-								</Input.Group>
-								{isNumeric(loanAmount) && parseFloat(loanAmount) === 0 && (
-									<div className="insufficient-loan-error">
-										<SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
-										Invalid Loan Amount
-									</div>
-								)}
-							</Col>
-							<Col className="mb-4">
-								<label className="lb-label">Collateral Amount </label>
-								<Input.Group className="groupwith-select">
-									<Input
-										style={
-											globalDisabled !== 2
-												? {
-														background: "#192229",
-														color: "white",
-														width: "70%",
-												  }
-												: {
-														width: "70%",
-														background: "#233039",
-														color: "white",
-												  }
-										}
-										value={
-											isNumeric(collateralLend) && collateralLend > 0
-												? parseFloat(collateralLend).toFixed(5)
-												: "N/A"
-										}
-										disabled={true}
-									/>
-
-									<Select
-										dropdownClassName="capx-dropdown"
-										value={collatCurrency}
-										onSelect={onCollatCurrencyChange}
-										disabled={globalDisabled !== 2}
-										suffixIcon={
-											<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
-										}
-										style={
-											globalDisabled !== 2
-												? {
-														background: "#192229",
-														color: "white",
-														width: "30%",
-												  }
-												: {
-														width: "30%",
-														background: "#233039",
-														color: "white",
-												  }
-										}
-									>
-										{userWVTs?.length > 0 &&
-											userWVTs.map((val, index) => {
-												return (
-													<Option key={index} value={val.asset}>
-														{val.asset}
-													</Option>
-												);
-											})}
-									</Select>
-								</Input.Group>
-							</Col>
-						</Row>
-					)}
-					{props.lend_loan_assets && (
-						<Col sm="6" className="mb-4 mt-2" style={{ padding: "0" }}>
-							<Checkbox
-								disabled={globalDisabled !== 2}
-								value={canLiquidateLoan}
-								onChange={onCanLiquidationChange}
-							>
-								<label className="lb-label">
-									Can anyone liquidate the loan?
+									Loan-To-Value
 									<Tooltip
 										className="tooltip-icon"
 										placement="top"
-										title="text" //update this tooltip text
+										title="text"
 									>
 										<SvgIcon name="info" viewbox="0 0 22 22.001" />
 									</Tooltip>
 								</label>
-							</Checkbox>
-						</Col>
-					)}
-					<Row>
-						<Col className="mb-4">
-							<label className="lb-label">
-								Loan-To-Value
-								<Tooltip className="tooltip-icon" placement="top" title="text">
-									<SvgIcon name="info" viewbox="0 0 22 22.001" />
-								</Tooltip>
-							</label>
-							<Slider
-								label={null}
-								className="slider-capx"
-								step={null}
-								disabled={globalDisabled !== 2}
-								marks={marks}
-								value={loanToValue}
-								onChange={onLoanToValueChange}
-							/>
-						</Col>
-					</Row>
-					<Row>
-						<Col className="mb-4" style={{ overflow: "hidden" }}>
-							<label className="lb-label">
-								Liquidation Threshold
-								<Tooltip className="tooltip-icon" placement="top" title="text">
-									<SvgIcon name="info" viewbox="0 0 22 22.001" />
-								</Tooltip>
-							</label>
-							<Slider
-								label={null}
-								disabled={globalDisabled !== 2}
-								className="slider-capx"
-								step={null}
-								marks={marks}
-								value={liquidationThreshold}
-								onChange={onLiquidationThresholdChange}
-							/>
-						</Col>
-					</Row>
-					{value === 1 ? (
-						<>
-							<Row>
-								<Col className="mb-4">
-									<label className="lb-label">Loan Period</label>
-									<Row>
-										<Col sm="3">
-											<Input.Group className="loanassets-group">
-												<Input
-													style={
-														globalDisabled !== 2
-															? {
-																	background: "#192229",
-																	color: "white",
-																	width: "70%",
-															  }
-															: {
-																	width: "70%",
-																	background: "#233039",
-																	color: "white",
-															  }
-													}
-													value={loanYears}
-													onChange={onLoanYearsChange}
-													placeholder="Years"
-													disabled={globalDisabled !== 2}
+								<Slider
+									label={null}
+									className="slider-capx"
+									step={null}
+									disabled={globalDisabled !== 2}
+									marks={marks}
+									value={loanToValue}
+									onChange={onLoanToValueChange}
+								/>
+							</Col>
+						</Row>
+						<Row>
+							<Col className="mb-4" style={{ overflow: "hidden" }}>
+								<label className="lb-label">
+									Liquidation Threshold
+									<Tooltip
+										className="tooltip-icon"
+										placement="top"
+										title="text"
+									>
+										<SvgIcon name="info" viewbox="0 0 22 22.001" />
+									</Tooltip>
+								</label>
+								<Slider
+									label={null}
+									disabled={globalDisabled !== 2}
+									className="slider-capx"
+									step={null}
+									marks={marks}
+									value={liquidationThreshold}
+									onChange={onLiquidationThresholdChange}
+								/>
+							</Col>
+						</Row>
+						{value === 1 ? (
+							<>
+								<Row>
+									<Col className="mb-4">
+										<label className="lb-label">Loan Period</label>
+										<Row>
+											<Col sm="3">
+												<Input.Group className="loanassets-group">
+													<Input
+														style={
+															globalDisabled !== 2
+																? {
+																		background: "#192229",
+																		color: "white",
+																		width: "70%",
+																  }
+																: {
+																		width: "70%",
+																		background: "#233039",
+																		color: "white",
+																  }
+														}
+														value={loanYears}
+														onChange={onLoanYearsChange}
+														placeholder="Years"
+														disabled={globalDisabled !== 2}
+													/>
+													<Button style={{ width: "30%" }} type="primary">
+														Y
+													</Button>
+												</Input.Group>
+											</Col>
+											<Col sm="3">
+												<Input.Group className="loanassets-group">
+													<Input
+														style={
+															globalDisabled !== 2
+																? {
+																		background: "#192229",
+																		color: "white",
+																		width: "70%",
+																  }
+																: {
+																		width: "70%",
+																		background: "#233039",
+																		color: "white",
+																  }
+														}
+														value={loanMonths}
+														onChange={onLoanMonthsChange}
+														placeholder="Months"
+														disabled={globalDisabled !== 2}
+													/>
+													<Button style={{ width: "30%" }} type="primary">
+														M
+													</Button>
+												</Input.Group>
+											</Col>
+											<Col sm="3">
+												<Input.Group className="loanassets-group">
+													<Input
+														style={
+															globalDisabled !== 2
+																? {
+																		background: "#192229",
+																		color: "white",
+																		width: "70%",
+																  }
+																: {
+																		width: "70%",
+																		background: "#233039",
+																		color: "white",
+																  }
+														}
+														value={loanDays}
+														onChange={onLoanDaysChange}
+														placeholder="Days"
+														disabled={globalDisabled !== 2}
+													/>
+													<Button style={{ width: "30%" }} type="primary">
+														D
+													</Button>
+												</Input.Group>
+											</Col>
+										</Row>
+										{getLoanDurationText() === "-" && (
+											<div className="insufficient-loan-error">
+												<SvgIcon
+													name="error-icon"
+													viewbox="0 0 18.988 15.511"
 												/>
-												<Button style={{ width: "30%" }} type="primary">
-													Y
-												</Button>
-											</Input.Group>
-										</Col>
-										<Col sm="3">
-											<Input.Group className="loanassets-group">
-												<Input
-													style={
-														globalDisabled !== 2
-															? {
-																	background: "#192229",
-																	color: "white",
-																	width: "70%",
-															  }
-															: {
-																	width: "70%",
-																	background: "#233039",
-																	color: "white",
-															  }
-													}
-													value={loanMonths}
-													onChange={onLoanMonthsChange}
-													placeholder="Months"
-													disabled={globalDisabled !== 2}
-												/>
-												<Button style={{ width: "30%" }} type="primary">
-													M
-												</Button>
-											</Input.Group>
-										</Col>
-										<Col sm="3">
-											<Input.Group className="loanassets-group">
-												<Input
-													style={
-														globalDisabled !== 2
-															? {
-																	background: "#192229",
-																	color: "white",
-																	width: "70%",
-															  }
-															: {
-																	width: "70%",
-																	background: "#233039",
-																	color: "white",
-															  }
-													}
-													value={loanDays}
-													onChange={onLoanDaysChange}
-													placeholder="Days"
-													disabled={globalDisabled !== 2}
-												/>
-												<Button style={{ width: "30%" }} type="primary">
-													D
-												</Button>
-											</Input.Group>
-										</Col>
-									</Row>
-									{getLoanDurationText() === "-" && (
-										<div className="insufficient-loan-error">
-											<SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
-											<span>Invalid Loan Period</span>
-										</div>
-									)}
-								</Col>
-							</Row>
+												<span>Invalid Loan Period</span>
+											</div>
+										)}
+									</Col>
+								</Row>
 
-							<Row>
-								<Col sm="3">
-									<label className="lb-label">
-										Interest Rate
-										<Tooltip
-											className="tooltip-icon"
-											placement="top"
-											title="text"
-										>
-											<SvgIcon name="info" viewbox="0 0 22 22.001" />
-										</Tooltip>
-									</label>
-									<Input.Group className="loanassets-group">
-										<Input
-											style={
-												globalDisabled !== 2
-													? {
-															background: "#192229",
-															color: "white",
-															width: "70%",
-													  }
-													: {
-															width: "70%",
-															background: "#233039",
-															color: "white",
-													  }
-											}
-											value={interestRate}
-											onChange={onInterestRateChange}
-											disabled={globalDisabled !== 2}
-										/>
-										<Button style={{ width: "30%" }} type="primary">
-											%
-										</Button>
-									</Input.Group>
-								</Col>
-								<Col sm="3">
-									<label className="lb-label">
-										Discount %
-										<Tooltip
-											className="tooltip-icon"
-											placement="top"
-											title="text"
-										>
-											<SvgIcon name="info" viewbox="0 0 22 22.001" />
-										</Tooltip>
-									</label>
-									<Input.Group className="loanassets-group">
-										<Input
-											style={
-												globalDisabled !== 2
-													? {
-															background: "#192229",
-															color: "white",
-															width: "70%",
-													  }
-													: {
-															width: "70%",
-															background: "#233039",
-															color: "white",
-													  }
-											}
-											value={discount}
-											onChange={onDiscountChange}
-											disabled={globalDisabled !== 2}
-										/>
-										<Button style={{ width: "30%" }} type="primary">
-											%
-										</Button>
-									</Input.Group>
-								</Col>
-							</Row>
-						</>
-					) : (
-						<>
-							<Row>
-								<Col className="mb-4">
-									<label className="lb-label">Loan Period</label>
-									<Row className="pr-4">
-										<Col sm="4">
-											<Input.Group className="loanassets-group">
-												<Input style={{ width: "70%" }} placeholder="Years" />
-												<Button style={{ width: "30%" }} type="primary">
-													Y
-												</Button>
-											</Input.Group>
-										</Col>
-										<Col sm="4">
-											<Input.Group className="loanassets-group">
-												<Input style={{ width: "70%" }} placeholder="Months" />
-												<Button style={{ width: "30%" }} type="primary">
-													M
-												</Button>
-											</Input.Group>
-										</Col>
-										<Col sm="4">
-											<Input.Group className="loanassets-group">
-												<Input style={{ width: "70%" }} placeholder="Days" />
-												<Button style={{ width: "30%" }} type="primary">
-													D
-												</Button>
-											</Input.Group>
-										</Col>
-									</Row>
-								</Col>
-								<Col sm="3">
-									<label className="lb-label">
-										Interest Rate
-										<Tooltip
-											className="tooltip-icon"
-											placement="top"
-											title="text"
-										>
-											<SvgIcon name="info" viewbox="0 0 22 22.001" />
-										</Tooltip>
-									</label>
-									<Input.Group className="loanassets-group">
-										<Input style={{ width: "70%" }} defaultValue="10" />
-										<Button style={{ width: "30%" }} type="primary">
-											%
-										</Button>
-									</Input.Group>
-								</Col>
-							</Row>
-							<Row className="mb-4">
-								<Col sm="4">
-									<label className="lb-label">
-										No. Of Installments
-										<Tooltip
-											className="tooltip-icon"
-											placement="top"
-											title="text"
-										>
-											<SvgIcon name="info" viewbox="0 0 22 22.001" />
-										</Tooltip>
-									</label>
-									<Input defaultValue="4" />
-								</Col>
-								<Col sm="4">
-									<label className="lb-label">
-										Default Scenario
-										<Tooltip
-											className="tooltip-icon"
-											placement="top"
-											title="text"
-										>
-											<SvgIcon name="info" viewbox="0 0 22 22.001" />
-										</Tooltip>
-									</label>
-									<Input defaultValue="2" />
-								</Col>
-								<Col sm="4">
-									<label className="lb-label">
-										Discount %
-										<Tooltip
-											className="tooltip-icon"
-											placement="top"
-											title="text"
-										>
-											<SvgIcon name="info" viewbox="0 0 22 22.001" />
-										</Tooltip>
-									</label>
-									<Input.Group className="loanassets-group">
-										<Input style={{ width: "70%" }} defaultValue="33" />
-										<Button style={{ width: "30%" }} type="primary">
-											%
-										</Button>
-									</Input.Group>
-								</Col>
-							</Row>
-							<Row>
-								<Col sm="12">
-									<label className="lb-label">
-										No. Of Installments
-										<Tooltip
-											className="tooltip-icon"
-											placement="top"
-											title="text"
-										>
-											<SvgIcon name="info" viewbox="0 0 22 22.001" />
-										</Tooltip>
-									</label>
-								</Col>
-								<Col sm="8">
-									<Radio.Group onChange={onChange} value={value}>
-										<Radio value={3}>Only Interest</Radio>
-										<Radio value={4}>Principle + Interest</Radio>
-									</Radio.Group>
-								</Col>
-							</Row>
-						</>
-					)}
+								<Row>
+									<Col sm="3">
+										<label className="lb-label">
+											Interest Rate
+											<Tooltip
+												className="tooltip-icon"
+												placement="top"
+												title="text"
+											>
+												<SvgIcon name="info" viewbox="0 0 22 22.001" />
+											</Tooltip>
+										</label>
+										<Input.Group className="loanassets-group">
+											<Input
+												style={
+													globalDisabled !== 2
+														? {
+																background: "#192229",
+																color: "white",
+																width: "70%",
+														  }
+														: {
+																width: "70%",
+																background: "#233039",
+																color: "white",
+														  }
+												}
+												value={interestRate}
+												onChange={onInterestRateChange}
+												disabled={globalDisabled !== 2}
+											/>
+											<Button style={{ width: "30%" }} type="primary">
+												%
+											</Button>
+										</Input.Group>
+									</Col>
+									<Col sm="3">
+										<label className="lb-label">
+											Discount %
+											<Tooltip
+												className="tooltip-icon"
+												placement="top"
+												title="text"
+											>
+												<SvgIcon name="info" viewbox="0 0 22 22.001" />
+											</Tooltip>
+										</label>
+										<Input.Group className="loanassets-group">
+											<Input
+												style={
+													globalDisabled !== 2
+														? {
+																background: "#192229",
+																color: "white",
+																width: "70%",
+														  }
+														: {
+																width: "70%",
+																background: "#233039",
+																color: "white",
+														  }
+												}
+												value={discount}
+												onChange={onDiscountChange}
+												disabled={globalDisabled !== 2}
+											/>
+											<Button style={{ width: "30%" }} type="primary">
+												%
+											</Button>
+										</Input.Group>
+									</Col>
+								</Row>
+							</>
+						) : (
+							<>
+								<Row>
+									<Col className="mb-4">
+										<label className="lb-label">Loan Period</label>
+										<Row className="pr-4">
+											<Col sm="4">
+												<Input.Group className="loanassets-group">
+													<Input style={{ width: "70%" }} placeholder="Years" />
+													<Button style={{ width: "30%" }} type="primary">
+														Y
+													</Button>
+												</Input.Group>
+											</Col>
+											<Col sm="4">
+												<Input.Group className="loanassets-group">
+													<Input
+														style={{ width: "70%" }}
+														placeholder="Months"
+													/>
+													<Button style={{ width: "30%" }} type="primary">
+														M
+													</Button>
+												</Input.Group>
+											</Col>
+											<Col sm="4">
+												<Input.Group className="loanassets-group">
+													<Input style={{ width: "70%" }} placeholder="Days" />
+													<Button style={{ width: "30%" }} type="primary">
+														D
+													</Button>
+												</Input.Group>
+											</Col>
+										</Row>
+									</Col>
+									<Col sm="3">
+										<label className="lb-label">
+											Interest Rate
+											<Tooltip
+												className="tooltip-icon"
+												placement="top"
+												title="text"
+											>
+												<SvgIcon name="info" viewbox="0 0 22 22.001" />
+											</Tooltip>
+										</label>
+										<Input.Group className="loanassets-group">
+											<Input style={{ width: "70%" }} defaultValue="10" />
+											<Button style={{ width: "30%" }} type="primary">
+												%
+											</Button>
+										</Input.Group>
+									</Col>
+								</Row>
+								<Row className="mb-4">
+									<Col sm="4">
+										<label className="lb-label">
+											No. Of Installments
+											<Tooltip
+												className="tooltip-icon"
+												placement="top"
+												title="text"
+											>
+												<SvgIcon name="info" viewbox="0 0 22 22.001" />
+											</Tooltip>
+										</label>
+										<Input defaultValue="4" />
+									</Col>
+									<Col sm="4">
+										<label className="lb-label">
+											Default Scenario
+											<Tooltip
+												className="tooltip-icon"
+												placement="top"
+												title="text"
+											>
+												<SvgIcon name="info" viewbox="0 0 22 22.001" />
+											</Tooltip>
+										</label>
+										<Input defaultValue="2" />
+									</Col>
+									<Col sm="4">
+										<label className="lb-label">
+											Discount %
+											<Tooltip
+												className="tooltip-icon"
+												placement="top"
+												title="text"
+											>
+												<SvgIcon name="info" viewbox="0 0 22 22.001" />
+											</Tooltip>
+										</label>
+										<Input.Group className="loanassets-group">
+											<Input style={{ width: "70%" }} defaultValue="33" />
+											<Button style={{ width: "30%" }} type="primary">
+												%
+											</Button>
+										</Input.Group>
+									</Col>
+								</Row>
+								<Row>
+									<Col sm="12">
+										<label className="lb-label">
+											No. Of Installments
+											<Tooltip
+												className="tooltip-icon"
+												placement="top"
+												title="text"
+											>
+												<SvgIcon name="info" viewbox="0 0 22 22.001" />
+											</Tooltip>
+										</label>
+									</Col>
+									<Col sm="8">
+										<Radio.Group onChange={onChange} value={value}>
+											<Radio value={3}>Only Interest</Radio>
+											<Radio value={4}>Principle + Interest</Radio>
+										</Radio.Group>
+									</Col>
+								</Row>
+							</>
+						)}
+					</div>
 				</div>
-				<div className="lendborrow-right">
+				<div
+					className={`lendborrow-right ${
+						globalDisabled === 0 ? "pulse-animate" : ""
+					}`}
+				>
 					<Summary
 						collateralTicker={collatCurrency}
 						collateralAddress={
