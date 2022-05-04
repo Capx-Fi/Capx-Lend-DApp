@@ -364,8 +364,8 @@ const NewLendOfferComponent = (props) => {
 						</>
 					)}
 					<div
-						className={`lendborrow-left ${
-							globalDisabled === 0 ? "pulse-animate disabled" : ""
+						className={`lendborrow-left-inner ${
+							globalDisabled === 0 ? "pulse-animate disabled" : "disable-class"
 						}`}
 					>
 						<Row>

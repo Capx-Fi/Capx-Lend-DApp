@@ -250,36 +250,35 @@ const BorrowTab = () => {
       </Row>
       <Row>
         <Col>
-          <div
-            className="order-list"
-            style={{ maxHeight: "55vh", overflowY: "scroll" }}
-          >
-            {availableLoanStatus(filteredLoans).map(function (status) {
-              return (
-                <div className="orderlist-card">
-                  <h4 className="card-title">{status}</h4>
-                  {filteredLoans.map(function (loan) {
-                    return (
-                      loan.status === status && (
-                        <AccordionCard
-                          orderId={loan.loanID}
-                          healthFactor={loan.healthFactor}
-                          paymentType={loan.repaymentType}
-                          status={loan.status}
-                          orderDetails={getOrderDetails(loan)}
-                          additonalInfo={getAdditionalInfo(loan)}
-                          loan={loan}
-                          isBorrower={true}
-                          lendContract={lendContract}
-                          masterContract={masterContract}
-                        />
-                      )
-                    );
-                  })}
-                </div>
-              );
-            })}
-          </div>
+          <CapxScrollbars style={{ height: "49.5vh" }}>
+            <div className="order-list">
+              {availableLoanStatus(filteredLoans).map(function (status) {
+                return (
+                  <div className="orderlist-card">
+                    <h4 className="card-title">{status}</h4>
+                    {filteredLoans.map(function (loan) {
+                      return (
+                        loan.status === status && (
+                          <AccordionCard
+                            orderId={loan.loanID}
+                            healthFactor={loan.healthFactor}
+                            paymentType={loan.repaymentType}
+                            status={loan.status}
+                            orderDetails={getOrderDetails(loan)}
+                            additonalInfo={getAdditionalInfo(loan)}
+                            loan={loan}
+                            isBorrower={true}
+                            lendContract={lendContract}
+                            masterContract={masterContract}
+                          />
+                        )
+                      );
+                    })}
+                  </div>
+                );
+              })}
+            </div>
+          </CapxScrollbars>
         </Col>
       </Row>
     </>
