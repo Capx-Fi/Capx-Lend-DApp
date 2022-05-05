@@ -1,7 +1,35 @@
 import React from "react";
 import { Button } from "antd";
-
+import Web3 from "web3";
+import BigNumber from "bignumber.js";
+import { MASTER_ABI } from "../../../contracts/Master";
+import { ORACLE_ABI } from "../../../contracts/Oracle";
+import { LEND_ABI } from "../../../contracts/Lend";
+import { approveCreateLoan, createLoan } from "../../../utils/createLoan";
+import { ERC20_ABI } from "../../../contracts/ERC20";
+import { useWeb3React } from "@web3-react/core";
+BigNumber.config({
+  ROUNDING_MODE: 3,
+  DECIMAL_PLACES: 18,
+  EXPONENTIAL_AT: [-18, 36],
+});
 const Summary = (props) => {
+  const web3 = new Web3(Web3.givenProvider);
+  const { active, account, chainId } = useWeb3React();
+  const masterContract = new web3.eth.Contract(
+    MASTER_ABI,
+    "0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
+  );
+
+  const oracleContract = new web3.eth.Contract(
+    ORACLE_ABI,
+    "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
+  );
+
+  const lendContract = new web3.eth.Contract(
+    LEND_ABI,
+    "0x309D0Ff4b655bAD183A3FA88A0547b41e877DcF1"
+  );
   return (
     <>
       <div className="summary-head">
@@ -122,8 +150,13 @@ const Summary = (props) => {
           <small>($1000/installment)</small>
         </div>
         <div className="right">
-          <Button type="secondary" size="large">
+          
+          <Button type="secondary" size="large" onClick={() => approveCreateLoan(account,ERC20_ABI, lendContract._address, props.isBorrower, props.isBorrower ? (new BigNumber(props?.collateralActualAmount).multipliedBy(Math.pow(10, props?.collateralDecimal).toString(10))): (new BigNumber(props?.stableCoinActualAmount).multipliedBy(Math.pow(10, props?.stableCoinDecimal).toString(10))), props.collateralAddress, props.stableCoinAddress)}>
             Approve Parameters
+          </Button>
+          {/* not defined props.canLiquidateLoan */}
+          <Button type="secondary" size="large" onClick={() => createLoan(lendContract, account, props.collateralAddress, props.stableCoinAddress, props.isBorrower, props.isBorrower ? (new BigNumber(props?.collateralActualAmount).multipliedBy(Math.pow(10, props?.collateralDecimal).toString(10))): (new BigNumber(props?.stableCoinActualAmount).multipliedBy(Math.pow(10, props?.stableCoinDecimal).toString(10))), (props.interestRate)*100 , (props.loanToValue)*100, (props.liquidationThreshold)*100, props.loanDurationInSeconds, (props.discount)*100, props.isBorrower ? false:false)}>
+            Create Loan Request
           </Button>
         </div>
       </div>

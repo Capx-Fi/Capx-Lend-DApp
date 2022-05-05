@@ -46,7 +46,8 @@ export const createLoan = async(
     ltv,
     lt,
     duration, //Number of days in form of seconds
-    discount
+    discount,
+    externalLiquidation
 ) => {
     let result = null;
     try {
@@ -61,7 +62,7 @@ export const createLoan = async(
                 lt,
                 duration,
                 discount,
-                isBorrower ? false : true
+                externalLiquidation
             ).send( { from : account });
     } catch (error) {
         console.log(error);
