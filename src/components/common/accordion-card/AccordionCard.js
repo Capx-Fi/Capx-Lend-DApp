@@ -33,7 +33,6 @@ function AccordionCard({
 	return (
 		<div>
 			<div className="capx-card" style={{ marginBottom: "20px" }}>
-				<Skeleton active>
 					<div className="ordercard-upper">
 						<div className="upper-left">
 							<b>Order ID: {orderId}</b>
@@ -81,7 +80,6 @@ function AccordionCard({
 							<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
 						</Button>
 					</div>
-				</Skeleton>
 			</div>
 			<div
 				className={`additional-info collapse-content ${

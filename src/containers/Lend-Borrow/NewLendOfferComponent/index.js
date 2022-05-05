@@ -52,7 +52,7 @@ const CompatibleAssetsModal = () => {
 			maskStyle={{
 				height: "calc(100vh - 97px)",
 				top: 61,
-				background: "rgba(21,21,23,0.9)",
+				background: "rgba(21,21,23,1)",
 			}}
 			className="capx-modal nodata-modal"
 			title={null}
