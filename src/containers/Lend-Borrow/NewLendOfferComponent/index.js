@@ -123,17 +123,17 @@ const NewLendOfferComponent = (props) => {
 		);
 	};
 
-	const [collateral, setCollateral] = useState(10);
-	const [collateralLend, setCollateralLend] = useState(10);
+	const [collateral, setCollateral] = useState(1);
+	const [collateralLend, setCollateralLend] = useState(1);
 	const [collatCurrency, setCollatCurrency] = useState(null);
 	const [marketPrice, setMarketPrice] = useState(1);
 	const [userWVTs, setUserWVTs] = useState(null);
 	const { active, account } = useWeb3React();
 
 	const [loanAsset, setLoanAsset] = useState(null);
-	const [loanAmount, setLoanAmount] = useState(10);
-	const [interestRate, setInterestRate] = useState(10);
-	const [discount, setDiscount] = useState(10);
+	const [loanAmount, setLoanAmount] = useState(1);
+	const [interestRate, setInterestRate] = useState(1);
+	const [discount, setDiscount] = useState(1);
 	const [loanToValue, setLoanToValue] = useState(40);
 	const [liquidationThreshold, setLiquidationThreshold] = useState(45);
 	const [canLiquidateLoan, setCanLiquidateLoan] = useState(false);
@@ -247,7 +247,7 @@ const NewLendOfferComponent = (props) => {
 		}
 	};
 
-	const [loanDays, setLoanDays] = useState(2);
+	const [loanDays, setLoanDays] = useState(1);
 	const onLoanDaysChange = (e) => {
 		const val = e.target.value;
 		if (isNaN(val) || val < 0) {
@@ -1123,7 +1123,11 @@ const NewLendOfferComponent = (props) => {
 						interestRate={isNumeric(interestRate) ? interestRate : null}
 						loanToValue={loanToValue}
 						liquidationThreshold={liquidationThreshold}
-						loanDurationInSeconds = {parseInt(loanYears)*365*86400 + parseInt(loanMonths)*30*86400 + parseInt(loanDays)*86400}
+						loanDurationInSeconds={
+							parseInt(loanYears) * 365 * 86400 +
+							parseInt(loanMonths) * 30 * 86400 +
+							parseInt(loanDays) * 86400
+						}
 						loanTerm={getLoanDurationText()}
 						discount={isNumeric(discount) ? discount : null}
 						collateralPrice={
