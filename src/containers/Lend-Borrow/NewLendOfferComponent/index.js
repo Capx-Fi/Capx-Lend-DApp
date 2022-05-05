@@ -8,7 +8,7 @@ import {
 	Tooltip,
 	Checkbox,
 	Form,
-	Modal
+	Modal,
 } from "antd";
 import { Row, Col, SvgIcon } from "../../../components/common";
 import Summary from "../Summary";
@@ -45,13 +45,30 @@ const CompatibleAssetsModal = () => {
 		setIsModalVisible(false);
 	};
 	return (
-		<Modal closable={false} centered footer={null} maskStyle={{ height: 'calc(100vh - 97px)', top: 61, background: 'rgba(21,21,23,0.9)' }} className="capx-modal nodata-modal" title={null} visible={isModalVisible} onOk={handleOk}>
-			<div className="modal-icon"><SvgIcon name="info" viewBox="0 0 22 22.001" /></div>
+		<Modal
+			closable={false}
+			centered
+			footer={null}
+			maskStyle={{
+				height: "calc(100vh - 97px)",
+				top: 61,
+				background: "rgba(21,21,23,0.9)",
+			}}
+			className="capx-modal nodata-modal"
+			title={null}
+			visible={isModalVisible}
+			onOk={handleOk}
+		>
+			<div className="modal-icon">
+				<SvgIcon name="info" viewBox="0 0 22 22.001" />
+			</div>
 			<p>No compatible assets found</p>
-			<Button type="secondary" size="small" onClick={handleCancel}>OK</Button>
+			<Button type="secondary" size="small" onClick={handleCancel}>
+				OK
+			</Button>
 		</Modal>
 	);
-}
+};
 
 const marks = {
 	0: { label: "0%", style: { fontSize: "13px" } },
@@ -369,9 +386,7 @@ const NewLendOfferComponent = (props) => {
 						<>
 							<div
 								className={`${
-									globalDisabled === 0
-										? "fetching-details-box"
-										: ""
+									globalDisabled === 0 ? "fetching-details-box" : ""
 								} mb-4`}
 							>
 								{globalDisabled === 0 ? (
@@ -380,17 +395,19 @@ const NewLendOfferComponent = (props) => {
 									""
 								)}
 								<span>
-									{globalDisabled === 0
-										? "Fetching Data"
+									{globalDisabled === 0 ? (
+										"Fetching Data"
+									) : (
 										// : "No compatible assets found"}
-										: <CompatibleAssetsModal />}
+										<CompatibleAssetsModal />
+									)}
 								</span>
 							</div>
 						</>
 					)}
 					<div
 						className={`lendborrow-left-inner ${
-							globalDisabled === 0 ? "pulse-animate disabled" : "disable-class"
+							globalDisabled === 0 ? "pulse-animate disable-class" : ""
 						}`}
 					>
 						<Row>
