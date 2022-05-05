@@ -50,6 +50,47 @@ const BorrowTab = () => {
         setLoans(loans);
       });
   }, []);
+
+  //filter logic
+  const [filters, setFilters] = useState({
+    lendAsset: "",
+    companyAsset: "",
+    status: "",
+  });
+
+  useEffect(() => {
+    let finalLoans = loans;
+    if (filters.lendAsset !== "") {
+      finalLoans = finalLoans.filter(
+        (loan) => loan.stableCoinTicker === filters.lendAsset
+      );
+    }
+    if (filters.companyAsset !== "") {
+      finalLoans = finalLoans.filter(
+        (loan) => loan.collateralTicker === filters.companyAsset
+      );
+    }
+    if (filters.status !== "") {
+      finalLoans = finalLoans.filter((loan) => loan.status === filters.status);
+    }
+
+    setFilteredLoans(finalLoans);
+  }, [filters, loans]);
+
+  function filterLoansByCompanyAsset(companyAsset) {
+    setFilters({ ...filters, companyAsset });
+  }
+
+  function filterLoansByLendAsset(lendAsset) {
+    setFilters({ ...filters, lendAsset });
+  }
+
+  function filterLoansByStatus(status) {
+    setFilters({ ...filters, status });
+  }
+
+  //end of filter logic
+
   const getLoans = async () => {
     const _loans = await fetchBorrowerLoans(
       "0xBC7a2925D5C194D1DbEdeB99F13c326851dC8230",
@@ -93,28 +134,6 @@ const BorrowTab = () => {
     });
 
     return status;
-  }
-
-  function filterLoansByCompanyAsset(loans, companyAsset) {
-    if (companyAsset !== "") {
-      setFilteredLoans(
-        loans.filter((loan) => loan.collateralTicker === companyAsset)
-      );
-    } else setFilteredLoans(loans);
-  }
-
-  function filterLoansByLendAsset(loans, lendAsset) {
-    if (lendAsset !== "") {
-      setFilteredLoans(
-        loans.filter((loan) => loan.stableCoinTicker === lendAsset)
-      );
-    } else setFilteredLoans(loans);
-  }
-
-  function filterLoansByStatus(loans, status) {
-    if (status !== "")
-      setFilteredLoans(loans.filter((loan) => loan.status === status));
-    else setFilteredLoans(loans);
   }
 
   function sortBy(key) {
@@ -179,7 +198,7 @@ const BorrowTab = () => {
                 suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
                 defaultValue=""
                 bordered={false}
-                onChange={(e) => filterLoansByCompanyAsset(loans, e)}
+                onChange={(e) => filterLoansByCompanyAsset(e)}
               >
                 <Option value={""}>All</Option>
                 {getFilterValues(loans, "collateralTicker").map(function (
@@ -196,7 +215,7 @@ const BorrowTab = () => {
                 suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
                 defaultValue=""
                 bordered={false}
-                onChange={(e) => filterLoansByLendAsset(loans, e)}
+                onChange={(e) => filterLoansByLendAsset(e)}
               >
                 <Option value={""}>All</Option>
                 {getFilterValues(loans, "stableCoinTicker").map(function (
@@ -213,7 +232,7 @@ const BorrowTab = () => {
                 suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
                 defaultValue=""
                 bordered={false}
-                onChange={(e) => filterLoansByStatus(loans, e)}
+                onChange={(e) => filterLoansByStatus(e)}
               >
                 <Option value={""}>All</Option>
                 {[
