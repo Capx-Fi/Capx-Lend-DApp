@@ -7,6 +7,7 @@ import {
   LoadingScreen,
 } from "../../../components/common";
 import { Scrollbar } from "react-scrollbars-custom";
+import DashboardLoader from "../../../components/common/dashboard-loader/DasboardLoader";
 import "./index.less";
 import { LEND_ABI } from "../../../contracts/Lend";
 import AccordionCard from "../../../components/common/accordion-card/AccordionCard";
@@ -132,7 +133,6 @@ const BorrowTab = () => {
       <Row>
         <Col>
           <div className="capx-card-secondary dashboard-statics-card">
-            <Skeleton active>
               <ul>
                 <li>
                   <p>Borrowed Amount</p>
@@ -157,12 +157,12 @@ const BorrowTab = () => {
                   </h4>
                 </li>
               </ul>
-            </Skeleton>
           </div>
         </Col>
       </Row>
       <Row className="heading-row">
         <Col className="left-col">
+          <h3> Filter By </h3>
           {/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
@@ -284,7 +284,7 @@ const BorrowTab = () => {
       </Row>
     </>
   ) : (
-    <LoadingScreen />
+    <DashboardLoader />
   );
 };
 

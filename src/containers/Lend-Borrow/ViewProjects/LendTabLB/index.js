@@ -4,9 +4,9 @@ import {
   SvgIcon,
   Row,
   Col,
-  LoadingScreen,
 } from "../../../../components/common";
 import "./index.less";
+import MarketLoader from "../../../../components/common/market-loader/MarketLoader";
 import { LEND_ABI } from "../../../../contracts/Lend";
 import { MASTER_ABI } from "../../../../contracts/Master";
 import { ORACLE_ABI } from "../../../../contracts/Oracle";
@@ -85,8 +85,10 @@ const LendTabLB = (collapsed) => {
   return !pathname.includes("/new") ? (
     filteredLoans ? (
       <>
+      <h1 className="mb-2">Marketplace</h1>
         <Row className="heading-row">
           <Col className="left-col">
+            <h3> Filter By </h3>
             <div className="filter-container">
               <div className="select-container">
                 <p>{"Company Asset:"}</p>
@@ -143,7 +145,7 @@ const LendTabLB = (collapsed) => {
         </Row>
         <Row>
           <Col sm="12">
-            <h2>All Loan Offers</h2>
+            <h2>All Offers</h2>
           </Col>
           <Col>
             <div className="order-list">
@@ -177,7 +179,7 @@ const LendTabLB = (collapsed) => {
         </Row>
       </>
     ) : (
-      <LoadingScreen />
+      <MarketLoader />
     )
   ) : (
     <NewLendOfferComponent lend_loan_assets />

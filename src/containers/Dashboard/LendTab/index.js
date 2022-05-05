@@ -8,6 +8,7 @@ import {
   Col,
   LoadingScreen,
 } from "../../../components/common";
+import DashboardLoader from "../../../components/common/dashboard-loader/DasboardLoader";
 import "./index.less";
 import Web3 from "web3";
 import { MASTER_ABI } from "../../../contracts/Master";
@@ -145,7 +146,6 @@ const LendTab = (collapsed) => {
       <Row>
         <Col>
           <div className="capx-card-secondary dashboard-statics-card">
-            <Skeleton active>
               <ul>
                 <li>
                   <p>Lent Amount</p>
@@ -170,12 +170,12 @@ const LendTab = (collapsed) => {
                   </h4>
                 </li>
               </ul>
-            </Skeleton>
           </div>
         </Col>
       </Row>
       <Row className="heading-row">
         <Col className="left-col">
+        <h3> Filter By </h3>
           {/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
@@ -307,7 +307,7 @@ const LendTab = (collapsed) => {
       </Row>
     </>
   ) : (
-    <LoadingScreen />
+    <DashboardLoader />
   );
 };
 

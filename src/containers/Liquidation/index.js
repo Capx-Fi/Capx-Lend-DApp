@@ -4,9 +4,9 @@ import {
   SvgIcon,
   Row,
   Col,
-  LoadingScreen,
 } from "../../components/common";
 import "./index.less";
+import LiquidationLoader from "../../components/common/liquidation-loader/LiquidationLoader";
 import { LEND_ABI } from "../../contracts/Lend";
 import AccordionCard from "../../components/common/accordion-card/AccordionCard";
 import { getOrderDetails } from "../../utils/getOrderDetails";
@@ -86,9 +86,10 @@ const Liquidation = () => {
       <Row className="heading-row">
         <Col sm="12">
           <h2>Liquidation Market</h2>
-          <p>Liquidate the collateral from your defaulted loans</p>
+          <p>Liquidate the collateral from Defaulted loans.</p>
         </Col>
         <Col className="left-col">
+          <h3> Filter By </h3>
           {/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
@@ -192,7 +193,7 @@ const Liquidation = () => {
       </Row>
     </>
   ) : (
-    <LoadingScreen />
+    <LiquidationLoader />
   );
 };
 export default Liquidation;
