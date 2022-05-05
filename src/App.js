@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import SvgSprite from "./utils/SvgSpriteLoader";
 import { Layout, Button } from "antd";
-
+import { Scrollbar } from "react-scrollbars-custom";
 import SideBar from "./components/layout/SideBar";
 import NavigationBar from "./components/layout/NavigationBar";
 import Dashboard from "./containers/Dashboard";
 import LendBorrow from "./containers/Lend-Borrow";
 import Metamask from "./containers/Metamask";
+import { useMediaQuery } from "react-responsive";
 
 //Svg Sprite
 import svgFile from "./assets/images/svg/svg-sprite.svg";
@@ -30,6 +31,8 @@ const { Header, Content, Sider, Footer } = Layout;
 const App = () => {
 	const [collapsed, setCollapsed] = React.useState(false);
 	const [loading, setLoading] = React.useState(true);
+	const isMobile = useMediaQuery({ query: "(max-width: 1240px)" });
+	const [isOpen, setIsOpen] = useState(!!isMobile);
 	const toggleCollapsed = () => {
 		setCollapsed(!collapsed);
 	};
@@ -60,8 +63,12 @@ const App = () => {
 										{modal.modalType !== null && <CapxModal {...modal} />}
 										<Sider
 											width={290}
+											collapsible
+											collapsedWidth="0"
+											breakpoint="xl"
 											className="capx-sider"
 											collapsed={collapsed}
+											trigger={null}
 										>
 											<SideBar />
 
@@ -84,13 +91,15 @@ const App = () => {
 												)}
 											</Button>
 										</Sider>
-										<Content className="right-content-wrapper">
-											<Switch>
-												<Route path="/liquidation" component={Liquidation} />
-												<Route path="/market" component={ViewLendBorrow} />
-												<Route path="/" component={Dashboard} />
-											</Switch>
-										</Content>
+										<Scrollbar style={{ height: 'calc(100vh - 95px)' }}>
+											<Content className="right-content-wrapper">
+												<Switch>
+													<Route path="/liquidation" component={Liquidation} />
+													<Route path="/market" component={ViewLendBorrow} />
+													<Route path="/" component={Dashboard} />
+												</Switch>
+											</Content>
+										</Scrollbar>
 									</>
 								) : (
 									<Content className="right-content-wrapper">

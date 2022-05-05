@@ -504,7 +504,7 @@ const NewLendOfferComponent = (props) => {
 									</Col>
 									<Col className="mb-4">
 										<label className="lb-label">Loan Asset</label>
-										<Input.Group className="loanassets-select">
+										<Input.Group className="groupwith-select">
 											<Input
 												style={
 													globalDisabled !== 2

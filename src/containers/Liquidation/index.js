@@ -4,7 +4,6 @@ import {
   SvgIcon,
   Row,
   Col,
-  CapxScrollbars,
   LoadingScreen,
 } from "../../components/common";
 import "./index.less";

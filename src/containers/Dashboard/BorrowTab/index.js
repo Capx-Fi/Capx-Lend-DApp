@@ -4,9 +4,9 @@ import {
   SvgIcon,
   Row,
   Col,
-  CapxScrollbars,
   LoadingScreen,
 } from "../../../components/common";
+import { Scrollbar } from "react-scrollbars-custom";
 import "./index.less";
 import { LEND_ABI } from "../../../contracts/Lend";
 import AccordionCard from "../../../components/common/accordion-card/AccordionCard";
@@ -250,7 +250,6 @@ const BorrowTab = () => {
       </Row>
       <Row>
         <Col>
-          <CapxScrollbars style={{ height: "49.5vh" }}>
             <div className="order-list">
               {availableLoanStatus(filteredLoans).map(function (status) {
                 return (
@@ -278,7 +277,6 @@ const BorrowTab = () => {
                 );
               })}
             </div>
-          </CapxScrollbars>
         </Col>
       </Row>
     </>

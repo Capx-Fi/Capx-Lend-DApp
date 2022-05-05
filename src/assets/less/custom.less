@@ -149,7 +149,7 @@ b {
 				line-height: 100%;
 			}
 			.ant-select-selection-item {
-				font-size: 16px;
+				font-size: @font-size-base - 1;
 				line-height: 38px;
 				color: @text-white;
 			}
@@ -202,6 +202,8 @@ b {
 .main-content {
 	.ant-layout-sider {
 		background: @sidebar-bg;
+		width: 100%;
+		max-width: 290px;
 	}
 	.right-content-wrapper {
 		min-height: calc(100vh - 95px);
@@ -388,5 +390,21 @@ b {
 		.ant-modal-footer{
 			border-color: @border-card;
 		}
+	}
+}
+
+.ScrollbarsCustom-TrackY{
+	background: @card-bg !important;
+	width: 6px !important;
+	.ScrollbarsCustom-ThumbY{
+		background: @tab-gradient !important;
+	}
+}
+
+.ScrollbarsCustom-TrackX{
+	background: @card-bg !important;
+	height: 6px !important;
+	.ScrollbarsCustom-ThumbX{
+		background: @tab-gradient !important;
 	}
 }

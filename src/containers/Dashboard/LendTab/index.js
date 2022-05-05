@@ -5,7 +5,6 @@ import {
   SvgIcon,
   Row,
   Col,
-  CapxScrollbars,
   LoadingScreen,
 } from "../../../components/common";
 import "./index.less";
@@ -263,45 +262,43 @@ const LendTab = (collapsed) => {
       </Row>
       <Row>
         <Col>
-          <CapxScrollbars style={{ height: "49.5vh" }}>
-            <div className="order-list">
-              {availableLoanStatus(filteredLoans).map(function (status) {
-                return (
-                  <div className="orderlist-card">
-                    <h4 className="card-title">{status}</h4>
-                    {filteredLoans.map(function (loan) {
-                      return (
-                        loan.status === status && (
-                          <AccordionCard
-                            orderId={loan.loanID}
-                            healthFactor={loan.healthFactor}
-                            paymentType={loan.repaymentType}
-                            status={loan.status}
-                            orderDetails={getOrderDetails(loan)}
-                            additonalInfo={getAdditionalInfo(loan)}
-                            loan={loan}
-                            isBorrower={false}
-                            lendContract={lendContract}
-                            masterContract={masterContract}
-                          />
-                        )
-                      );
-                    })}
-                    {/* <h4 className="card-title">{status}</h4>
-                    { <h4 className="card-title">Expired</h4> }
-                    <AccordionCard
-                      orderId={loan.loanID}
-                      healthFactor={"1.2"}
-                      paymentType={loan.repaymentType}
-                      status={loan.status}
-                      orderDetails={getOrderDetails(loan)}
-                      additonalInfo={getAdditionalInfo(loan)}
-                    /> */}
-                  </div>
-                );
-              })}
-            </div>
-          </CapxScrollbars>
+          <div className="order-list">
+            {availableLoanStatus(filteredLoans).map(function (status) {
+              return (
+                <div className="orderlist-card">
+                  <h4 className="card-title">{status}</h4>
+                  {filteredLoans.map(function (loan) {
+                    return (
+                      loan.status === status && (
+                        <AccordionCard
+                          orderId={loan.loanID}
+                          healthFactor={loan.healthFactor}
+                          paymentType={loan.repaymentType}
+                          status={loan.status}
+                          orderDetails={getOrderDetails(loan)}
+                          additonalInfo={getAdditionalInfo(loan)}
+                          loan={loan}
+                          isBorrower={false}
+                          lendContract={lendContract}
+                          masterContract={masterContract}
+                        />
+                      )
+                    );
+                  })}
+                  {/* <h4 className="card-title">{status}</h4>
+                  { <h4 className="card-title">Expired</h4> }
+                  <AccordionCard
+                    orderId={loan.loanID}
+                    healthFactor={"1.2"}
+                    paymentType={loan.repaymentType}
+                    status={loan.status}
+                    orderDetails={getOrderDetails(loan)}
+                    additonalInfo={getAdditionalInfo(loan)}
+                  /> */}
+                </div>
+              );
+            })}
+          </div>
         </Col>
       </Row>
     </>
