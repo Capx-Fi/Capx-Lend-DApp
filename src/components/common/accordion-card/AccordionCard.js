@@ -1,4 +1,4 @@
-import { Button, Col, Row, Tooltip } from "antd";
+import { Button, Col, Row, Tooltip, Skeleton } from "antd";
 import React, { useState } from "react";
 import SvgIcon from "../svg-icon/svg-icon";
 import "../../../containers/Dashboard/index.less";
@@ -33,53 +33,55 @@ function AccordionCard({
 	return (
 		<div>
 			<div className="capx-card" style={{ marginBottom: "20px" }}>
-				<div className="ordercard-upper">
-					<div className="upper-left">
-						<b>Order ID: {orderId}</b>
-						<span className="helthfactor-title">
-							Health Factor :{" "}
-							<b>
-								{loan?.status === "Cancelled"
-									? "N/A"
-									: convertToInternationalCurrencySystem(healthFactor)}
-							</b>
-							<Tooltip
-								className="tooltip-icon"
-								placement="top"
-								title={healthFactorTooltip}
-							>
-								<SvgIcon name="info" viewbox="0 0 22 22.001" />
-							</Tooltip>
-						</span>
-					</div>
-					<div className="upper-right">
-						<span className="badge badge-green">{paymentType}</span>
-						{status && (
-							<span className={`badge badge-${status.toLowerCase()}`}>
-								{status}
+				<Skeleton active>
+					<div className="ordercard-upper">
+						<div className="upper-left">
+							<b>Order ID: {orderId}</b>
+							<span className="helthfactor-title">
+								Health Factor :{" "}
+								<b>
+									{loan?.status === "Cancelled"
+										? "N/A"
+										: convertToInternationalCurrencySystem(healthFactor)}
+								</b>
+								<Tooltip
+									className="tooltip-icon"
+									placement="top"
+									title={healthFactorTooltip}
+								>
+									<SvgIcon name="info" viewbox="0 0 22 22.001" />
+								</Tooltip>
 							</span>
-						)}
+						</div>
+						<div className="upper-right">
+							<span className="badge badge-green">{paymentType}</span>
+							{status && (
+								<span className={`badge badge-${status.toLowerCase()}`}>
+									{status}
+								</span>
+							)}
+						</div>
 					</div>
-				</div>
-				<div className={`ordercard-bottom-${orderDetails.length}`}>
-					<ul>
-						{orderDetails.map((item, index) => {
-							return (
-								<li key={index}>
-									<p>{item.label}</p>
-									<h4>{item.value}</h4>
-								</li>
-							);
-						})}
-					</ul>
-					<Button
-						onClick={() => setIsCollapsed(!isCollapsed)}
-						className={`arrow-collapse ${isCollapsed ? "down" : "up"}`}
-						type="link"
-					>
-						<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
-					</Button>
-				</div>
+					<div className={`ordercard-bottom-${orderDetails.length}`}>
+						<ul>
+							{orderDetails.map((item, index) => {
+								return (
+									<li key={index}>
+										<p>{item.label}</p>
+										<h4>{item.value}</h4>
+									</li>
+								);
+							})}
+						</ul>
+						<Button
+							onClick={() => setIsCollapsed(!isCollapsed)}
+							className={`arrow-collapse ${isCollapsed ? "down" : "up"}`}
+							type="link"
+						>
+							<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />
+						</Button>
+					</div>
+				</Skeleton>
 			</div>
 			<div
 				className={`additional-info collapse-content ${
