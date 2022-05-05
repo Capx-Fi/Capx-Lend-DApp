@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SvgSprite from "./utils/SvgSpriteLoader";
 import { Layout, Button } from "antd";
-import { Scrollbar } from "react-scrollbars-custom";
 import SideBar from "./components/layout/SideBar";
 import NavigationBar from "./components/layout/NavigationBar";
 import Dashboard from "./containers/Dashboard";
@@ -64,7 +63,6 @@ const App = () => {
 										<Sider
 											width={290}
 											collapsible
-											collapsedWidth="0"
 											breakpoint="xl"
 											className="capx-sider"
 											collapsed={collapsed}
@@ -91,15 +89,13 @@ const App = () => {
 												)}
 											</Button>
 										</Sider>
-										<Scrollbar style={{ height: 'calc(100vh - 95px)' }}>
-											<Content className="right-content-wrapper">
-												<Switch>
-													<Route path="/liquidation" component={Liquidation} />
-													<Route path="/market" component={ViewLendBorrow} />
-													<Route path="/" component={Dashboard} />
-												</Switch>
-											</Content>
-										</Scrollbar>
+										<Content className="right-content-wrapper">
+											<Switch>
+												<Route path="/liquidation" component={Liquidation} />
+												<Route path="/market" component={ViewLendBorrow} />
+												<Route path="/" component={Dashboard} />
+											</Switch>
+										</Content>
 									</>
 								) : (
 									<Content className="right-content-wrapper">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
-import { Button, Select, Tooltip, Radio } from "antd";
+import { Button, Select, Tooltip, Skeleton } from "antd";
+import { Scrollbar } from "react-scrollbars-custom";
 import {
   SvgIcon,
   Row,
@@ -140,35 +141,36 @@ const LendTab = (collapsed) => {
   }
   return loans ? (
     <>
-      <br></br>
-      <h1>Overview</h1>
+      <h1 className="mb-2">Overview</h1>
       <Row>
         <Col>
           <div className="capx-card-secondary dashboard-statics-card">
-            <ul>
-              <li>
-                <p>Lent Amount</p>
-                <h4>
-                  $ {convertToInternationalCurrencySystem(totalAmount(loans))}
-                </h4>
-              </li>
-              <li>
-                <p>Number of loans</p>
-                <h4>{loans.length}</h4>
-              </li>
-              <li>
-                <p>Interest Accured</p>
-                <h4>
-                  $ {convertToInternationalCurrencySystem(totalInterest(loans))}
-                </h4>
-              </li>
-              <li>
-                <p>Interest Pending</p>
-                <h4>
-                  $ {convertToInternationalCurrencySystem(totalPending(loans))}
-                </h4>
-              </li>
-            </ul>
+            <Skeleton active>
+              <ul>
+                <li>
+                  <p>Lent Amount</p>
+                  <h4>
+                    $ {convertToInternationalCurrencySystem(totalAmount(loans))}
+                  </h4>
+                </li>
+                <li>
+                  <p>Number of loans</p>
+                  <h4>{loans.length}</h4>
+                </li>
+                <li>
+                  <p>Interest Accured</p>
+                  <h4>
+                    $ {convertToInternationalCurrencySystem(totalInterest(loans))}
+                  </h4>
+                </li>
+                <li>
+                  <p>Interest Pending</p>
+                  <h4>
+                    $ {convertToInternationalCurrencySystem(totalPending(loans))}
+                  </h4>
+                </li>
+              </ul>
+            </Skeleton>
           </div>
         </Col>
       </Row>
@@ -262,43 +264,45 @@ const LendTab = (collapsed) => {
       </Row>
       <Row>
         <Col>
-          <div className="order-list">
-            {availableLoanStatus(filteredLoans).map(function (status) {
-              return (
-                <div className="orderlist-card">
-                  <h4 className="card-title">{status}</h4>
-                  {filteredLoans.map(function (loan) {
-                    return (
-                      loan.status === status && (
-                        <AccordionCard
-                          orderId={loan.loanID}
-                          healthFactor={loan.healthFactor}
-                          paymentType={loan.repaymentType}
-                          status={loan.status}
-                          orderDetails={getOrderDetails(loan)}
-                          additonalInfo={getAdditionalInfo(loan)}
-                          loan={loan}
-                          isBorrower={false}
-                          lendContract={lendContract}
-                          masterContract={masterContract}
-                        />
-                      )
-                    );
-                  })}
-                  {/* <h4 className="card-title">{status}</h4>
-                  { <h4 className="card-title">Expired</h4> }
-                  <AccordionCard
-                    orderId={loan.loanID}
-                    healthFactor={"1.2"}
-                    paymentType={loan.repaymentType}
-                    status={loan.status}
-                    orderDetails={getOrderDetails(loan)}
-                    additonalInfo={getAdditionalInfo(loan)}
-                  /> */}
-                </div>
-              );
-            })}
-          </div>
+          <Scrollbar style={{ height: 'calc(100vh - 465px)' }}>
+            <div className="order-list">
+              {availableLoanStatus(filteredLoans).map(function (status) {
+                return (
+                  <div className="orderlist-card">
+                    <h4 className="card-title">{status}</h4>
+                    {filteredLoans.map(function (loan) {
+                      return (
+                        loan.status === status && (
+                          <AccordionCard
+                            orderId={loan.loanID}
+                            healthFactor={loan.healthFactor}
+                            paymentType={loan.repaymentType}
+                            status={loan.status}
+                            orderDetails={getOrderDetails(loan)}
+                            additonalInfo={getAdditionalInfo(loan)}
+                            loan={loan}
+                            isBorrower={false}
+                            lendContract={lendContract}
+                            masterContract={masterContract}
+                          />
+                        )
+                      );
+                    })}
+                    {/* <h4 className="card-title">{status}</h4>
+                    { <h4 className="card-title">Expired</h4> }
+                    <AccordionCard
+                      orderId={loan.loanID}
+                      healthFactor={"1.2"}
+                      paymentType={loan.repaymentType}
+                      status={loan.status}
+                      orderDetails={getOrderDetails(loan)}
+                      additonalInfo={getAdditionalInfo(loan)}
+                    /> */}
+                  </div>
+                );
+              })}
+            </div>
+          </Scrollbar>
         </Col>
       </Row>
     </>

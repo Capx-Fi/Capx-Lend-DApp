@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Select } from "antd";
+import { Button, Select, Skeleton } from "antd";
 import {
   SvgIcon,
   Row,
@@ -128,35 +128,36 @@ const BorrowTab = () => {
   }
   return loans ? (
     <>
-      <br></br>
-      <h1>Overview</h1>
+      <h1 className="mb-2">Overview</h1>
       <Row>
         <Col>
           <div className="capx-card-secondary dashboard-statics-card">
-            <ul>
-              <li>
-                <p>Borrowed Amount</p>
-                <h4>
-                  $ {convertToInternationalCurrencySystem(totalAmount(loans))}{" "}
-                </h4>
-              </li>
-              <li>
-                <p>Active loans</p>
-                <h4>{loans.length}</h4>
-              </li>
-              <li>
-                <p>Interest Paid</p>
-                <h4>
-                  $ {convertToInternationalCurrencySystem(totalInterest(loans))}
-                </h4>
-              </li>
-              <li>
-                <p>Loan Amount Repayed</p>
-                <h4>
-                  $ {convertToInternationalCurrencySystem(totalPaidOff(loans))}
-                </h4>
-              </li>
-            </ul>
+            <Skeleton active>
+              <ul>
+                <li>
+                  <p>Borrowed Amount</p>
+                  <h4>
+                    $ {convertToInternationalCurrencySystem(totalAmount(loans))}{" "}
+                  </h4>
+                </li>
+                <li>
+                  <p>Active loans</p>
+                  <h4>{loans.length}</h4>
+                </li>
+                <li>
+                  <p>Interest Paid</p>
+                  <h4>
+                    $ {convertToInternationalCurrencySystem(totalInterest(loans))}
+                  </h4>
+                </li>
+                <li>
+                  <p>Loan Amount Repayed</p>
+                  <h4>
+                    $ {convertToInternationalCurrencySystem(totalPaidOff(loans))}
+                  </h4>
+                </li>
+              </ul>
+            </Skeleton>
           </div>
         </Col>
       </Row>
@@ -250,6 +251,7 @@ const BorrowTab = () => {
       </Row>
       <Row>
         <Col>
+          <Scrollbar style={{ height: 'calc(100vh - 465px)' }}>
             <div className="order-list">
               {availableLoanStatus(filteredLoans).map(function (status) {
                 return (
@@ -277,6 +279,7 @@ const BorrowTab = () => {
                 );
               })}
             </div>
+          </Scrollbar>
         </Col>
       </Row>
     </>
