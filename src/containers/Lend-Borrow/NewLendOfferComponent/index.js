@@ -1123,6 +1123,7 @@ const NewLendOfferComponent = (props) => {
 						interestRate={isNumeric(interestRate) ? interestRate : null}
 						loanToValue={loanToValue}
 						liquidationThreshold={liquidationThreshold}
+						loanDurationInSeconds = {parseInt(loanYears)*365*86400 + parseInt(loanMonths)*30*86400 + parseInt(loanDays)*86400}
 						loanTerm={getLoanDurationText()}
 						discount={isNumeric(discount) ? discount : null}
 						collateralPrice={
