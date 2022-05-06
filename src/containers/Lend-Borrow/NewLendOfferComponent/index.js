@@ -137,6 +137,7 @@ const NewLendOfferComponent = (props) => {
 	const [loanToValue, setLoanToValue] = useState(40);
 	const [liquidationThreshold, setLiquidationThreshold] = useState(45);
 	const [canLiquidateLoan, setCanLiquidateLoan] = useState(false);
+	const [duration, setDuration] = useState(86400);
 	const masterContract = new web3.eth.Contract(
 		MASTER_ABI,
 		"0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
@@ -212,6 +213,7 @@ const NewLendOfferComponent = (props) => {
 	};
 	const onCollateralChange = (e) => {
 		const val = e.target.value;
+		console.log(val);
 		if (isNaN(val) || val < 0 || val > balance) {
 			return;
 		}
@@ -259,6 +261,10 @@ const NewLendOfferComponent = (props) => {
 		}
 	};
 
+	useEffect(() => {
+		setDuration(loanYears * 31536000 + loanMonths * 2592000 + loanDays * 86400);
+	}, [loanYears, loanMonths, loanDays]);
+
 	const getLoanDurationText = () => {
 		let text = "";
 		const years = parseInt(loanYears);
@@ -297,6 +303,19 @@ const NewLendOfferComponent = (props) => {
 			setInterestRate(val);
 		}
 	};
+
+	// const durationValid = (e) => {
+	// 	const val = e.target.value;
+	// 	if (isNaN(val)) {
+	// 		return;
+	// 	} else {
+	// 		setDuration(
+	// 			parseInt(loanYears) * 365 * 86400 +
+	// 				parseInt(loanMonths) * 30 * 86400 +
+	// 				parseInt(loanDays) * 86400
+	// 		);
+	// 	}
+	// };
 
 	const onDiscountChange = (e) => {
 		const val = e.target.value;
@@ -377,6 +396,8 @@ const NewLendOfferComponent = (props) => {
 			.dividedBy(new BigNumber(100))
 			.toString(10);
 	}
+
+	console.log(duration);
 
 	return (
 		<>
@@ -627,12 +648,17 @@ const NewLendOfferComponent = (props) => {
 											))}
 										</Select>
 									</Input.Group>
-									{isNumeric(loanAmount) && parseFloat(loanAmount) === 0 && (
-										<div className="insufficient-loan-error">
-											<SvgIcon name="error-icon" viewbox="0 0 18.988 15.511" />
-											Invalid Loan Amount
-										</div>
-									)}
+									{isNumeric(loanAmount) &&
+										(parseFloat(loanAmount) === 0 || parseFloat(loanAmount)) ===
+											"" && (
+											<div className="insufficient-loan-error">
+												<SvgIcon
+													name="error-icon"
+													viewbox="0 0 18.988 15.511"
+												/>
+												Invalid Loan Amount
+											</div>
+										)}
 								</Col>
 								<Col className="mb-4">
 									<label className="lb-label">Collateral Amount </label>
@@ -764,7 +790,16 @@ const NewLendOfferComponent = (props) => {
 							<>
 								<Row>
 									<Col className="mb-4">
-										<label className="lb-label">Loan Period</label>
+										<label className="lb-label">
+											Loan Period{" "}
+											<Tooltip
+												className="tooltip-icon"
+												placement="top"
+												title="text"
+											>
+												<SvgIcon name="info" viewbox="0 0 22 22.001" />
+											</Tooltip>
+										</label>
 										<Row>
 											<Col sm="3">
 												<Input.Group className="loanassets-group">
@@ -891,6 +926,16 @@ const NewLendOfferComponent = (props) => {
 											<Button style={{ width: "30%" }} type="primary">
 												%
 											</Button>
+											{isNumeric(interestRate) &&
+												parseFloat(interestRate) === 0 && (
+													<div className="insufficient-loan-error">
+														<SvgIcon
+															name="error-icon"
+															viewbox="0 0 18.988 15.511"
+														/>
+														<span>Invalid Interest Rate</span>
+													</div>
+												)}
 										</Input.Group>
 									</Col>
 									<Col sm="3">
@@ -920,12 +965,23 @@ const NewLendOfferComponent = (props) => {
 														  }
 												}
 												value={discount}
+												min={"1"}
 												onChange={onDiscountChange}
 												disabled={globalDisabled !== 2}
 											/>
 											<Button style={{ width: "30%" }} type="primary">
 												%
 											</Button>
+											{isNumeric(discount) &&
+												(parseFloat(discount) === 0 || discount === "") && (
+													<div className="insufficient-loan-error">
+														<SvgIcon
+															name="error-icon"
+															viewbox="0 0 18.988 15.511"
+														/>
+														<span>Invalid Discount</span>
+													</div>
+												)}
 										</Input.Group>
 									</Col>
 								</Row>
@@ -934,7 +990,16 @@ const NewLendOfferComponent = (props) => {
 							<>
 								<Row>
 									<Col className="mb-4">
-										<label className="lb-label">Loan Period</label>
+										<label className="lb-label">
+											Loan Period{" "}
+											<Tooltip
+												className="tooltip-icon"
+												placement="top"
+												title="text"
+											>
+												<SvgIcon name="info" viewbox="0 0 22 22.001" />
+											</Tooltip>
+										</label>
 										<Row className="pr-4">
 											<Col sm="4">
 												<Input.Group className="loanassets-group">
@@ -1120,7 +1185,9 @@ const NewLendOfferComponent = (props) => {
 								? loanAmount
 								: null
 						}
-						interestRate={isNumeric(interestRate) ? interestRate : null}
+						interestRate={
+							isNumeric(interestRate) && interestRate !== 0 ? interestRate : "-"
+						}
 						loanToValue={loanToValue}
 						liquidationThreshold={liquidationThreshold}
 						loanDurationInSeconds={
@@ -1152,7 +1219,7 @@ const NewLendOfferComponent = (props) => {
 								: "-"
 						}
 						canLiquidateLoan={
-							props.lend_loan_assets ? (canLiquidateLoan ? "Yes" : "No") : null
+							props.lend_loan_assets ? (canLiquidateLoan ? "Yes" : "No") : false
 						}
 						marketPrice={
 							isNumeric(marketPrice)
@@ -1162,6 +1229,7 @@ const NewLendOfferComponent = (props) => {
 						serviceFee="2.5"
 						loanType="Single Repayment"
 						isBorrower={props.lend_loan_assets ? false : true}
+						durationValid={duration}
 					/>
 				</div>
 			</div>
