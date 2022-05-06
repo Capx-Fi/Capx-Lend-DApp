@@ -15,11 +15,19 @@ export const approveCreateLoan = async (
   isBorrower, // Determining which function to call.
   amount, // WVT in case of Borrower creating the loan else SC. (In BigNumber Format)
   wvtAddress,
-  scAddress
+  scAddress,
+  dispatch
 ) => {
   const web3 = new Web3(Web3.givenProvider);
   // Approving the tokens
   let approvalResult = null;
+  dispatch(
+    showModal({
+      modalType: "ApproveLoan",
+      modalTitle: "Approving Loan",
+      modalSubtitle: "Please wait while we approve your loan",
+    })
+  );
   try {
     let erc20Contract = null;
     if (isBorrower) {
@@ -30,8 +38,30 @@ export const approveCreateLoan = async (
     approvalResult = await erc20Contract.methods
       .approve(LEND_CONTRACT_ADDRESS, amount.toString(10))
       .send({ from: account });
+    dispatch(
+      showModal({
+        modalType: "ApproveLoanSuccess",
+        modalTitle: "Approved Loan Successfully",
+        modalSubtitle: "You can now initiate the loan request",
+      })
+    );
+    setTimeout(() => {
+      dispatch(hideModal());
+    }, 3000);
   } catch (err) {
     console.log("ERC20 - Approve | Accept Loan Amount ERR: \n", err);
+    dispatch(
+      showModal({
+        modalType: "Error",
+        modalTitle: "Error",
+        modalSubtitle: "Approval Error",
+        closable: false,
+      })
+    );
+
+    setTimeout(() => {
+      dispatch(hideModal());
+    }, 3000);
   }
 };
 
@@ -58,6 +88,7 @@ export const createLoan = async (
       closable: false,
     })
   );
+
   let result = null;
   try {
     result = await lendContract.methods
@@ -82,6 +113,9 @@ export const createLoan = async (
         closable: false,
       })
     );
+    setTimeout(() => {
+      dispatch(hideModal());
+    }, 3000);
   } catch (error) {
     console.log(error);
     dispatch(
@@ -95,6 +129,6 @@ export const createLoan = async (
 
     setTimeout(() => {
       dispatch(hideModal());
-    }, 2000);
+    }, 3000);
   }
 };

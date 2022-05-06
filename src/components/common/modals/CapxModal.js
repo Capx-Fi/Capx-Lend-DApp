@@ -4,9 +4,20 @@ import { useDispatch } from "react-redux";
 import { hideModal } from "../../../redux/features/modalSlice";
 import Lottie from "lottie-react";
 
+//create loan
+
 import CreateLoanSuccess from "../../../assets/lottie/CreateLoan/CreateLoanSuccess.json";
 import CreateLoanInProgress from "../../../assets/lottie/CreateLoan/CreateLoanInProgress.json";
-import CreateLoanInitial from "../../../assets/lottie/CreateLoan/CreateLoanInitial.json";
+
+//approve loan
+
+import ApproveLoanSuccess from "../../../assets/lottie/CreateLoan/CreateLoanSuccess.json";
+import ApproveLoanInProgress from "../../../assets/lottie/CreateLoan/CreateLoanInProgress.json";
+
+//cancel loan
+
+import CancelLoanSuccess from "../../../assets/lottie/Cancel/CancelLoanSuccess.json";
+import CancelLoanInProgress from "../../../assets/lottie/Cancel/CancelLoanInProgress.json";
 
 import ErrorState from "../../../assets/lottie/Error/ErrorState.json";
 
@@ -38,7 +49,21 @@ const CapxModal = (modal) => {
           }}
           loop={true}
           animationData={
-            modal.modalType === "Error" ? ErrorState : CreateLoanInProgress
+            modal.modalType === "Error"
+              ? ErrorState
+              : modal.modalType === "CreateLoan"
+              ? CreateLoanInProgress
+              : modal.modalType === "CreateLoanSuccess"
+              ? CreateLoanSuccess
+              : modal.modalType === "ApproveLoan"
+              ? ApproveLoanInProgress
+              : modal.modalType === "ApproveLoanSuccess"
+              ? ApproveLoanSuccess
+              : modal.modalType === "CancelLoan"
+              ? CancelLoanInProgress
+              : modal.modalType === "CancelLoanSuccess"
+              ? CancelLoanSuccess
+              : CreateLoanInProgress
           }
         />
         <p>{modal.modalProps.lottie}</p>

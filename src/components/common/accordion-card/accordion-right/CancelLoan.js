@@ -5,9 +5,11 @@ import SvgIcon from "../../svg-icon/svg-icon";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { cancelLoan } from "../../../../utils/cancelLoan";
+import { useDispatch } from "react-redux";
 function CancelLoan({ lendContract, loan }) {
   const web3 = new Web3(Web3.givenProvider);
   const { active, account, chainId } = useWeb3React();
+  const dispatch = useDispatch();
   return (
     <div>
       <Row className="mb-2">
@@ -22,9 +24,12 @@ function CancelLoan({ lendContract, loan }) {
           </Tooltip>
         </Col>
       </Row>
-      <Button 
-        className="action-btn mt-3" block
-        onClick={() => cancelLoan(lendContract,account, loan?.loanID)}
+      <Button
+        className="action-btn mt-3"
+        block
+        onClick={() =>
+          cancelLoan(lendContract, account, loan?.loanID, dispatch)
+        }
       >
         Cancel Loan
       </Button>
