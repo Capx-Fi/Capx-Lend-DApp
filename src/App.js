@@ -46,6 +46,15 @@ const App = () => {
 		useWeb3React();
 
 	const modal = useSelector((state) => state.modal);
+
+	const toggle = () => {
+		setIsOpen(!isOpen);
+		if (isOpen && isMobile) {
+			document.body.classList.add("sidebar-open");
+		} else {
+			document.body.classList.remove("sidebar-open");
+		}
+	};
 	return (
 		<>
 			{!loading ? (
@@ -64,7 +73,7 @@ const App = () => {
 											width={290}
 											collapsible
 											breakpoint="xl"
-											className="capx-sider"
+											className={isOpen ? "capx-sider" : "sidebar-open capx-sider"}
 											collapsed={collapsed}
 											trigger={null}
 										>
