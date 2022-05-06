@@ -877,6 +877,8 @@ const NewLendOfferComponent = (props) => {
 										</label>
 										<Input.Group className="loanassets-group">
 											<Input
+												className={(!isNumeric(interestRate) ||
+												(parseFloat(interestRate) === 0 || interestRate === "")) ? "ant-input-status-error" : ""}
 												style={
 													globalDisabled !== 2
 														? {
@@ -922,6 +924,8 @@ const NewLendOfferComponent = (props) => {
 										</label>
 										<Input.Group className="loanassets-group">
 											<Input
+												className={(!isNumeric(discount) ||
+												(parseFloat(discount) === 0 || discount === "")) ? "ant-input-status-error" : ""}
 												style={
 													globalDisabled !== 2
 														? {
