@@ -8,6 +8,7 @@ import { LEND_ABI } from "../../../contracts/Lend";
 import { approveCreateLoan, createLoan } from "../../../utils/createLoan";
 import { ERC20_ABI } from "../../../contracts/ERC20";
 import { useWeb3React } from "@web3-react/core";
+import { getInterest } from "../../../utils/fetchLoanDetails";
 BigNumber.config({
 	ROUNDING_MODE: 3,
 	DECIMAL_PLACES: 18,
@@ -35,6 +36,9 @@ const Summary = (props) => {
 		LEND_ABI,
 		"0x309D0Ff4b655bAD183A3FA88A0547b41e877DcF1"
 	);
+	console.log(props.durationValid);
+
+	console.log(props.collateralAmount);
 	return (
 		<>
 			<div className="summary-head">
@@ -151,8 +155,23 @@ const Summary = (props) => {
 			<div className="summary-footer">
 				<div className="left">
 					<small>Pay-Off Amount</small>
-					<h2>$4250</h2>
-					<small>($1000/installment)</small>
+					<h2>{`$${
+						isNaN(
+							getInterest(
+								Number(props.stableCoinAmount.slice(1)),
+								Number(props.interestRate),
+								Number(props.loanDurationInSeconds),
+								Number(props.stableCoinDecimal)
+							)
+						)
+							? "    -"
+							: getInterest(
+									Number(props.stableCoinAmount.slice(1)),
+									Number(props.interestRate),
+									Number(props.loanDurationInSeconds),
+									Number(props.stableCoinDecimal)
+							  )
+					}`}</h2>
 				</div>
 				<div className={`right ${isValid === true ? "" : "disabled-button"}`}>
 					<Button
