@@ -691,7 +691,7 @@ const NewLendOfferComponent = (props) => {
 						{props.lend_loan_assets && (
 							<Col sm="6" className="mb-4 mt-2" style={{ padding: "0" }}>
 								<Checkbox
-									disabled={globalDisabled !== 2}
+									disabled={(!isNumeric(loanAmount) || (parseFloat(loanAmount) === 0 || loanAmount === "")) || globalDisabled !== 2}
 									value={canLiquidateLoan}
 									onChange={onCanLiquidationChange}
 								>
