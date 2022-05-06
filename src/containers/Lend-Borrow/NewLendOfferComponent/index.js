@@ -561,7 +561,7 @@ const NewLendOfferComponent = (props) => {
 										</small>
 									</label>
 									<Input.Group
-										className="loanassets-select"
+										className="groupwith-select"
 										// style={
 										// 	parseFloat(loanAmount) === 0
 										// 		? { border: "2px solid #ff4d4f", borderRadius: "8px" }
@@ -569,6 +569,8 @@ const NewLendOfferComponent = (props) => {
 										// }
 									>
 										<Input
+											className={(!isNumeric(loanAmount) || 
+												(parseFloat(loanAmount) === 0 || loanAmount === "")) ? "ant-input-status-error" : ""}
 											style={
 												globalDisabled !== 2
 													? {
@@ -770,6 +772,7 @@ const NewLendOfferComponent = (props) => {
 											<Col sm="3">
 												<Input.Group className="loanassets-group">
 													<Input
+														className={(getLoanDurationText() === "-" || (loanDays === "") || (loanMonths === "") || (loanYears === "")) ? "ant-input-status-error" : ""}
 														style={
 															globalDisabled !== 2
 																? {
@@ -796,6 +799,7 @@ const NewLendOfferComponent = (props) => {
 											<Col sm="3">
 												<Input.Group className="loanassets-group">
 													<Input
+														className={(getLoanDurationText() === "-" || (loanDays === "") || (loanMonths === "") || (loanYears === "")) ? "ant-input-status-error" : ""}
 														style={
 															globalDisabled !== 2
 																? {
@@ -822,6 +826,7 @@ const NewLendOfferComponent = (props) => {
 											<Col sm="3">
 												<Input.Group className="loanassets-group">
 													<Input
+														className={(getLoanDurationText() === "-" || (loanDays === "") || (loanMonths === "") || (loanYears === "")) ? "ant-input-status-error" : ""}
 														style={
 															globalDisabled !== 2
 																? {
