@@ -45,6 +45,43 @@ const BorrowTabLB = () => {
         setLoans(loans);
       });
   }, []);
+
+  //filter logic
+  const [filters, setFilters] = useState({
+    lendAsset: "",
+    companyAsset: "",
+    status: "",
+  });
+
+  useEffect(() => {
+    let finalLoans = loans;
+    if (filters.lendAsset !== "") {
+      finalLoans = finalLoans.filter(
+        (loan) => loan.stableCoinTicker === filters.lendAsset
+      );
+    }
+    if (filters.companyAsset !== "") {
+      finalLoans = finalLoans.filter(
+        (loan) => loan.collateralTicker === filters.companyAsset
+      );
+    }
+    if (filters.status !== "") {
+      finalLoans = finalLoans.filter((loan) => loan.status === filters.status);
+    }
+
+    setFilteredLoans(finalLoans);
+  }, [filters, loans]);
+
+  function filterLoansByCompanyAsset(companyAsset) {
+    setFilters({ ...filters, companyAsset });
+  }
+
+  function filterLoansByLendAsset(lendAsset) {
+    setFilters({ ...filters, lendAsset });
+  }
+
+  //end of filter logic
+
   const getLoans = async () => {
     const _loans = await fetchLoanDetailsLender(
       account,
@@ -58,14 +95,6 @@ const BorrowTabLB = () => {
     return _loans;
   };
 
-  function filterLoansByCompanyAsset(loans, companyAsset) {
-    if (companyAsset !== "") {
-      setFilteredLoans(
-        loans.filter((loan) => loan.collateralTicker === companyAsset)
-      );
-    } else setFilteredLoans(loans);
-  }
-
   function availableLoanStatus(loans) {
     let status = [];
     loans.forEach((loan) => {
@@ -75,13 +104,6 @@ const BorrowTabLB = () => {
     return status;
   }
 
-  function filterLoansByLendAsset(loans, lendAsset) {
-    if (lendAsset !== "") {
-      setFilteredLoans(
-        loans.filter((loan) => loan.stableCoinTicker === lendAsset)
-      );
-    } else setFilteredLoans(loans);
-  }
   const pathname = window.location.pathname;
   return !pathname.includes("/new") ? (
     filteredLoans ? (
@@ -100,7 +122,7 @@ const BorrowTabLB = () => {
                   }
                   defaultValue=""
                   bordered={false}
-                  onChange={(e) => filterLoansByCompanyAsset(filteredLoans, e)}
+                  onChange={(e) => filterLoansByCompanyAsset(e)}
                 >
                   <Option value={""}>All</Option>
                   {getFilterValues(filteredLoans, "collateralTicker").map(
@@ -119,7 +141,7 @@ const BorrowTabLB = () => {
                   }
                   defaultValue=""
                   bordered={false}
-                  onChange={(e) => filterLoansByLendAsset(filteredLoans, e)}
+                  onChange={(e) => filterLoansByLendAsset(e)}
                 >
                   <Option value={""}>All</Option>
                   {getFilterValues(filteredLoans, "stableCoinTicker").map(
