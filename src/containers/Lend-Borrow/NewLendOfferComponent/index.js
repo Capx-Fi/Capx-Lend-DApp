@@ -7,7 +7,6 @@ import {
 	Slider,
 	Tooltip,
 	Checkbox,
-	Form,
 	Modal,
 } from "antd";
 import { Row, Col, SvgIcon } from "../../../components/common";
@@ -137,7 +136,6 @@ const NewLendOfferComponent = (props) => {
 	const [loanToValue, setLoanToValue] = useState(40);
 	const [liquidationThreshold, setLiquidationThreshold] = useState(45);
 	const [canLiquidateLoan, setCanLiquidateLoan] = useState(false);
-	const [duration, setDuration] = useState(86400);
 	const masterContract = new web3.eth.Contract(
 		MASTER_ABI,
 		"0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
@@ -213,8 +211,7 @@ const NewLendOfferComponent = (props) => {
 	};
 	const onCollateralChange = (e) => {
 		const val = e.target.value;
-		console.log(val);
-		if (isNaN(val) || val < 0 || val > balance) {
+		if (isNaN(val) || val < 0 || val > balance ) {
 			return;
 		}
 		setCollateral(val);
@@ -261,10 +258,6 @@ const NewLendOfferComponent = (props) => {
 		}
 	};
 
-	useEffect(() => {
-		setDuration(loanYears * 31536000 + loanMonths * 2592000 + loanDays * 86400);
-	}, [loanYears, loanMonths, loanDays]);
-
 	const getLoanDurationText = () => {
 		let text = "";
 		const years = parseInt(loanYears);
@@ -303,19 +296,6 @@ const NewLendOfferComponent = (props) => {
 			setInterestRate(val);
 		}
 	};
-
-	// const durationValid = (e) => {
-	// 	const val = e.target.value;
-	// 	if (isNaN(val)) {
-	// 		return;
-	// 	} else {
-	// 		setDuration(
-	// 			parseInt(loanYears) * 365 * 86400 +
-	// 				parseInt(loanMonths) * 30 * 86400 +
-	// 				parseInt(loanDays) * 86400
-	// 		);
-	// 	}
-	// };
 
 	const onDiscountChange = (e) => {
 		const val = e.target.value;
@@ -358,16 +338,6 @@ const NewLendOfferComponent = (props) => {
 					props.lend_loan_assets ? false : true
 				);
 				if (props.lend_loan_assets) {
-					console.log(
-						"PARAMATERS ",
-						marketPrice,
-						parseFloat(stableCoinList[currentCoinIndex].stableCoinDecimal),
-						props.lend_loan_assets ? loanAmount : collateral,
-						userWVTs[index]?.tokenDecimal,
-						loanToValue,
-						discount,
-						props.lend_loan_assets ? false : true
-					);
 					setCollateralLend(amount);
 				} else {
 					setLoanAsset(amount);
@@ -389,15 +359,12 @@ const NewLendOfferComponent = (props) => {
 	]);
 
 	function calculateCollateralVal(marketPrice, wvtAmt, discount) {
-		console.log("PARAMNATER", marketPrice, wvtAmt, discount);
 		return new BigNumber(marketPrice)
 			.multipliedBy(new BigNumber(wvtAmt))
 			.multipliedBy(new BigNumber(discount))
 			.dividedBy(new BigNumber(100))
 			.toString(10);
 	}
-
-	console.log(duration);
 
 	return (
 		<>
@@ -455,11 +422,11 @@ const NewLendOfferComponent = (props) => {
 										</label>
 										<Input.Group
 											className="groupwith-select"
-											style={
-												parseFloat(collateral) === 0
-													? { border: "2px solid #ff4d4f", borderRadius: "8px" }
-													: { borderRadius: "8px" }
-											}
+											// style={
+											// 	parseFloat(collateral) === 0
+											// 		? { border: "2px solid #ff4d4f", borderRadius: "8px" }
+											// 		: { borderRadius: "8px" }
+											// }
 										>
 											<Input
 												style={
@@ -513,7 +480,7 @@ const NewLendOfferComponent = (props) => {
 													})}
 											</Select>
 										</Input.Group>
-										{isNumeric(collateral) && parseFloat(collateral) === 0 && (
+										{(!isNumeric(collateral) || (parseFloat(collateral) === 0 || collateral === "")) && (
 											<div className="insufficient-loan-error">
 												<SvgIcon
 													name="error-icon"
@@ -595,11 +562,11 @@ const NewLendOfferComponent = (props) => {
 									</label>
 									<Input.Group
 										className="loanassets-select"
-										style={
-											parseFloat(loanAmount) === 0
-												? { border: "2px solid #ff4d4f", borderRadius: "8px" }
-												: { borderRadius: "8px" }
-										}
+										// style={
+										// 	parseFloat(loanAmount) === 0
+										// 		? { border: "2px solid #ff4d4f", borderRadius: "8px" }
+										// 		: { borderRadius: "8px" }
+										// }
 									>
 										<Input
 											style={
@@ -648,9 +615,8 @@ const NewLendOfferComponent = (props) => {
 											))}
 										</Select>
 									</Input.Group>
-									{isNumeric(loanAmount) &&
-										(parseFloat(loanAmount) === 0 || parseFloat(loanAmount)) ===
-											"" && (
+									{(!isNumeric(loanAmount) ||
+										(parseFloat(loanAmount) === 0 || loanAmount === "")) && (
 											<div className="insufficient-loan-error">
 												<SvgIcon
 													name="error-icon"
@@ -880,7 +846,7 @@ const NewLendOfferComponent = (props) => {
 												</Input.Group>
 											</Col>
 										</Row>
-										{getLoanDurationText() === "-" && (
+										{(getLoanDurationText() === "-" || (loanDays === "") || (loanMonths === "") || (loanYears === ""))&& (
 											<div className="insufficient-loan-error">
 												<SvgIcon
 													name="error-icon"
@@ -926,8 +892,8 @@ const NewLendOfferComponent = (props) => {
 											<Button style={{ width: "30%" }} type="primary">
 												%
 											</Button>
-											{isNumeric(interestRate) &&
-												parseFloat(interestRate) === 0 && (
+											{(!isNumeric(interestRate) ||
+												(parseFloat(interestRate) === 0 || interestRate === "") )&& (
 													<div className="insufficient-loan-error">
 														<SvgIcon
 															name="error-icon"
@@ -972,8 +938,8 @@ const NewLendOfferComponent = (props) => {
 											<Button style={{ width: "30%" }} type="primary">
 												%
 											</Button>
-											{isNumeric(discount) &&
-												(parseFloat(discount) === 0 || discount === "") && (
+											{(!isNumeric(discount) ||
+												(parseFloat(discount) === 0 || discount === "")) && (
 													<div className="insufficient-loan-error">
 														<SvgIcon
 															name="error-icon"
@@ -1229,7 +1195,6 @@ const NewLendOfferComponent = (props) => {
 						serviceFee="2.5"
 						loanType="Single Repayment"
 						isBorrower={props.lend_loan_assets ? false : true}
-						durationValid={duration}
 					/>
 				</div>
 			</div>

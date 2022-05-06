@@ -65,13 +65,14 @@ function getTotalInterest(scAmt, interestRate, penalty, duration, flag) {
 }
 
 export function getInterest(scAmt, interestRate, duration, scDecimal) {
+	console.log(scAmt, interestRate, duration, scDecimal);
 	let amt = new BigNumber(scAmt).multipliedBy(Math.pow(10, scDecimal));
 	let num = amt * (interestRate * 100) * duration;
-	let den = 1000000 * 86400 * 365;
+	let den = 10000 * 86400 * 365;
 	return amt
 		.plus(num / den)
 		.dividedBy(Math.pow(10, scDecimal))
-		.toFixed(3);
+		.toFixed(1);
 }
 
 async function getHealthFactor(

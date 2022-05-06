@@ -8,6 +8,7 @@ import { LEND_ABI } from "../../../contracts/Lend";
 import { approveCreateLoan, createLoan } from "../../../utils/createLoan";
 import { ERC20_ABI } from "../../../contracts/ERC20";
 import { useWeb3React } from "@web3-react/core";
+import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
 import { getInterest } from "../../../utils/fetchLoanDetails";
 BigNumber.config({
 	ROUNDING_MODE: 3,
@@ -158,20 +159,23 @@ const Summary = (props) => {
 					<h2>{`$${
 						isNaN(
 							getInterest(
-								Number(props.stableCoinAmount.slice(1)),
+								Number(props.stableCoinActualAmount),
 								Number(props.interestRate),
 								Number(props.loanDurationInSeconds),
 								Number(props.stableCoinDecimal)
 							)
 						)
 							? "    -"
-							: getInterest(
-									Number(props.stableCoinAmount.slice(1)),
+							: convertToInternationalCurrencySystem(
+								getInterest(
+									Number(props.stableCoinActualAmount),
 									Number(props.interestRate),
 									Number(props.loanDurationInSeconds),
 									Number(props.stableCoinDecimal)
-							  )
+								)
+							)
 					}`}</h2>
+					<small>Approx.</small>
 				</div>
 				<div className={`right ${isValid === true ? "" : "disabled-button"}`}>
 					<Button
