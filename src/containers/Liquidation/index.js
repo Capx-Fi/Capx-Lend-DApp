@@ -16,7 +16,7 @@ import { getFilterValues } from "../../utils/getFilterValues";
 // import { fetchLiquidationLoans } from "../../utils/fetchLiquidationLoans";
 import { fetchLoanDetails } from "../../utils/fetchLoanDetails";
 import { fetchLiquidationLoans } from "../../utils/fetchLiquidationLoans";
-import noBorrow from "../../assets/images/noBorrow.png";
+import noLiquidate from "../../assets/images/svg/no-liquidate.svg";
 const { Option } = Select;
 const Liquidation = () => {
 	const [loans, setLoans] = useState(null);
@@ -187,13 +187,8 @@ const Liquidation = () => {
 						})}
 						{availableLoanStatus(filteredLoans)?.length === 0 && (
 							<div className="no-orders">
-								{/* <SvgIcon name="no-borrow" viewbox="0 0 180 150" /> */}
-								<img
-									src={`${noBorrow}`}
-									alt="no borrow order illustration"
-									width={320}
-								/>
-								<h3>No Defaulted Loans Found!</h3>
+								<img src={noLiquidate} alt="No Borrows" />
+								<h2>Nothing to Liquidate!</h2>
 							</div>
 						)}
 					</div>

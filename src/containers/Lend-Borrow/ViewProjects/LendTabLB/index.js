@@ -14,7 +14,7 @@ import { fetchLoanDetailsBorrower } from "../../../../utils/fetchLoanDetailsBorr
 import NewLendOfferComponent from "../../NewLendOfferComponent";
 import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { getFilterValues } from "../../../../utils/getFilterValues";
-import noBorrow from "../../../../assets/images/noBorrow.png";
+import noLend from "../../../../assets/images/svg/no-lend.svg";
 
 const { Option } = Select;
 
@@ -197,13 +197,8 @@ const LendTabLB = (collapsed) => {
 							})}
 							{availableLoanStatus(filteredLoans)?.length === 0 && (
 								<div className="no-orders">
-									{/* <SvgIcon name="no-borrow" viewbox="0 0 180 150" /> */}
-									<img
-										src={`${noBorrow}`}
-										alt="no borrow order illustration"
-										width={320}
-									/>
-									<h3>Oops! No Lend Orders Found!</h3>
+									<img src={noLend} alt="No Lend Orders" />
+									<h2>Oops! No Lend Orders Found!</h2>
 								</div>
 							)}
 						</div>

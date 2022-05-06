@@ -15,7 +15,7 @@ import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
 import { getFilterValues } from "../../../utils/getFilterValues";
 import { fetchBorrowerLoans } from "../../../utils/fetchBorrowerLoans";
-import noBorrow from "../../../assets/images/noBorrow.png";
+import noBorrow from "../../../assets/images/svg/no-borrow.svg";
 const { Option } = Select;
 
 const BorrowTab = () => {
@@ -308,13 +308,8 @@ const BorrowTab = () => {
 							})}
 							{availableLoanStatus(filteredLoans)?.length === 0 && (
 								<div className="no-orders">
-									{/* <SvgIcon name="no-borrow" viewbox="0 0 180 150" /> */}
-									<img
-										src={`${noBorrow}`}
-										alt="no borrow order illustration"
-										width={320}
-									/>
-									<h3>Oops! No Borrow Orders Found!</h3>
+									<img src={noBorrow} alt="No Borrows" />
+									<h2>Oops! No Borrow Orders Found!</h2>
 								</div>
 							)}
 						</div>
