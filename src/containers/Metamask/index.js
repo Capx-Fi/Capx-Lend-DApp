@@ -25,7 +25,7 @@ const Metamask = () => {
 			await activate(injected);
 			if (unsupportedChainIdError) {
 				notification.open({
-					description: "Unsupported Chain ID",
+					description: "Unsupported Chain. Please connect to Rinkeby Network",
 					icon: (
 						<SvgIcon name="info" viewBox="0 0 22 22.001" fill={"#ffffff"} />
 					),

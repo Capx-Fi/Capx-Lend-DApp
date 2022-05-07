@@ -19,7 +19,7 @@ const NavigationBar = () => {
 	console.log(chainId);
 
 	const chainNames = {
-		1: "mainnet",
+		// 1: "mainnet",
 		4: "Ethereum",
 		97: "BSC",
 		80001: "Matic",
@@ -143,7 +143,7 @@ const NavigationBar = () => {
 								<div className="name">Ethereum</div>
 							</div>
 						</Option>
-						<Option key="2" value="Matic">
+						{/* <Option key="2" value="Matic">
 							<div className="select-inner">
 								<div className="svg-icon">
 									<div className="svg-icon-inner">
@@ -162,7 +162,7 @@ const NavigationBar = () => {
 								</div>
 								<div className="name">BSC</div>
 							</div>
-						</Option>
+						</Option> */}
 					</Select>
 					<div className="wallet-address" onClick={deactivate}>
 						<Button
