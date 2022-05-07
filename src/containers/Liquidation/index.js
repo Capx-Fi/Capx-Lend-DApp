@@ -44,6 +44,7 @@ const Liquidation = () => {
 	}, []);
 	const getLoans = async () => {
 		const _loans = await fetchLiquidationLoans(
+			account,
 			"https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
 			masterContract,
 			oracleContract
