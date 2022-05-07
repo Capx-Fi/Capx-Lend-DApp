@@ -1,26 +1,53 @@
 import BigNumber from "bignumber.js";
+import { hideModal, showModal } from "../redux/features/modalSlice";
 
 BigNumber.config({
-    ROUNDING_MODE: 3,
-    DECIMAL_PLACES: 18,
-    EXPONENTIAL_AT: [-18, 36],
-  });
+  ROUNDING_MODE: 3,
+  DECIMAL_PLACES: 18,
+  EXPONENTIAL_AT: [-18, 36],
+});
 
-export const pullAssets = async(
-    lendContract,
-    account,
-    loanID
-) => {
-    let result = null;
-    try {
-        result = await lendContract.methods
-            .pullAssets(
-                loanID
-            ).send( { from : account });
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const pullAssets = async (lendContract, account, loanID, dispatch) => {
+  dispatch(
+    showModal({
+      modalType: "Claim",
+      modalTitle: "Claiming Assets...",
+      modalSubtitle: "Please do not refresh or close this page",
+      closable: false,
+    })
+  );
+  let result = null;
+  try {
+    result = await lendContract.methods
+      .pullAssets(loanID)
+      .send({ from: account });
+
+    dispatch(
+      showModal({
+        modalType: "ClaimSuccess",
+        modalTitle: "Successfully Claimed Assets",
+        modalSubtitle: "Asstes claimed successfully",
+        closable: false,
+      })
+    );
+    setTimeout(() => {
+      dispatch(hideModal());
+    }, 3000);
+  } catch (error) {
+    console.log(error);
+    dispatch(
+      showModal({
+        modalType: "Error",
+        modalTitle: "Error Claiming Assets",
+        modalSubtitle: "Could not fetch your assets",
+        closable: false,
+      })
+    );
+    setTimeout(() => {
+      dispatch(hideModal());
+    }, 3000);
+  }
+};
 
 // export const pullAssets = async (
 //     lendContract,

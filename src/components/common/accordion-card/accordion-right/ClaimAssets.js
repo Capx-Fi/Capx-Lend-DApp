@@ -44,15 +44,7 @@ function ClaimAssets({ lendContract, loan, amount, penalty }) {
         className="action-btn mt-3"
         block
         onClick={() =>
-          dispatch(
-            showModal({
-              modalType: "Claim",
-              modalIcon: <SvgIcon name="loading-icon" viewbox="0 0 216 216" />,
-              modalTitle: "We are adding the requested token pair for you!",
-              modalSubtitle: "Please do not refresh or close this page",
-              closable: false,
-            })
-          ) && pullAssets(lendContract, account, loan?.loanID)
+          pullAssets(lendContract, account, loan?.loanID, dispatch)
         }
       >
         Claim Assets

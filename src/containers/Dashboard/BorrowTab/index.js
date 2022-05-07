@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Select, Skeleton } from "antd";
-import {
-  SvgIcon,
-  Row,
-  Col,
-  LoadingScreen,
-} from "../../../components/common";
+import { SvgIcon, Row, Col, LoadingScreen } from "../../../components/common";
 import { Scrollbar } from "react-scrollbars-custom";
 import DashboardLoader from "../../../components/common/dashboard-loader/DasboardLoader";
 import "./index.less";
@@ -152,30 +147,30 @@ const BorrowTab = () => {
       <Row>
         <Col>
           <div className="capx-card-secondary dashboard-statics-card">
-              <ul>
-                <li>
-                  <p>Borrowed Amount</p>
-                  <h4>
-                    $ {convertToInternationalCurrencySystem(totalAmount(loans))}{" "}
-                  </h4>
-                </li>
-                <li>
-                  <p>Active loans</p>
-                  <h4>{loans.length}</h4>
-                </li>
-                <li>
-                  <p>Interest Paid</p>
-                  <h4>
-                    $ {convertToInternationalCurrencySystem(totalInterest(loans))}
-                  </h4>
-                </li>
-                <li>
-                  <p>Loan Amount Repayed</p>
-                  <h4>
-                    $ {convertToInternationalCurrencySystem(totalPaidOff(loans))}
-                  </h4>
-                </li>
-              </ul>
+            <ul>
+              <li>
+                <p>Borrowed Amount</p>
+                <h4>
+                  $ {convertToInternationalCurrencySystem(totalAmount(loans))}{" "}
+                </h4>
+              </li>
+              <li>
+                <p>Active loans</p>
+                <h4>{loans.length}</h4>
+              </li>
+              <li>
+                <p>Interest Paid</p>
+                <h4>
+                  $ {convertToInternationalCurrencySystem(totalInterest(loans))}
+                </h4>
+              </li>
+              <li>
+                <p>Loan Amount Repayed</p>
+                <h4>
+                  $ {convertToInternationalCurrencySystem(totalPaidOff(loans))}
+                </h4>
+              </li>
+            </ul>
           </div>
         </Col>
       </Row>
@@ -270,7 +265,7 @@ const BorrowTab = () => {
       </Row>
       <Row>
         <Col>
-          <Scrollbar style={{ height: 'calc(100vh - 465px)' }}>
+          <Scrollbar style={{ height: "calc(100vh - 490px)" }}>
             <div className="order-list">
               {availableLoanStatus(filteredLoans).map(function (status) {
                 return (
