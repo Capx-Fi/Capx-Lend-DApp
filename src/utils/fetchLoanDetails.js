@@ -45,7 +45,7 @@ async function getLoanStatus(
   } else if (stageOfLoan === "5") {
     status = "Completed";
   } else if (stageOfLoan === "6") {
-    status = "Defaulted";
+    status = "Liquidated";
   }
   return status;
 }

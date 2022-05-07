@@ -104,7 +104,7 @@ const LendTab = (collapsed) => {
 
 	const getLoans = async () => {
 		const _loans = await fetchLenderLoans(
-			"0xBC7a2925D5C194D1DbEdeB99F13c326851dC8230",
+			account,
 			"https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
 			"https://api.thegraph.com/subgraphs/name/chester-king/lendnftsubgraph",
 			masterContract,

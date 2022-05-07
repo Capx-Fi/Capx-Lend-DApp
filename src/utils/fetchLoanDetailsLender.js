@@ -9,7 +9,7 @@ export const fetchLoanDetailsLender = async (
   console.log("Account",account);
   let allLoans = await fetchLoanDetails(GRAPH_LEND_URL, masterContract, oracleContract);
   return allLoans.filter((loan) => {
-    if(loan.stageOfLoan  === "2" ) {
+    if(loan.stageOfLoan  === "2" && loan?.borrowerAddress.toLowerCase() !== account.toLowerCase() ) {
         return loan;
     } else;
   })

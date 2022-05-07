@@ -1,9 +1,10 @@
 import { Button, Col, Radio, Row } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { liquidation, approveLiquidation } from "../../../../utils/liquidation";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { ERC20_ABI } from "../../../../contracts/ERC20";
+import { useDispatch } from "react-redux";
 
 
 function LiquidateLoan({ lendContract, loan , masterContract}) {
@@ -11,6 +12,8 @@ function LiquidateLoan({ lendContract, loan , masterContract}) {
   const onChange = (e) => {
     setValue(e.target.value);
   };
+  const [approved, setApproved] = useState(false);
+  const dispatch = useDispatch();
   const web3 = new Web3(Web3.givenProvider);
   const { active, account, chainId } = useWeb3React();
   return (
@@ -36,23 +39,34 @@ function LiquidateLoan({ lendContract, loan , masterContract}) {
           <b>{loan?.liquidationAmt.toString()}</b>
         </Col>
       </Row>
-      <Button className="action-btn mt-3" block
-        onClick={() => approveLiquidation(
-          masterContract,
-          account,
+      { !approved ? (
+          <Button className="action-btn mt-3" block
+          onClick={() => approveLiquidation(
+            masterContract,
+            account,
+            loan?.loanID,
+            ERC20_ABI, 
+            lendContract._address,
+            loan?.stableCoinAddress,
+            setApproved,
+            dispatch
+          )}
+        >
+          Approve Loan Liquidation
+        </Button>
+      ) : (
+        <Button className="action-btn mt-3" block
+        onClick={() => liquidation(
+          lendContract, 
+          account, 
           loan?.loanID,
-          ERC20_ABI, 
-          lendContract._address,
-          loan?.stableCoinAddress
-        )}
-      >
-        Approve Loan Liquidation
-      </Button>
-      <Button className="action-btn mt-3" block
-        onClick={() => liquidation(lendContract, account, loan?.loanID)}
+          setApproved,
+          dispatch)}
       >
         Liquidate Loan
       </Button>
+      )
+      }
     </div>
   );
 }

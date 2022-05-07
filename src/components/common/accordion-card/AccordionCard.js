@@ -189,7 +189,7 @@ function AccordionCard({
                     </div>
                   </div>
                 )}
-                {/* {status === "Defaulted"  && pathname.includes("/Liquidation") &&
+                {status === "Defaulted"  && pathname.includes("/Liquidation") &&
 									(
 										<LiquidateLoan
 											lendContract={lendContract}
@@ -197,7 +197,7 @@ function AccordionCard({
 											masterContract={masterContract}
 										/>
 									)
-								} */}
+								}
                 {status === "Defaulted" && !pathname.includes("/Liquidation") && (
                   <div className="statusIcon">
                     <SvgIcon

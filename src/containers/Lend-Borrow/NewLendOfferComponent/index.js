@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Button,
   Radio,
@@ -29,9 +30,9 @@ BigNumber.config({
 });
 const { Option } = Select;
 
-const CompatibleAssetsModal = () => {
+const CompatibleAssetsModal = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(true);
-
+  const history = useHistory();
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -42,6 +43,7 @@ const CompatibleAssetsModal = () => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    history.push("/market");
   };
   return (
     <Modal
@@ -61,6 +63,7 @@ const CompatibleAssetsModal = () => {
       <div className="modal-icon">
         <SvgIcon name="info" viewBox="0 0 22 22.001" />
       </div>
+      
       <p>No compatible assets found</p>
       <Button type="secondary" size="small" onClick={handleCancel}>
         OK
@@ -392,7 +395,7 @@ const NewLendOfferComponent = (props) => {
                     "Fetching Data"
                   ) : (
                     // : "No compatible assets found"}
-                    <CompatibleAssetsModal />
+                    <CompatibleAssetsModal props/>
                   )}
                 </span>
               </div>

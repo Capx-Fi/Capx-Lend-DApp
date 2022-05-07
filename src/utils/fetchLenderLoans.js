@@ -10,7 +10,6 @@ export const fetchLenderLoans = async (
 ) => {
     let allLoans = await fetchLoanDetails(GRAPH_LEND_URL, masterContract, oracleContract);
     let lenderLoans = [];
-    return allLoans;
     const client = new ApolloClient({
         uri: GRAPH_NFT_URL,
         cache: new InMemoryCache(),

@@ -19,6 +19,14 @@ import ApproveLoanInProgress from "../../../assets/lottie/CreateLoan/CreateLoanI
 import CancelLoanSuccess from "../../../assets/lottie/Cancel/CancelLoanSuccess.json";
 import CancelLoanInProgress from "../../../assets/lottie/Cancel/CancelLoanInProgress.json";
 
+// Liquidation Loan
+import LiquidatingProgress from  "../../../assets/lottie/Liquidation/LiquidatingProgress.json";
+
+// Repay Loan
+import RepayInProgress from "../../../assets/lottie/Repay/RepayInProgress.json";
+import RepaySuccess from "../../../assets/lottie/Repay/RepaySuccess.json";
+
+// Error
 import ErrorState from "../../../assets/lottie/Error/ErrorState.json";
 
 const CapxModal = (modal) => {
@@ -63,6 +71,14 @@ const CapxModal = (modal) => {
               ? CancelLoanInProgress
               : modal.modalType === "CancelLoanSuccess"
               ? CancelLoanSuccess
+              : modal.modalType === "LiquidateLoan"
+              ? LiquidatingProgress
+              : modal.modalType === "LiquidateLoanSuccess"
+              ? CreateLoanSuccess
+              : modal.modalType === "RepayLoan"
+              ? RepayInProgress
+              : modal.modalType === "RepayLoanSuccess"
+              ? RepaySuccess
               : CreateLoanInProgress
           }
         />
