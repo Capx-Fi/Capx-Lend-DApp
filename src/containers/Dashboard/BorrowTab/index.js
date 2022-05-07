@@ -165,7 +165,7 @@ const BorrowTab = () => {
               <li>
                 <p>Borrowed Amount</p>
                 <h4>
-                  $ {convertToInternationalCurrencySystem(totalAmounts(loans))}{" "}
+                  $ {convertToInternationalCurrencySystem(totalAmount(loans))}{" "}
                 </h4>
               </li>
               <li>

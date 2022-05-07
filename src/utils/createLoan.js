@@ -16,7 +16,8 @@ export const approveCreateLoan = async (
   amount, // WVT in case of Borrower creating the loan else SC. (In BigNumber Format)
   wvtAddress,
   scAddress,
-  dispatch
+  dispatch,
+  setApproved
 ) => {
   const web3 = new Web3(Web3.givenProvider);
   // Approving the tokens
@@ -38,6 +39,7 @@ export const approveCreateLoan = async (
     approvalResult = await erc20Contract.methods
       .approve(LEND_CONTRACT_ADDRESS, amount.toString(10))
       .send({ from: account });
+
     dispatch(
       showModal({
         modalType: "ApproveLoanSuccess",
@@ -45,6 +47,7 @@ export const approveCreateLoan = async (
         modalSubtitle: "You can now initiate the loan request",
       })
     );
+    setApproved(true);
     setTimeout(() => {
       dispatch(hideModal());
     }, 3000);
@@ -78,7 +81,8 @@ export const createLoan = async (
   duration, //Number of days in form of seconds
   discount,
   externalLiquidation,
-  dispatch
+  dispatch,
+  setApproved
 ) => {
   dispatch(
     showModal({
@@ -113,6 +117,7 @@ export const createLoan = async (
         closable: false,
       })
     );
+    setApproved(false);
     setTimeout(() => {
       dispatch(hideModal());
     }, 3000);
