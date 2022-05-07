@@ -27,7 +27,7 @@ export const approveLiquidation = async (
     showModal({
       modalType: "ApproveLoan",
       modalTitle: "Approving Loan",
-      modalSubtitle: "Please wait while we approve"
+      modalSubtitle: "Please wait while we approve",
     })
   );
   try {
@@ -50,7 +50,7 @@ export const approveLiquidation = async (
       showModal({
         modalType: "ApproveLoanSuccess",
         modalTitle: "Approval Successfully",
-        modalSubtitle: "You can now Liquidate the loan."
+        modalSubtitle: "You can now Liquidate the loan.",
       })
     );
     setApproved(true);
@@ -62,7 +62,7 @@ export const approveLiquidation = async (
       showModal({
         modalType: "Error",
         modalTitle: "Error",
-        modalSubtitle: "Approval Error"
+        modalSubtitle: "Approval Error",
       })
     );
     setTimeout(() => {
@@ -74,18 +74,19 @@ export const approveLiquidation = async (
 
 export const liquidation = async (
   lendContract,
-  account, 
+  account,
   loanID,
   setApproved,
-  dispatch) => {
+  dispatch
+) => {
   let result = null;
   dispatch(
     showModal({
       modalType: "LiquidateLoan",
       modalTitle: "Liquidating Loan",
-      modalSubtitle: "Please wait while we Liquidate loan."
+      modalSubtitle: "Please wait while we Liquidate loan.",
     })
-  )
+  );
   try {
     result = await lendContract.methods
       .liquidation(loanID)
@@ -95,18 +96,20 @@ export const liquidation = async (
       showModal({
         modalType: "LiquidateLoanSuccess",
         modalTitle: "Loan Liquidation Successfully.",
-        modalSubtitle: "Redirecting to Liquidation Dashboard."
+        modalSubtitle: "Redirecting to Liquidation Dashboard.",
       })
     );
     setTimeout(() => {
       dispatch(hideModal());
+
+      window.location.reload();
     }, 3000);
   } catch (error) {
     dispatch(
       showModal({
         modalType: "Error",
         modalTitle: "Error",
-        modalSubtitle: "Liquidation Error"
+        modalSubtitle: "Liquidation Error",
       })
     );
     setTimeout(() => {

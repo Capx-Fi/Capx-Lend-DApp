@@ -33,9 +33,9 @@ export const approveAcceptLoan = async (
     if (isBorrower) {
       result = await masterContract.methods
         .wvtAmountCalculation(
-          new BigNumber(loan?.stableCoinAmt).multipliedBy(
-            Math.pow(10, loan?.stableCoinDecimal)
-          ).toString(10),
+          new BigNumber(loan?.stableCoinAmt)
+            .multipliedBy(Math.pow(10, loan?.stableCoinDecimal))
+            .toString(10),
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
@@ -48,9 +48,9 @@ export const approveAcceptLoan = async (
     } else {
       result = await masterContract.methods
         .stablecoinAmountCalculation(
-          new BigNumber(loan?.collateralAmt).multipliedBy(
-            Math.pow(10, loan?.collateralDecimal)
-          ).toString(10),
+          new BigNumber(loan?.collateralAmt)
+            .multipliedBy(Math.pow(10, loan?.collateralDecimal))
+            .toString(10),
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
@@ -133,6 +133,8 @@ export const acceptLoan = async (
     setApproved(false);
     setTimeout(() => {
       dispatch(hideModal());
+
+      window.location.reload();
     }, 3000);
   } catch (error) {
     console.log(error);

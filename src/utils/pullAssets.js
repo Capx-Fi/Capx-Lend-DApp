@@ -32,6 +32,8 @@ export const pullAssets = async (lendContract, account, loanID, dispatch) => {
     );
     setTimeout(() => {
       dispatch(hideModal());
+
+      window.location.reload();
     }, 3000);
   } catch (error) {
     console.log(error);

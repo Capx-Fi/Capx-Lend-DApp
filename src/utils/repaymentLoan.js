@@ -54,6 +54,8 @@ export const approveRepaymentLoan = async (
     );
     setTimeout(() => {
       dispatch(hideModal());
+
+      window.location.reload();
     }, 3000);
   } catch (err) {
     console.log("ERC20 - Approve | Accept Loan Amount ERR: \n", err);
