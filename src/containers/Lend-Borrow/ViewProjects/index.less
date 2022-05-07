@@ -67,28 +67,6 @@
 	}
 }
 
-.dashboard-statics-card {
-	ul {
-		list-style-type: none;
-		padding-left: 0;
-		margin-bottom: 0;
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		li {
-			position: relative;
-			p {
-				font-size: 15px;
-				margin-bottom: 0;
-				color: @text-muted;
-			}
-			h4 {
-				font-size: 20px;
-				margin-bottom: 0;
-			}
-		}
-	}
-}
-
 .orderlist-card {
 	margin-bottom: 15px;
 	.card-title {
@@ -374,6 +352,13 @@
 			}
 		}
 	}
+}
+
+.no-orders {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .action-outline-btn {

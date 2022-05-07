@@ -78,6 +78,7 @@
 }
 
 .dashboard-statics-card {
+	padding: 20px 25px;
 	ul {
 		list-style-type: none;
 		padding-left: 0;
@@ -97,16 +98,16 @@
 			}
 		}
 	}
-	.ant-skeleton-paragraph{
+	.ant-skeleton-paragraph {
 		display: flex;
 		align-items: center;
 		grid-gap: 15px;
-		li{
+		li {
 			width: 100% !important;
 			margin-top: 0 !important;
 		}
 	}
-	.ant-skeleton-title{
+	.ant-skeleton-title {
 		margin-top: 0 !important;
 	}
 }
@@ -216,6 +217,10 @@
 				&.badge-initiated {
 					background: #7a5e34;
 					border-color: #7a5e34;
+				}
+				&.badge-liquidated {
+					background: #5ba1ca;
+					border-color: #5ba1ca;
 				}
 			}
 		}
@@ -460,6 +465,13 @@
 			}
 		}
 	}
+}
+
+.no-orders {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .statusIcon {

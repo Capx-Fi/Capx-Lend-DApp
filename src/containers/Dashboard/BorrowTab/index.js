@@ -15,11 +15,13 @@ import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
 import { getFilterValues } from "../../../utils/getFilterValues";
 import { fetchBorrowerLoans } from "../../../utils/fetchBorrowerLoans";
+import noBorrow from "../../../assets/images/svg/no-borrow.svg";
 const { Option } = Select;
 
 const BorrowTab = () => {
   const [loans, setLoans] = useState(null);
   const [filteredLoans, setFilteredLoans] = useState(null);
+  const [refresh, setRefresh] = useState(false);
   const web3 = new Web3(Web3.givenProvider);
 
   const masterContract = new web3.eth.Contract(
@@ -37,7 +39,7 @@ const BorrowTab = () => {
     "0x309D0Ff4b655bAD183A3FA88A0547b41e877DcF1"
   );
 
-  const { active, account } = useWeb3React();
+  const { active, account, chainId } = useWeb3React();
 
   useEffect(() => {
     active &&
@@ -56,17 +58,17 @@ const BorrowTab = () => {
 
   useEffect(() => {
     let finalLoans = loans;
-    if (filters.lendAsset !== "") {
+    if (filters?.lendAsset !== "") {
       finalLoans = finalLoans.filter(
         (loan) => loan.stableCoinTicker === filters.lendAsset
       );
     }
-    if (filters.companyAsset !== "") {
+    if (filters?.companyAsset !== "") {
       finalLoans = finalLoans.filter(
         (loan) => loan.collateralTicker === filters.companyAsset
       );
     }
-    if (filters.status !== "") {
+    if (filters?.status !== "") {
       finalLoans = finalLoans.filter((loan) => loan.status === filters.status);
     }
 
@@ -141,6 +143,18 @@ const BorrowTab = () => {
     });
     setFilteredLoans(arrayCopy);
   }
+
+  useEffect(() => {
+    if (loans) {
+      setLoans(null);
+    }
+    getLoans();
+  }, [account, chainId]);
+
+  // setTimeout(() => {
+  // 	setRefresh(!refresh);
+  // }, 6000);
+
   return loans ? (
     <>
       <h1 className="mb-2">Overview</h1>
@@ -151,7 +165,7 @@ const BorrowTab = () => {
               <li>
                 <p>Borrowed Amount</p>
                 <h4>
-                  $ {convertToInternationalCurrencySystem(totalAmount(loans))}{" "}
+                  $ {convertToInternationalCurrencySystem(totalAmounts(loans))}{" "}
                 </h4>
               </li>
               <li>
@@ -265,7 +279,7 @@ const BorrowTab = () => {
       </Row>
       <Row>
         <Col>
-          <Scrollbar style={{ height: "calc(100vh - 490px)" }}>
+          <Scrollbar style={{ height: "calc(100vh - 510px)" }}>
             <div className="order-list">
               {availableLoanStatus(filteredLoans).map(function (status) {
                 return (
@@ -292,6 +306,12 @@ const BorrowTab = () => {
                   </div>
                 );
               })}
+              {availableLoanStatus(filteredLoans)?.length === 0 && (
+                <div className="no-orders">
+                  <img src={noBorrow} alt="No Borrows" />
+                  <h2>Oops! No Borrow Orders Found!</h2>
+                </div>
+              )}
             </div>
           </Scrollbar>
         </Col>

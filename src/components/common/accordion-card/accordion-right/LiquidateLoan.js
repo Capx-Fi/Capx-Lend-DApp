@@ -1,6 +1,6 @@
 import { Button, Col, Radio, Row } from "antd";
 import React from "react";
-import { repaymentLoan, approveRepaymentLoan } from "../../../../utils/repaymentLoan";
+import { liquidation, approveLiquidation } from "../../../../utils/liquidation";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { ERC20_ABI } from "../../../../contracts/ERC20";
