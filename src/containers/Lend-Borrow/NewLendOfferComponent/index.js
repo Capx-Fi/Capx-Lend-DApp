@@ -429,6 +429,11 @@ const NewLendOfferComponent = (props) => {
 											// }
 										>
 											<Input
+												className={
+													!isNumeric(collateral) || (parseFloat(collateral) === 0 || collateral === "")
+													? "ant-input-status-error"
+													: ""
+												}
 												style={
 													globalDisabled !== 2
 														? {
@@ -510,7 +515,7 @@ const NewLendOfferComponent = (props) => {
 												value={
 													isNumeric(loanAsset) && loanAsset > 0
 														? parseFloat(loanAsset).toFixed(5)
-														: "N/A"
+														: "-"
 												}
 												disabled={true}
 											/>
@@ -648,7 +653,7 @@ const NewLendOfferComponent = (props) => {
 											value={
 												isNumeric(collateralLend) && collateralLend > 0
 													? parseFloat(collateralLend).toFixed(5)
-													: "N/A"
+													: "-"
 											}
 											disabled={true}
 										/>
@@ -1119,12 +1124,12 @@ const NewLendOfferComponent = (props) => {
 									? `${convertToInternationalCurrencySystem(collateral)} ${
 											collatCurrency !== null ? collatCurrency : ""
 									  }`
-									: "N/A"
+									: "-"
 								: isNumeric(collateralLend) && collateralLend > 0
 								? `${convertToInternationalCurrencySystem(collateralLend)} ${
 										collatCurrency !== null ? collatCurrency : ""
 								  }`
-								: "N/A"
+								: "-"
 						}
 						collateralActualAmount={
 							props.borrow_loan_assets
@@ -1144,12 +1149,12 @@ const NewLendOfferComponent = (props) => {
 							props.borrow_loan_assets
 								? isNumeric(loanAsset) && loanAsset > 0
 									? `$ ${convertToInternationalCurrencySystem(loanAsset)}`
-									: "N/A"
+									: "-"
 								: isNumeric(loanAmount) && loanAmount > 0
 								? `${convertToInternationalCurrencySystem(loanAmount)} ${
 										stableCoinList[currentCoinIndex].stableCoin
 								  }`
-								: "N/A"
+								: "-"
 						}
 						stableCoinActualAmount={
 							props.borrow_loan_assets
@@ -1199,7 +1204,7 @@ const NewLendOfferComponent = (props) => {
 						marketPrice={
 							isNumeric(marketPrice)
 								? `$ ${convertToInternationalCurrencySystem(marketPrice)}`
-								: "N/A"
+								: "-"
 						}
 						serviceFee="2.5"
 						loanType="Single Repayment"
