@@ -11,6 +11,7 @@ import AcceptLoanOffer from "./accordion-right/AcceptLoanOffer";
 import RepayLoan from "./accordion-right/RepayLoan";
 import CancelLoan from "./accordion-right/CancelLoan";
 import StatusText from "./accordion-right/StatusText";
+import LiquidateLoan from "./accordion-right/LiquidateLoan";
 import { convertToInternationalCurrencySystem } from "../../../utils/convertToInternationalCurrencySystem";
 import StartLoanOffer from "./accordion-right/StartLoanOffer";
 
@@ -30,6 +31,7 @@ function AccordionCard({
 	externalLiquidation,
 }) {
 	const [isCollapsed, setIsCollapsed] = useState(true);
+	const pathname = window.location.pathname;
 	return (
 		<div>
 			<div className="capx-card" style={{ marginBottom: "20px" }}>
@@ -187,8 +189,18 @@ function AccordionCard({
 										</div>
 									</div>
 								)}
-								{status === "Defaulted" && (
-									<div className="statusIcon">
+								{status === "Defaulted"  && pathname.includes("/Liquidation") &&
+									(
+										<LiquidateLoan
+											lendContract={lendContract}
+											loan={loan}
+											masterContract={masterContract}
+										/>
+									)
+								}
+								{status === "Defaulted"  && !pathname.includes("/Liquidation") &&
+									(
+										<div className="statusIcon">
 										<SvgIcon
 											className="statusIcon"
 											name="defaulted-loan"
@@ -198,6 +210,22 @@ function AccordionCard({
 										/>
 										<div className="statusTitle" style={{ color: "#ff0000" }}>
 											{"Defaulted"}
+										</div>
+									</div>
+									)
+								}
+								{status === "Liquidated" &&
+								 (
+									<div className="statusIcon">
+										<SvgIcon
+											className="statusIcon"
+											name="defaulted-loan"
+											viewBox="0 0 115.002 115.002"
+											width="6.5rem"
+											fill="#5ba1ca"
+										/>
+										<div className="statusTitle" style={{ color: "#5ba1ca" }}>
+											{"Liquidated"}
 										</div>
 									</div>
 								)}
