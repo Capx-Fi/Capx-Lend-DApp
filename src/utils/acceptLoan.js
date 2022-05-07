@@ -34,8 +34,8 @@ export const approveAcceptLoan = async (
       result = await masterContract.methods
         .wvtAmountCalculation(
           new BigNumber(loan?.stableCoinAmt).multipliedBy(
-            Math.pow(10, loan?.stableCoinDecimal).toString(10)
-          ),
+            Math.pow(10, loan?.stableCoinDecimal)
+          ).toString(10),
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
@@ -49,8 +49,8 @@ export const approveAcceptLoan = async (
       result = await masterContract.methods
         .stablecoinAmountCalculation(
           new BigNumber(loan?.collateralAmt).multipliedBy(
-            Math.pow(10, loan?.collateralDecimal).toString(10)
-          ),
+            Math.pow(10, loan?.collateralDecimal)
+          ).toString(10),
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
@@ -74,7 +74,7 @@ export const approveAcceptLoan = async (
       erc20Contract = new web3.eth.Contract(ERC20_ABI, loan?.stableCoinAddress);
     }
     approvalResult = await erc20Contract.methods
-      .approve(LEND_CONTRACT_ADDRESS, approvalAmt)
+      .approve(LEND_CONTRACT_ADDRESS, approvalAmt.toString(10))
       .send({ from: account });
     dispatch(
       showModal({

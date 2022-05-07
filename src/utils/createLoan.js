@@ -100,7 +100,7 @@ export const createLoan = async (
         wvtAddress,
         scAddress,
         isBorrower,
-        amount,
+        amount.toString(10),
         interestRate,
         ltv,
         lt,
