@@ -20,7 +20,7 @@ import CancelLoanSuccess from "../../../assets/lottie/Cancel/CancelLoanSuccess.j
 import CancelLoanInProgress from "../../../assets/lottie/Cancel/CancelLoanInProgress.json";
 
 // Liquidation Loan
-import LiquidatingProgress from  "../../../assets/lottie/Liquidation/LiquidatingProgress.json";
+import LiquidationInBetween from  "../../../assets/lottie/Liquidation/LiquidationInBetween.json";
 
 // Repay Loan
 import RepayInProgress from "../../../assets/lottie/Repay/RepayInProgress.json";
@@ -72,7 +72,7 @@ const CapxModal = (modal) => {
               : modal.modalType === "CancelLoanSuccess"
               ? CancelLoanSuccess
               : modal.modalType === "LiquidateLoan"
-              ? LiquidatingProgress
+              ? LiquidationInBetween
               : modal.modalType === "LiquidateLoanSuccess"
               ? CreateLoanSuccess
               : modal.modalType === "RepayLoan"
