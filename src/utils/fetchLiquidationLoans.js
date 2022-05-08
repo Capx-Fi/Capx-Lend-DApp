@@ -9,8 +9,11 @@ export const fetchLiquidationLoans = async (
 ) => {
   let allLoans = await fetchLoanDetails(GRAPH_LEND_URL, masterContract, oracleContract);
   return allLoans.filter((loan) => {
-    if(loan.status === "Defaulted" && loan?.borrowerAddress.toLowerCase() !== account.toLowerCase() ) {
+    if(loan.status === "Defaulted" && loan?.borrowerAddress.toLowerCase() !== account.toLowerCase() && loan?.externalLiquidation ) {
         return loan;
-    } else;
+    }
+    else if( loan.status === "Defaulted" && loan?.lenderAddress.toLowerCase() === account.toLowerCase()) {
+      return loan
+    };
   })
 }
