@@ -72,7 +72,7 @@ const CapxModal = (modal) => {
               : modal.modalType === "CancelLoanSuccess"
               ? CancelLoanSuccess
               : modal.modalType === "LiquidateLoan"
-              ? LiquidationInBetween
+              ? CancelLoanInProgress
               : modal.modalType === "LiquidateLoanSuccess"
               ? CreateLoanSuccess
               : modal.modalType === "RepayLoan"
