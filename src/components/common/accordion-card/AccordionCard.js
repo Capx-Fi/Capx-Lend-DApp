@@ -29,6 +29,7 @@ function AccordionCard({
   lendContract,
   masterContract,
   externalLiquidation,
+  isLendDashboard=false
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const pathname = window.location.pathname;
@@ -161,7 +162,7 @@ function AccordionCard({
                 {status === "Funded" && (
                   <StartLoanOffer lendContract={lendContract} loan={loan} />
                 )}
-                {status === "Active" && (
+                {status === "Active" && !isLendDashboard &&(
                   <RepayLoan
                     lendContract={lendContract}
                     loan={loan}
@@ -169,6 +170,19 @@ function AccordionCard({
                     // repayAmount={"$3000"}
                     // isInstallment={paymentType === "Installment"}
                   />
+                )}
+                {status === "Active" && isLendDashboard &&(
+                  <div className="statusIcon">
+                  <SvgIcon
+                    name="completed-loan"
+                    viewBox="0 0 115.002 115.002"
+                    width="6.5rem"
+                    fill="#48547e"
+                  />
+                  <div className="statusTitle" style={{ color: "#48547e" }}>
+                    {"Loan Active"}
+                  </div>
+                </div>
                 )}
                 {status === "Initiated" && (
                   <CancelLoan lendContract={lendContract} loan={loan} />

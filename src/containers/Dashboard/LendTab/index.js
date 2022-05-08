@@ -300,6 +300,7 @@ const LendTab = (collapsed) => {
 														isBorrower={false}
 														lendContract={lendContract}
 														masterContract={masterContract}
+														isLendDashboard={true}
 													/>
 												)
 											);
