@@ -36,7 +36,7 @@ async function getLoanStatus(
     status = "Funded";
   } else if (
     stageOfLoan === "4" &&
-    (endTime < Math.floor(Date.now() / 1000) ||
+    (endTime < (Math.floor(Date.now() / (86400 * 1000))*86400) ||
       (await fetchHealthFactor(masterContract, loanID)) < 1)
   ) {
     status = "Defaulted";
