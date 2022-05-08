@@ -5,6 +5,7 @@ import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { ERC20_ABI } from "../../../../contracts/ERC20";
 import { useDispatch } from "react-redux";
+import { convertToInternationalCurrencySystem } from "../../../../utils/convertToInternationalCurrencySystem";
 
 
 function LiquidateLoan({ lendContract, loan , masterContract}) {
@@ -36,7 +37,7 @@ function LiquidateLoan({ lendContract, loan , masterContract}) {
       <Row>
         <Col sm="7">Amount to be paid : &nbsp;</Col>
         <Col sm="5" className="text-right">
-          <b>{loan?.liquidationAmt.toString()}</b>
+          <b>{convertToInternationalCurrencySystem(loan?.liquidationAmt.toString(10))}</b>
         </Col>
       </Row>
       { !approved ? (
