@@ -43,6 +43,7 @@ const BorrowTab = () => {
   const { active, account, chainId } = useWeb3React();
 
   const getLoans = async () => {
+    console.log("getLoans---");
     const _loans = await fetchBorrowerLoans(
       account,
       "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
@@ -65,7 +66,27 @@ const BorrowTab = () => {
   } = useQuery(["borrowDashboard", account, chainId, active], getLoans);
 
   useEffect(() => {
-    setFilteredLoans(loans);
+    if (isFetchedAfterMount) {
+      setFilteredLoans(loans);
+      let finalLoans = loans;
+      if (filters?.lendAsset !== "") {
+        finalLoans = finalLoans.filter(
+          (loan) => loan.stableCoinTicker === filters.lendAsset
+        );
+      }
+      if (filters?.companyAsset !== "") {
+        finalLoans = finalLoans.filter(
+          (loan) => loan.collateralTicker === filters.companyAsset
+        );
+      }
+      if (filters?.status !== "") {
+        finalLoans = finalLoans.filter(
+          (loan) => loan.status === filters.status
+        );
+      }
+      console.log(finalLoans);
+      sortLoans(finalLoans);
+    }
   }, [isFetched, isFetchedAfterMount, loans]);
 
   const [filters, setFilters] = useState({
@@ -73,25 +94,6 @@ const BorrowTab = () => {
     companyAsset: "",
     status: "",
   });
-
-  useEffect(() => {
-    let finalLoans = loans;
-    if (filters?.lendAsset !== "") {
-      finalLoans = finalLoans.filter(
-        (loan) => loan.stableCoinTicker === filters.lendAsset
-      );
-    }
-    if (filters?.companyAsset !== "") {
-      finalLoans = finalLoans.filter(
-        (loan) => loan.collateralTicker === filters.companyAsset
-      );
-    }
-    if (filters?.status !== "") {
-      finalLoans = finalLoans.filter((loan) => loan.status === filters.status);
-    }
-
-    sortLoans(finalLoans);
-  }, [filters, loans, sortBy, isFetched, isFetchedAfterMount]);
 
   function filterLoansByCompanyAsset(companyAsset) {
     setFilters({ ...filters, companyAsset });
@@ -141,7 +143,7 @@ const BorrowTab = () => {
   }
 
   function sortLoans(finalLoans) {
-    let arrayCopy = [...finalLoans];
+    let arrayCopy = finalLoans;
     arrayCopy.sort((a, b) => {
       if (parseFloat(a[sortBy]) < parseFloat(b[sortBy])) return -1;
       if (parseFloat(a[sortBy]) > parseFloat(b[sortBy])) return 1;
