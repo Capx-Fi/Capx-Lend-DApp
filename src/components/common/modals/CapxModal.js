@@ -20,7 +20,7 @@ import CancelLoanSuccess from "../../../assets/lottie/Cancel/CancelLoanSuccess.j
 import CancelLoanInProgress from "../../../assets/lottie/Cancel/CancelLoanInProgress.json";
 
 // Liquidation Loan
-import LiquidationInBetween from  "../../../assets/lottie/Liquidation/LiquidationInBetween.json";
+import LiquidationInBetween from "../../../assets/lottie/Liquidation/LiquidationInBetween.json";
 
 // Repay Loan
 import RepayInProgress from "../../../assets/lottie/Repay/RepayInProgress.json";
@@ -41,6 +41,7 @@ const CapxModal = (modal) => {
         onCancel={() => dispatch(hideModal())}
         closable={modal.closable}
         footer={" "}
+        keyboard={false}
         maskClosable={false}
         maskStyle={{
           height: "calc(100vh - 90px)",

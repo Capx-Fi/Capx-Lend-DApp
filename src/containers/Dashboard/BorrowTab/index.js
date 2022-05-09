@@ -16,11 +16,12 @@ import { convertToInternationalCurrencySystem } from "../../../utils/convertToIn
 import { getFilterValues } from "../../../utils/getFilterValues";
 import { fetchBorrowerLoans } from "../../../utils/fetchBorrowerLoans";
 import noBorrow from "../../../assets/images/svg/no-borrow.svg";
+import { useQuery } from "react-query";
 const { Option } = Select;
 
 const BorrowTab = () => {
-  const [loans, setLoans] = useState(null);
   const [filteredLoans, setFilteredLoans] = useState(null);
+  const [sortBy, setSortBy] = useState("stableCoinAmt");
   const [refresh, setRefresh] = useState(false);
   const web3 = new Web3(Web3.givenProvider);
 
@@ -41,15 +42,32 @@ const BorrowTab = () => {
 
   const { active, account, chainId } = useWeb3React();
 
-  useEffect(() => {
-    active &&
-      getLoans().then((loans) => {
-        setFilteredLoans(loans);
-        setLoans(loans);
-      });
-  }, []);
+  const getLoans = async () => {
+    const _loans = await fetchBorrowerLoans(
+      account,
+      "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
+      masterContract,
+      oracleContract
+    );
+    console.log("L", _loans);
+    console.log("Filters", getFilterValues(_loans, "stableCoinTicker"));
+    setFilteredLoans(_loans);
+    return _loans;
+  };
 
-  //filter logic
+  //useQuery
+
+  const {
+    data: loans,
+    isLoading,
+    isFetched,
+    isFetchedAfterMount,
+  } = useQuery(["borrowDashboard", account, chainId, active], getLoans);
+
+  useEffect(() => {
+    setFilteredLoans(loans);
+  }, [isFetched, isFetchedAfterMount, loans]);
+
   const [filters, setFilters] = useState({
     lendAsset: "",
     companyAsset: "",
@@ -72,8 +90,8 @@ const BorrowTab = () => {
       finalLoans = finalLoans.filter((loan) => loan.status === filters.status);
     }
 
-    setFilteredLoans(finalLoans);
-  }, [filters, loans]);
+    sortLoans(finalLoans);
+  }, [filters, loans, sortBy, isFetched, isFetchedAfterMount]);
 
   function filterLoansByCompanyAsset(companyAsset) {
     setFilters({ ...filters, companyAsset });
@@ -88,18 +106,6 @@ const BorrowTab = () => {
   }
 
   //end of filter logic
-
-  const getLoans = async () => {
-    const _loans = await fetchBorrowerLoans(
-      account,
-      "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
-      masterContract,
-      oracleContract
-    );
-    console.log("L", _loans);
-    console.log("Filters", getFilterValues(_loans, "stableCoinTicker"));
-    return _loans;
-  };
 
   function totalAmount(loans) {
     let total = 0;
@@ -134,28 +140,17 @@ const BorrowTab = () => {
     return status;
   }
 
-  function sortBy(key) {
-    let arrayCopy = [...filteredLoans];
+  function sortLoans(finalLoans) {
+    let arrayCopy = [...finalLoans];
     arrayCopy.sort((a, b) => {
-      if (parseFloat(a[key]) < parseFloat(b[key])) return -1;
-      if (parseFloat(a[key]) > parseFloat(b[key])) return 1;
+      if (parseFloat(a[sortBy]) < parseFloat(b[sortBy])) return -1;
+      if (parseFloat(a[sortBy]) > parseFloat(b[sortBy])) return 1;
       return 0;
     });
     setFilteredLoans(arrayCopy);
   }
 
-  useEffect(() => {
-    if (loans) {
-      setLoans(null);
-    }
-    getLoans();
-  }, [account, chainId]);
-
-  // setTimeout(() => {
-  // 	setRefresh(!refresh);
-  // }, 6000);
-
-  return loans ? (
+  return !isLoading && isFetchedAfterMount ? (
     <>
       <h1 className="mb-2">Overview</h1>
       <Row>
@@ -266,7 +261,7 @@ const BorrowTab = () => {
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Sort By"
             style={{ minWidth: 120 }}
-            onChange={(e) => sortBy(e)}
+            onChange={(e) => setSortBy(e)}
           >
             <Option value="stableCoinAmt">Loan Amount</Option>
             <Option value="interestRate">Interest Rate</Option>
@@ -281,31 +276,32 @@ const BorrowTab = () => {
         <Col>
           <Scrollbar style={{ height: "calc(100vh - 510px)" }}>
             <div className="order-list">
-              {availableLoanStatus(filteredLoans).map(function (status) {
-                return (
-                  <div className="orderlist-card">
-                    <h4 className="card-title">{status}</h4>
-                    {filteredLoans.map(function (loan) {
-                      return (
-                        loan.status === status && (
-                          <AccordionCard
-                            orderId={loan.loanID}
-                            healthFactor={loan.healthFactor}
-                            paymentType={loan.repaymentType}
-                            status={loan.status}
-                            orderDetails={getOrderDetails(loan)}
-                            additonalInfo={getAdditionalInfo(loan)}
-                            loan={loan}
-                            isBorrower={true}
-                            lendContract={lendContract}
-                            masterContract={masterContract}
-                          />
-                        )
-                      );
-                    })}
-                  </div>
-                );
-              })}
+              {filteredLoans &&
+                availableLoanStatus(filteredLoans).map(function (status) {
+                  return (
+                    <div className="orderlist-card">
+                      <h4 className="card-title">{status}</h4>
+                      {filteredLoans.map(function (loan) {
+                        return (
+                          loan.status === status && (
+                            <AccordionCard
+                              orderId={loan.loanID}
+                              healthFactor={loan.healthFactor}
+                              paymentType={loan.repaymentType}
+                              status={loan.status}
+                              orderDetails={getOrderDetails(loan)}
+                              additonalInfo={getAdditionalInfo(loan)}
+                              loan={loan}
+                              isBorrower={true}
+                              lendContract={lendContract}
+                              masterContract={masterContract}
+                            />
+                          )
+                        );
+                      })}
+                    </div>
+                  );
+                })}
               {availableLoanStatus(filteredLoans)?.length === 0 && (
                 <div className="no-orders">
                   <img src={noBorrow} alt="No Borrows" />
