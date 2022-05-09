@@ -80,6 +80,8 @@ const CapxModal = (modal) => {
               ? RepayInProgress
               : modal.modalType === "RepayLoanSuccess"
               ? RepaySuccess
+              : modal.modalType === "ClaimSuccess"
+              ? ApproveLoanSuccess
               : CreateLoanInProgress
           }
         />
