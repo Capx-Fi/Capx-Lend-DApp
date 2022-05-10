@@ -291,6 +291,7 @@ const LendTab = (collapsed) => {
                       orderDetails={getOrderDetails(loan)}
                       additonalInfo={getAdditionalInfo(loan)}
                       loan={loan}
+                      from={"lendDashboard"}
                       isBorrower={false}
                       lendContract={lendContract}
                       masterContract={masterContract}

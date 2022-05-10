@@ -9,8 +9,9 @@ import { useWeb3React } from "@web3-react/core";
 import { ERC20_ABI } from "../../../../contracts/ERC20";
 import { convertToInternationalCurrencySystem } from "../../../../utils/convertToInternationalCurrencySystem";
 import { useDispatch } from "react-redux";
+import { useQueryClient } from "react-query";
 
-function RepayLoan({ lendContract, loan, masterContract }) {
+function RepayLoan({ lendContract, loan, masterContract, from }) {
   const [value, setValue] = React.useState(1);
   const onChange = (e) => {
     setValue(e.target.value);
@@ -18,6 +19,7 @@ function RepayLoan({ lendContract, loan, masterContract }) {
   const dispatch = useDispatch();
   const [approved, setApproved] = useState(false);
   const web3 = new Web3(Web3.givenProvider);
+  const queryClient = useQueryClient();
   const { active, account, chainId } = useWeb3React();
   return (
     <div>
@@ -58,7 +60,9 @@ function RepayLoan({ lendContract, loan, masterContract }) {
               lendContract._address,
               loan?.stableCoinAddress,
               setApproved,
-              dispatch
+              dispatch,
+              queryClient,
+              from
             )
           }
         >
@@ -74,7 +78,9 @@ function RepayLoan({ lendContract, loan, masterContract }) {
               account,
               loan?.loanID,
               setApproved,
-              dispatch
+              dispatch,
+              queryClient,
+              from
             )
           }
         >

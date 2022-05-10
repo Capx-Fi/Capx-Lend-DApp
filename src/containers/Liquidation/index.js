@@ -17,10 +17,16 @@ import { getFilterValues } from "../../utils/getFilterValues";
 import { fetchLoanDetails } from "../../utils/fetchLoanDetails";
 import { fetchLiquidationLoans } from "../../utils/fetchLiquidationLoans";
 import noLiquidate from "../../assets/images/svg/no-liquidate.svg";
+import { useQuery } from "react-query";
 const { Option } = Select;
 const Liquidation = () => {
-  const [loans, setLoans] = useState(null);
+  const [filters, setFilters] = useState({
+    lendAsset: "",
+    companyAsset: "",
+    status: "",
+  });
   const [filteredLoans, setFilteredLoans] = useState(null);
+  const [sortBy, setSortBy] = useState("stableCoinAmt");
   const web3 = new Web3(Web3.givenProvider);
   const masterContract = new web3.eth.Contract(
     MASTER_ABI,
@@ -34,14 +40,8 @@ const Liquidation = () => {
     LEND_ABI,
     "0x309D0Ff4b655bAD183A3FA88A0547b41e877DcF1"
   );
-  const { active, account } = useWeb3React();
-  useEffect(() => {
-    active &&
-      getLoans().then((loans) => {
-        setFilteredLoans(loans);
-        setLoans(loans);
-      });
-  }, []);
+  const { active, account, chainId } = useWeb3React();
+
   const getLoans = async () => {
     const _loans = await fetchLiquidationLoans(
       account,
@@ -53,6 +53,37 @@ const Liquidation = () => {
     console.log("Filters", getFilterValues(_loans, "stableCoinTicker"));
     return _loans;
   };
+
+  const {
+    data: loans,
+    isLoading,
+    isFetched,
+    isFetchedAfterMount,
+    isFetching,
+  } = useQuery(["liquidation", account, chainId, active], getLoans);
+
+  useEffect(() => {
+    if (loans) {
+      let finalLoans = loans;
+      if (filters?.lendAsset !== "") {
+        finalLoans = finalLoans.filter(
+          (loan) => loan.stableCoinTicker === filters.lendAsset
+        );
+      }
+      if (filters?.companyAsset !== "") {
+        finalLoans = finalLoans.filter(
+          (loan) => loan.collateralTicker === filters.companyAsset
+        );
+      }
+      if (filters?.status !== "") {
+        finalLoans = finalLoans.filter(
+          (loan) => loan.status === filters.status
+        );
+      }
+      sortLoans(finalLoans);
+    }
+  }, [isFetching, loans, filters, sortBy]);
+
   function availableLoanStatus(loans) {
     let status = [];
     loans.forEach((loan) => {
@@ -60,26 +91,26 @@ const Liquidation = () => {
     });
     return status;
   }
-  function filterLoansByCompanyAsset(loans, companyAsset) {
-    if (companyAsset !== "") {
-      setFilteredLoans(
-        loans.filter((loan) => loan.collateralTicker === companyAsset)
-      );
-    } else setFilteredLoans(loans);
+  function filterLoansByCompanyAsset(companyAsset) {
+    setFilters({ ...filters, companyAsset });
   }
-  function filterLoansByLendAsset(loans, lendAsset) {
-    if (lendAsset !== "") {
-      setFilteredLoans(
-        loans.filter((loan) => loan.stableCoinTicker === lendAsset)
-      );
-    } else setFilteredLoans(loans);
+
+  function filterLoansByLendAsset(lendAsset) {
+    setFilters({ ...filters, lendAsset });
   }
-  function filterLoansByStatus(loans, status) {
-    if (status !== "")
-      setFilteredLoans(loans.filter((loan) => loan.status === status));
-    else setFilteredLoans(loans);
+
+  function sortLoans(finalLoans) {
+    console.log("sortLoans", sortBy);
+    let arrayCopy = [...finalLoans];
+    arrayCopy.sort((a, b) => {
+      console.log("a", b[sortBy]);
+      if (parseFloat(a[sortBy]) < parseFloat(b[sortBy])) return -1;
+      if (parseFloat(a[sortBy]) > parseFloat(b[sortBy])) return 1;
+      return 0;
+    });
+    setFilteredLoans(arrayCopy);
   }
-  return loans ? (
+  return !isLoading && !isFetching && filteredLoans ? (
     <>
       <Row className="heading-row">
         <Col sm="12">
@@ -152,10 +183,12 @@ const Liquidation = () => {
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Sort By"
             style={{ minWidth: 120 }}
+            value={sortBy}
+            onChange={(e) => setSortBy(e)}
           >
-            <Option value="sb1">Loan Amount</Option>
-            <Option value="sb2">Interest Rate</Option>
-            <Option value="sb3">Loan-To-Value</Option>
+            <Option value="stableCoinAmt">Loan Amount</Option>
+            <Option value="interestRate">Interest Rate</Option>
+            <Option value="loanToValue">Loan-To-Value</Option>
           </Select>
         </Col>
       </Row>
@@ -177,6 +210,7 @@ const Liquidation = () => {
                           additonalInfo={getAdditionalInfo(loan)}
                           loan={loan}
                           isBorrower={false}
+                          from={"liquidation"}
                           status={loan.status}
                           lendContract={lendContract}
                           masterContract={masterContract}

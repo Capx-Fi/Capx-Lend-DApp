@@ -7,6 +7,7 @@ import { approveAcceptLoan } from "../../../../utils/acceptLoan";
 import { acceptLoan } from "../../../../utils/acceptLoan";
 import { ERC20_ABI } from "../../../../contracts/ERC20";
 import { useDispatch } from "react-redux";
+import { useQueryClient } from "react-query";
 
 function AcceptLoanOffer({
   masterContract,
@@ -15,11 +16,13 @@ function AcceptLoanOffer({
   amount,
   isBorrower,
   externalLiquidation,
+  from,
 }) {
   const web3 = new Web3(Web3.givenProvider);
   const { active, account, chainId } = useWeb3React();
   const [approved, setApproved] = useState(false);
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   return (
     <div>
       <Row className="mb-2">
@@ -47,7 +50,9 @@ function AcceptLoanOffer({
               isBorrower,
               loan,
               setApproved,
-              dispatch
+              dispatch,
+              queryClient,
+              from
             )
           }
         >
@@ -64,7 +69,9 @@ function AcceptLoanOffer({
               loan?.loanID,
               externalLiquidation,
               setApproved,
-              dispatch
+              dispatch,
+              queryClient,
+              from
             )
           }
         >

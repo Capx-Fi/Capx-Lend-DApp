@@ -16,7 +16,9 @@ export const approveRepaymentLoan = async (
   LEND_CONTRACT_ADDRESS,
   scAddress,
   setApproved,
-  dispatch
+  dispatch,
+  queryClient,
+  from
 ) => {
   let result = null;
   const web3 = new Web3(Web3.givenProvider);
@@ -75,7 +77,9 @@ export const repaymentLoan = async (
   account,
   loanID,
   setApproved,
-  dispatch
+  dispatch,
+  queryClient,
+  from
 ) => {
   let result = null;
   dispatch(
@@ -99,6 +103,9 @@ export const repaymentLoan = async (
     );
     setTimeout(() => {
       dispatch(hideModal());
+      setTimeout(() => {
+        from && queryClient.invalidateQueries(from);
+      }, 3000);
     }, 3000);
   } catch (error) {
     console.log(error);

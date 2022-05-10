@@ -37,9 +37,11 @@ export const pullAssets = async (
         closable: false,
       })
     );
-    from && queryClient.invalidateQueries(from);
     setTimeout(() => {
       dispatch(hideModal());
+      setTimeout(() => {
+        from && queryClient.invalidateQueries(from);
+      }, 3000);
     }, 3000);
   } catch (error) {
     console.log(error);

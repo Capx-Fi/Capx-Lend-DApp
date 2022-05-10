@@ -174,7 +174,6 @@ const BorrowTabLB = () => {
               value={sortBy}
               onChange={(e) => setSortBy(e)}
             >
-              {" "}
               <Option value="stableCoinAmt">Loan Amount</Option>
               <Option value="interestRate">Interest Rate</Option>
               <Option value="loanToValue">Loan-To-Value</Option>
@@ -200,6 +199,7 @@ const BorrowTabLB = () => {
                       orderDetails={getOrderDetails(loan)}
                       additonalInfo={getAdditionalInfo(loan)}
                       loan={loan}
+                      from={"borrowLB"}
                       isBorrower={true}
                       lendContract={lendContract}
                       masterContract={masterContract}
