@@ -211,7 +211,7 @@ const Liquidation = () => {
                           loan={loan}
                           isBorrower={false}
                           from={"liquidation"}
-                          // status={loan.status}
+                          status={loan.status}
                           lendContract={lendContract}
                           masterContract={masterContract}
                         />

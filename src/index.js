@@ -25,7 +25,7 @@ const queryClient = new QueryClient({
 ReactDOM.render(
   <Web3ReactProvider getLibrary={getLibrary}>
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <MetamaskStateProvider>
         <Provider store={store}>
           <App />

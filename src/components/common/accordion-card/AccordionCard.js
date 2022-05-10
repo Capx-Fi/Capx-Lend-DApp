@@ -58,7 +58,7 @@ function AccordionCard({
           </div>
           <div className="upper-right">
             <span className="badge badge-green">{paymentType}</span>
-            {status && (
+            {status && !pathname.includes("/Liquidation") && (
               <span className={`badge badge-${status.toLowerCase()}`}>
                 {status}
               </span>
