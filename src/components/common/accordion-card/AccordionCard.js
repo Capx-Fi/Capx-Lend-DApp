@@ -162,12 +162,25 @@ function AccordionCard({
                     penalty={(loan?.penalty).toString() + " %"}
                   />
                 )}
-                {status === "Funded" && (
+                {status === "Funded" && !isLendDashboard && (
                   <StartLoanOffer
                     from={from}
                     lendContract={lendContract}
                     loan={loan}
                   />
+                )}
+                {status === "Funded" && isLendDashboard &&(
+                  <div className="statusIcon">
+                  <SvgIcon
+                    name="completed-loan"
+                    viewBox="0 0 115.002 115.002"
+                    width="6.5rem"
+                    fill="#82735f"
+                  />
+                  <div className="statusTitle" style={{ color: "#82735f" }}>
+                    {"Loan Funded"}
+                  </div>
+                </div>
                 )}
                 {status === "Active" && !isLendDashboard && (
                   <RepayLoan

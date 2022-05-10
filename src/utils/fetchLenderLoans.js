@@ -32,7 +32,9 @@ export const fetchLenderLoans = async (
         lenderLoans = allLoans.filter((loan) => {
             if(loanIDs.includes(loan.loanID)) {
                 return loan;
-            } else;
+            } else if (loan?.lenderAddress.toLowerCase() === account.toLowerCase() && loan?.stageOfLoan === "3" && loan?.description === "Loan accepted by lender") {
+                return loan;
+            };
         })
         
     } catch (error) {
