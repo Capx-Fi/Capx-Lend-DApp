@@ -67,6 +67,7 @@ const BorrowTab = () => {
     data: loans,
     isLoading,
     isFetched,
+    isFetching,
     isFetchedAfterMount,
   } = useQuery(["borrowDashboard", account, chainId, active], getLoans);
 
@@ -151,7 +152,7 @@ const BorrowTab = () => {
     setFilteredLoans(arrayCopy);
   }
 
-  return !isLoading && isFetchedAfterMount && filteredLoans ? (
+  return !isLoading && !isFetching && filteredLoans ? (
     <>
       <h1 className="mb-2">Overview</h1>
       <Row>
@@ -292,6 +293,7 @@ const BorrowTab = () => {
                         orderDetails={getOrderDetails(loan)}
                         additonalInfo={getAdditionalInfo(loan)}
                         loan={loan}
+                        from={"borrowDashboard"}
                         isBorrower={true}
                         lendContract={lendContract}
                         masterContract={masterContract}

@@ -8,6 +8,7 @@ import Web3 from "web3";
 import { Provider } from "react-redux";
 import { store } from "./redux/app";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 function getLibrary(provider) {
   return new Web3(provider);
@@ -15,13 +16,16 @@ function getLibrary(provider) {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5000,
+      staleTime: 3000,
+      refetchOnWindowFocus: false,
+      refetchOnMount: true,
     },
   },
 });
 ReactDOM.render(
   <Web3ReactProvider getLibrary={getLibrary}>
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <MetamaskStateProvider>
         <Provider store={store}>
           <App />

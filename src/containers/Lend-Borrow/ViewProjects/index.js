@@ -4,6 +4,7 @@ import "./index.less";
 import BorrowTabLB from "./BorrowTabLB";
 import LendTabLB from "./LendTabLB";
 import { useHistory } from "react-router-dom";
+import { useQueryClient } from "react-query";
 
 const { TabPane } = Tabs;
 
@@ -28,6 +29,8 @@ const ViewLendBorrow = () => {
       </Button>
     ),
   };
+
+  const queryClient = useQueryClient();
   return (
     <div>
       <Tabs
@@ -35,7 +38,11 @@ const ViewLendBorrow = () => {
         defaultActiveKey="1"
         type="card"
         tabBarExtraContent={operations}
-        onChange={() => navigate.push("/market")}
+        onChange={() => {
+          navigate.push("/market");
+          queryClient.invalidateQueries("lendLB");
+          queryClient.invalidateQueries("borrowLB");
+        }}
       >
         <TabPane tab="Borrow" key="1">
           <BorrowTabLB />

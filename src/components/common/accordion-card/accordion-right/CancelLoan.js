@@ -6,10 +6,12 @@ import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { cancelLoan } from "../../../../utils/cancelLoan";
 import { useDispatch } from "react-redux";
-function CancelLoan({ lendContract, loan }) {
+import { useQueryClient } from "react-query";
+function CancelLoan({ lendContract, loan, from }) {
   const web3 = new Web3(Web3.givenProvider);
   const { active, account, chainId } = useWeb3React();
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   return (
     <div>
       <Row className="mb-2">
@@ -28,7 +30,14 @@ function CancelLoan({ lendContract, loan }) {
         className="action-btn mt-3"
         block
         onClick={() =>
-          cancelLoan(lendContract, account, loan?.loanID, dispatch)
+          cancelLoan(
+            lendContract,
+            account,
+            loan?.loanID,
+            dispatch,
+            queryClient,
+            from
+          )
         }
       >
         Cancel Loan

@@ -16,13 +16,14 @@ import AccordionCard from "../../../components/common/accordion-card/AccordionCa
 import { getOrderDetails } from "../../../utils/getOrderDetails";
 import { getAdditionalInfo } from "../../../utils/getAdditionalInfo";
 import noLend from "../../../assets/images/svg/no-lend.svg";
+import { useQuery } from "react-query";
 
 const { Option } = Select;
 
 const LendTab = (collapsed) => {
-  const [loans, setLoans] = useState(null);
   const [filteredLoans, setFilteredLoans] = useState(null);
   const web3 = new Web3(Web3.givenProvider);
+  const [sortBy, setSortBy] = useState("stableCoinAmt");
 
   const masterContract = new web3.eth.Contract(
     MASTER_ABI,
@@ -39,28 +40,7 @@ const LendTab = (collapsed) => {
     "0x309D0Ff4b655bAD183A3FA88A0547b41e877DcF1"
   );
 
-  const { active, account } = useWeb3React();
-
-  // useEffect(() => {
-  //   active &&
-  //     fetchLenderLoans(
-  //       account,
-  //       "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
-  //       "https://api.thegraph.com/subgraphs/name/chester-king/lendnftsubgraph",
-  //       masterContract,
-  //       oracleContract
-  //     ).then((loans) => {
-  //       setLoans(loans);
-  //     });
-  // }, []);
-  useEffect(() => {
-    active &&
-      getLoans().then((loans) => {
-        console.log(loans);
-        setFilteredLoans(loans);
-        setLoans(loans);
-      });
-  }, []);
+  const { active, account, chainId } = useWeb3React();
 
   //filter logic
   const [filters, setFilters] = useState({
@@ -68,25 +48,6 @@ const LendTab = (collapsed) => {
     companyAsset: "",
     status: "",
   });
-
-  useEffect(() => {
-    let finalLoans = loans;
-    if (filters.lendAsset !== "") {
-      finalLoans = finalLoans.filter(
-        (loan) => loan.stableCoinTicker === filters.lendAsset
-      );
-    }
-    if (filters.companyAsset !== "") {
-      finalLoans = finalLoans.filter(
-        (loan) => loan.collateralTicker === filters.companyAsset
-      );
-    }
-    if (filters.status !== "") {
-      finalLoans = finalLoans.filter((loan) => loan.status === filters.status);
-    }
-
-    setFilteredLoans(finalLoans);
-  }, [filters, loans]);
 
   function filterLoansByCompanyAsset(companyAsset) {
     setFilters({ ...filters, companyAsset });
@@ -114,6 +75,37 @@ const LendTab = (collapsed) => {
     console.log("Filters", getFilterValues(_loans, "stableCoinTicker"));
     return _loans;
   };
+
+  const {
+    data: loans,
+    isLoading,
+    isFetched,
+    isFetchedAfterMount,
+    isFetching,
+  } = useQuery(["lendDashboard", account, chainId, active], getLoans);
+
+  useEffect(() => {
+    if (loans) {
+      let finalLoans = loans;
+      if (filters?.lendAsset !== "") {
+        finalLoans = finalLoans.filter(
+          (loan) => loan.stableCoinTicker === filters.lendAsset
+        );
+      }
+      if (filters?.companyAsset !== "") {
+        finalLoans = finalLoans.filter(
+          (loan) => loan.collateralTicker === filters.companyAsset
+        );
+      }
+      if (filters?.status !== "") {
+        finalLoans = finalLoans.filter(
+          (loan) => loan.status === filters.status
+        );
+      }
+      sortLoans(finalLoans);
+    }
+  }, [isFetching, loans, filters, sortBy]);
+
   function totalAmount(loans) {
     let total = 0;
     loans.forEach((loan) => {
@@ -138,11 +130,13 @@ const LendTab = (collapsed) => {
     return total;
   }
 
-  function sortBy(key) {
-    let arrayCopy = [...filteredLoans];
+  function sortLoans(finalLoans) {
+    console.log("sortLoans", sortBy);
+    let arrayCopy = [...finalLoans];
     arrayCopy.sort((a, b) => {
-      if (parseFloat(a[key]) < parseFloat(b[key])) return -1;
-      if (parseFloat(a[key]) > parseFloat(b[key])) return 1;
+      console.log("a", b[sortBy]);
+      if (parseFloat(a[sortBy]) < parseFloat(b[sortBy])) return -1;
+      if (parseFloat(a[sortBy]) > parseFloat(b[sortBy])) return 1;
       return 0;
     });
     setFilteredLoans(arrayCopy);
@@ -156,7 +150,7 @@ const LendTab = (collapsed) => {
 
     return status;
   }
-  return loans ? (
+  return !isLoading && !isFetching && filteredLoans ? (
     <>
       <h1 className="mb-2">Overview</h1>
       <Row>
@@ -267,7 +261,8 @@ const LendTab = (collapsed) => {
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Sort By"
             style={{ minWidth: 120 }}
-            onChange={(e) => sortBy(e)}
+            value={sortBy}
+            onChange={(e) => setSortBy(e)}
           >
             <Option value="stableCoinAmt">Loan Amount</Option>
             <Option value="interestRate">Interest Rate</Option>
@@ -282,30 +277,28 @@ const LendTab = (collapsed) => {
         <Col>
           <Scrollbar style={{ height: "calc(100vh - 510px)" }}>
             <div className="order-list">
-              {availableLoanStatus(filteredLoans).map(function (status) {
-                return (
-                  <div className="orderlist-card">
-                    <h4 className="card-title">{status}</h4>
-                    {filteredLoans.map(function (loan) {
-                      return (
-                        loan.status === status && (
-                          <AccordionCard
-                            orderId={loan.loanID}
-                            healthFactor={loan.healthFactor}
-                            paymentType={loan.repaymentType}
-                            status={loan.status}
-                            orderDetails={getOrderDetails(loan)}
-                            additonalInfo={getAdditionalInfo(loan)}
-                            loan={loan}
-                            isBorrower={false}
-                            lendContract={lendContract}
-                            masterContract={masterContract}
-                            isLendDashboard={true}
-                          />
-                        )
-                      );
-                    })}
-                    {/* <h4 className="card-title">{status}</h4>
+              {/* {availableLoanStatus(filteredLoans).map(function (status) {
+                return ( */}
+              <div className="orderlist-card">
+                {/* <h4 className="card-title">{status}</h4> */}
+                {filteredLoans.map(function (loan) {
+                  return (
+                    <AccordionCard
+                      orderId={loan.loanID}
+                      healthFactor={loan.healthFactor}
+                      paymentType={loan.repaymentType}
+                      status={loan.status}
+                      orderDetails={getOrderDetails(loan)}
+                      additonalInfo={getAdditionalInfo(loan)}
+                      loan={loan}
+                      isBorrower={false}
+                      lendContract={lendContract}
+                      masterContract={masterContract}
+                      isLendDashboard={true}
+                    />
+                  );
+                })}
+                {/* <h4 className="card-title">{status}</h4>
                     { <h4 className="card-title">Expired</h4> }
                     <AccordionCard
                       orderId={loan.loanID}
@@ -315,9 +308,8 @@ const LendTab = (collapsed) => {
                       orderDetails={getOrderDetails(loan)}
                       additonalInfo={getAdditionalInfo(loan)}
                     /> */}
-                  </div>
-                );
-              })}
+              </div>
+              );
               {availableLoanStatus(filteredLoans)?.length === 0 && (
                 <div className="no-orders">
                   <img src={noLend} alt="No Borrows" />

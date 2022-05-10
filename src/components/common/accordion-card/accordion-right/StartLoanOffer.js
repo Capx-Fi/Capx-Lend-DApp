@@ -5,7 +5,7 @@ import { pullAssets } from "../../../../utils/pullAssets";
 import { useWeb3React } from "@web3-react/core";
 import { useDispatch } from "react-redux";
 
-function StartLoanOffer({ lendContract, loan }) {
+function StartLoanOffer({ lendContract, loan, from }) {
   const web3 = new Web3(Web3.givenProvider);
   const { active, account, chainId } = useWeb3React();
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ function StartLoanOffer({ lendContract, loan }) {
         className="action-btn mt-3"
         block
         onClick={() =>
-          pullAssets(lendContract, account, loan?.loanID, dispatch)
+          pullAssets(lendContract, account, loan?.loanID, dispatch, from)
         }
       >
         Start Loan

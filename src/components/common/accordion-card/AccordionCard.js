@@ -29,7 +29,8 @@ function AccordionCard({
   lendContract,
   masterContract,
   externalLiquidation,
-  isLendDashboard=false
+  isLendDashboard = false,
+  from,
 }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const pathname = window.location.pathname;
@@ -121,6 +122,7 @@ function AccordionCard({
                   <AcceptLoanOffer
                     masterContract={masterContract}
                     lendContract={lendContract}
+                    from={from}
                     loan={loan}
                     amount={
                       isBorrower
@@ -143,6 +145,7 @@ function AccordionCard({
                   <ClaimAssets
                     lendContract={lendContract}
                     loan={loan}
+                    from={from}
                     amount={
                       isBorrower
                         ? convertToInternationalCurrencySystem(
@@ -160,10 +163,15 @@ function AccordionCard({
                   />
                 )}
                 {status === "Funded" && (
-                  <StartLoanOffer lendContract={lendContract} loan={loan} />
+                  <StartLoanOffer
+                    from={from}
+                    lendContract={lendContract}
+                    loan={loan}
+                  />
                 )}
-                {status === "Active" && !isLendDashboard &&(
+                {status === "Active" && !isLendDashboard && (
                   <RepayLoan
+                    from={from}
                     lendContract={lendContract}
                     loan={loan}
                     masterContract={masterContract}
@@ -171,21 +179,25 @@ function AccordionCard({
                     // isInstallment={paymentType === "Installment"}
                   />
                 )}
-                {status === "Active" && isLendDashboard &&(
+                {status === "Active" && isLendDashboard && (
                   <div className="statusIcon">
-                  <SvgIcon
-                    name="completed-loan"
-                    viewBox="0 0 115.002 115.002"
-                    width="6.5rem"
-                    fill="#48547e"
-                  />
-                  <div className="statusTitle" style={{ color: "#48547e" }}>
-                    {"Loan Active"}
+                    <SvgIcon
+                      name="completed-loan"
+                      viewBox="0 0 115.002 115.002"
+                      width="6.5rem"
+                      fill="#48547e"
+                    />
+                    <div className="statusTitle" style={{ color: "#48547e" }}>
+                      {"Loan Active"}
+                    </div>
                   </div>
-                </div>
                 )}
                 {status === "Initiated" && (
-                  <CancelLoan lendContract={lendContract} loan={loan} />
+                  <CancelLoan
+                    from={from}
+                    lendContract={lendContract}
+                    loan={loan}
+                  />
                 )}
                 {statusType && (
                   <StatusText type={statusType} title={statusTitle} />
@@ -203,15 +215,15 @@ function AccordionCard({
                     </div>
                   </div>
                 )}
-                {status === "Defaulted"  && pathname.includes("/Liquidation") &&
-									(
-										<LiquidateLoan
-											lendContract={lendContract}
-											loan={loan}
-											masterContract={masterContract}
-										/>
-									)
-								}
+                {status === "Defaulted" &&
+                  pathname.includes("/Liquidation") && (
+                    <LiquidateLoan
+                      lendContract={lendContract}
+                      loan={loan}
+                      from={from}
+                      masterContract={masterContract}
+                    />
+                  )}
                 {status === "Defaulted" && !pathname.includes("/Liquidation") && (
                   <div className="statusIcon">
                     <SvgIcon

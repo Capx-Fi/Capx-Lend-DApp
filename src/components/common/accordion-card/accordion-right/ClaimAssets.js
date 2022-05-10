@@ -7,10 +7,12 @@ import { useWeb3React } from "@web3-react/core";
 import { pullAssets } from "../../../../utils/pullAssets";
 import { showModal } from "../../../../redux/features/modalSlice";
 import { useDispatch } from "react-redux";
-function ClaimAssets({ lendContract, loan, amount, penalty }) {
+import { useQueryClient } from "react-query";
+function ClaimAssets({ lendContract, loan, amount, penalty, from }) {
   const web3 = new Web3(Web3.givenProvider);
   const { active, account, chainId } = useWeb3React();
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   return (
     <div>
       <Row className="mb-2">
@@ -44,7 +46,14 @@ function ClaimAssets({ lendContract, loan, amount, penalty }) {
         className="action-btn mt-3"
         block
         onClick={() =>
-          pullAssets(lendContract, account, loan?.loanID, dispatch)
+          pullAssets(
+            lendContract,
+            account,
+            loan?.loanID,
+            dispatch,
+            queryClient,
+            from
+          )
         }
       >
         Claim Assets
