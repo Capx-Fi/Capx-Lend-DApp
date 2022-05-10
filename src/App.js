@@ -73,7 +73,9 @@ const App = () => {
 											width={290}
 											collapsible
 											breakpoint="xl"
-											className={isOpen ? "capx-sider" : "sidebar-open capx-sider"}
+											className={
+												isOpen ? "capx-sider" : "sidebar-open capx-sider"
+											}
 											collapsed={collapsed}
 											trigger={null}
 										>

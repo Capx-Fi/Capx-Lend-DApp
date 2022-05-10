@@ -12,12 +12,20 @@ const Metamask = () => {
 	const { error } = useWeb3React();
 	const unsupportedChainIdError =
 		error && error instanceof UnsupportedChainIdError;
+
 	notification.config({
-		duration: 30000,
+		duration: 4500,
 		className: "notification",
+		width: "300px",
 	});
+
 	const closeIcon = (
-		<SvgIcon name="close" viewBox="0 0 19 19" fill={"#ffffff"} />
+		<SvgIcon
+			className={"closeIcon"}
+			name="close"
+			viewBox="0 0 19 19"
+			fill={"#ffffff"}
+		/>
 	);
 
 	async function tryConnect() {
@@ -27,13 +35,20 @@ const Metamask = () => {
 				notification.open({
 					description: "Unsupported Chain. Please connect to Rinkeby Network",
 					icon: (
-						<SvgIcon name="info" viewBox="0 0 22 22.001" fill={"#ffffff"} />
+						<SvgIcon
+							name="info"
+							viewBox="0 0 22 22.001"
+							width={"1.5rem"}
+							height={"1.5rem"}
+							fill={"#ffffff"}
+						/>
 					),
 					style: {
-						backgroundColor: "red",
-						color: "white",
+						backgroundColor: "#bf0000",
+						color: "#ffffff",
 					},
 					closeIcon,
+					duration: 2000,
 				});
 			}
 		} catch (ex) {
