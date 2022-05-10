@@ -20,6 +20,12 @@ import { useQuery } from "react-query";
 const { Option } = Select;
 
 const BorrowTab = () => {
+  const [filters, setFilters] = useState({
+    lendAsset: "",
+    companyAsset: "",
+    status: "",
+  });
+
   const [filteredLoans, setFilteredLoans] = useState(null);
   const [sortBy, setSortBy] = useState("stableCoinAmt");
   const [refresh, setRefresh] = useState(false);
@@ -52,7 +58,6 @@ const BorrowTab = () => {
     );
     console.log("L", _loans);
     console.log("Filters", getFilterValues(_loans, "stableCoinTicker"));
-    setFilteredLoans(_loans);
     return _loans;
   };
 
@@ -66,8 +71,7 @@ const BorrowTab = () => {
   } = useQuery(["borrowDashboard", account, chainId, active], getLoans);
 
   useEffect(() => {
-    if (isFetchedAfterMount) {
-      setFilteredLoans(loans);
+    if (loans) {
       let finalLoans = loans;
       if (filters?.lendAsset !== "") {
         finalLoans = finalLoans.filter(
@@ -84,16 +88,9 @@ const BorrowTab = () => {
           (loan) => loan.status === filters.status
         );
       }
-      console.log(finalLoans);
       sortLoans(finalLoans);
     }
-  }, [isFetched, isFetchedAfterMount, loans]);
-
-  const [filters, setFilters] = useState({
-    lendAsset: "",
-    companyAsset: "",
-    status: "",
-  });
+  }, [isFetched, isFetchedAfterMount, loans, filters, sortBy]);
 
   function filterLoansByCompanyAsset(companyAsset) {
     setFilters({ ...filters, companyAsset });
@@ -143,8 +140,10 @@ const BorrowTab = () => {
   }
 
   function sortLoans(finalLoans) {
-    let arrayCopy = finalLoans;
+    console.log("sortLoans", sortBy);
+    let arrayCopy = [...finalLoans];
     arrayCopy.sort((a, b) => {
+      console.log("a", b[sortBy]);
       if (parseFloat(a[sortBy]) < parseFloat(b[sortBy])) return -1;
       if (parseFloat(a[sortBy]) > parseFloat(b[sortBy])) return 1;
       return 0;
@@ -152,7 +151,7 @@ const BorrowTab = () => {
     setFilteredLoans(arrayCopy);
   }
 
-  return !isLoading && isFetchedAfterMount ? (
+  return !isLoading && isFetchedAfterMount && filteredLoans ? (
     <>
       <h1 className="mb-2">Overview</h1>
       <Row>
@@ -278,32 +277,31 @@ const BorrowTab = () => {
         <Col>
           <Scrollbar style={{ height: "calc(100vh - 510px)" }}>
             <div className="order-list">
-              {filteredLoans &&
-                availableLoanStatus(filteredLoans).map(function (status) {
-                  return (
-                    <div className="orderlist-card">
-                      <h4 className="card-title">{status}</h4>
-                      {filteredLoans.map(function (loan) {
-                        return (
-                          loan.status === status && (
-                            <AccordionCard
-                              orderId={loan.loanID}
-                              healthFactor={loan.healthFactor}
-                              paymentType={loan.repaymentType}
-                              status={loan.status}
-                              orderDetails={getOrderDetails(loan)}
-                              additonalInfo={getAdditionalInfo(loan)}
-                              loan={loan}
-                              isBorrower={true}
-                              lendContract={lendContract}
-                              masterContract={masterContract}
-                            />
-                          )
-                        );
-                      })}
-                    </div>
-                  );
-                })}
+              {filteredLoans && (
+                // availableLoanStatus(filteredLoans).map(function (status) {
+                //   return (
+                <div className="orderlist-card">
+                  {/*  //       <h4 className="card-title">{status}</h4> */}
+                  {filteredLoans.map(function (loan) {
+                    return (
+                      /*      loan.status === status && */ <AccordionCard
+                        orderId={loan.loanID}
+                        healthFactor={loan.healthFactor}
+                        paymentType={loan.repaymentType}
+                        status={loan.status}
+                        orderDetails={getOrderDetails(loan)}
+                        additonalInfo={getAdditionalInfo(loan)}
+                        loan={loan}
+                        isBorrower={true}
+                        lendContract={lendContract}
+                        masterContract={masterContract}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+            <div>
               {availableLoanStatus(filteredLoans)?.length === 0 && (
                 <div className="no-orders">
                   <img src={noBorrow} alt="No Borrows" />
