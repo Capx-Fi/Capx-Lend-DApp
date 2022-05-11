@@ -55,8 +55,6 @@ const BorrowTab = () => {
 
 	const masterURL = getMasterURL(chainId).toString();
 
-	console.log(masterURL);
-
 	const getLoans = async () => {
 		console.log("getLoans---");
 		const _loans = await fetchBorrowerLoans(

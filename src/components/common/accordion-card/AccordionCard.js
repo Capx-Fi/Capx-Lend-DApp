@@ -174,16 +174,14 @@ function AccordionCard({
 									/>
 								)}
 								{status === "Funded" && isLendDashboard && (
-									<div className="statusIcon">
+									<div className="statusIllustration">
 										<SvgIcon
 											name="completed-loan"
 											viewBox="0 0 115.002 115.002"
 											width="6.5rem"
 											fill="#82735f"
 										/>
-										<div className="statusTitle" style={{ color: "#82735f" }}>
-											{"Loan Funded"}
-										</div>
+										<div className="statusTitle">{"Loan Funded"}</div>
 									</div>
 								)}
 								{status === "Active" && !isLendDashboard && (
@@ -197,7 +195,7 @@ function AccordionCard({
 									/>
 								)}
 								{status === "Active" && isLendDashboard && (
-									<div className="statusIcon">
+									<div className="statusIllustration">
 										<SvgIcon
 											name="completed-loan"
 											viewBox="0 0 115.002 115.002"
@@ -214,15 +212,13 @@ function AccordionCard({
 									<StatusText type={statusType} title={statusTitle} />
 								)}
 								{status === "Completed" && (
-									<div className="statusIcon">
+									<div className="statusIllustration">
 										<img
 											className="statusIcon"
 											src={loanApproved}
 											alt="Loan cancelled illustration"
 										/>
-										<div className="statusTitle" style={{ color: "#00ff00" }}>
-											{"Completed"}
-										</div>
+										<div className="statusTitle">{"Completed"}</div>
 									</div>
 								)}
 								{status === "Defaulted" &&
@@ -234,7 +230,7 @@ function AccordionCard({
 										/>
 									)}
 								{status === "Defaulted" && !pathname.includes("/Liquidation") && (
-									<div className="statusIcon">
+									<div className="statusIllustration">
 										<img
 											className="statusIcon"
 											src={loanDefaulted}
@@ -244,7 +240,7 @@ function AccordionCard({
 									</div>
 								)}
 								{status === "Liquidated" && (
-									<div className="statusIcon">
+									<div className="statusIllustration">
 										<SvgIcon
 											className="statusIcon"
 											name="defaulted-loan"
