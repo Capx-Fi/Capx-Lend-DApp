@@ -208,7 +208,7 @@ function AccordionCard({
 									</div>
 								)}
 								{status === "Initiated" && (
-									<CancelLoan lendContract={lendContract} loan={loan} />
+									<CancelLoan lendContract={lendContract} loan={loan} from={from}/>
 								)}
 								{statusType && (
 									<StatusText type={statusType} title={statusTitle} />
@@ -228,6 +228,7 @@ function AccordionCard({
 										<LiquidateLoan
 											lendContract={lendContract}
 											loan={loan}
+											from={from}
 											masterContract={masterContract}
 										/>
 									)}
