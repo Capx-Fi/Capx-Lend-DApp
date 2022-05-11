@@ -1,5 +1,6 @@
-import { Button, Col, Radio, Row } from "antd";
+import { Button, Col, Radio, Row, Tooltip } from "antd";
 import React, { useState } from "react";
+import SvgIcon from "../../svg-icon/svg-icon";
 import {
   repaymentLoan,
   approveRepaymentLoan,
@@ -21,6 +22,8 @@ function RepayLoan({ lendContract, loan, masterContract, from }) {
   const web3 = new Web3(Web3.givenProvider);
   const queryClient = useQueryClient();
   const { active, account, chainId } = useWeb3React();
+  let isEarly = parseInt(loan?.loanEndTime) > Math.floor(Date.now() / (86400 * 1000)) * 86400 ? true : false;
+  console.log("isEarly Repayment", isEarly);
   return (
     <div>
       {/* {isInstallment && (
@@ -47,6 +50,24 @@ function RepayLoan({ lendContract, loan, masterContract, from }) {
           </b>
         </Col>
       </Row>
+      {isEarly ? (
+        <Row>
+        <Col sm="7">
+          Early Loan Repayment Penalty
+          <Tooltip
+            className="tooltip-icon"
+            placement="top"
+            title={"Early Loan Repayment Penalty"}
+          >
+            <SvgIcon name="info" viewbox="0 0 22 22.001" />
+          </Tooltip>
+          &nbsp;:&nbsp;
+        </Col>
+        <Col sm="5" className="text-right">
+          <b>{loan?.penalty} %</b>
+        </Col>
+      </Row>) : null
+      }
       {!approved ? (
         <Button
           className="action-btn mt-3"

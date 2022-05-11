@@ -365,6 +365,7 @@ export const fetchLoanDetails = async (
 					lenderAddress: loan?.lenderAddress,
 					liquidationAmt: _liquidationAmount,
 					description: loan?.description,
+          loanEndTime: loan?.endTime,
 				};
 				return data;
 			})
