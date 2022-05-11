@@ -168,7 +168,7 @@ export const fetchLoanDetails = async (
   });
 
   const query = `query {
-        loanEntities {
+        loans {
             id
             loanID
             wvtAddress
@@ -200,8 +200,7 @@ export const fetchLoanDetails = async (
     const { data } = await client.query({
       query: gql(query),
     });
-
-    loans = await data.loanEntities
+    loans = await data.loans
       .map(async (loan) => {
         const _scAmt =
           loan?.stageOfLoan === "1" || loan?.stageOfLoan === "0"

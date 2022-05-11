@@ -16,8 +16,8 @@ export const fetchLenderLoans = async (
     });
 
     const query = `query {
-        nftentities (where: {owner : "${account}" }) {
-          tokenid
+        nfts (where: {owner : "${account}" }) {
+          tokenId
         }
       }`;
 
@@ -26,8 +26,8 @@ export const fetchLenderLoans = async (
             query: gql(query),
         });
         let loanIDs = []
-        loanIDs = data.nftentities.map((nft) => {
-            return nft.tokenid;
+        loanIDs = data.nfts.map((nft) => {
+            return nft.tokenId;
         })
         lenderLoans = allLoans.filter((loan) => {
             if(loanIDs.includes(loan.loanID)) {
