@@ -7,7 +7,14 @@ BigNumber.config({
   EXPONENTIAL_AT: [-18, 36],
 });
 
-export const pullAssets = async (lendContract, account, loanID, dispatch) => {
+export const pullAssets = async (
+  lendContract,
+  account,
+  loanID,
+  dispatch,
+  queryClient,
+  from
+) => {
   dispatch(
     showModal({
       modalType: "Claim",
@@ -32,6 +39,9 @@ export const pullAssets = async (lendContract, account, loanID, dispatch) => {
     );
     setTimeout(() => {
       dispatch(hideModal());
+      setTimeout(() => {
+        from && queryClient.invalidateQueries(from);
+      }, 3000);
     }, 3000);
   } catch (error) {
     console.log(error);

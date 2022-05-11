@@ -4,11 +4,13 @@ import Web3 from "web3";
 import { pullAssets } from "../../../../utils/pullAssets";
 import { useWeb3React } from "@web3-react/core";
 import { useDispatch } from "react-redux";
+import { useQueryClient } from "react-query";
 
-function StartLoanOffer({ lendContract, loan }) {
+function StartLoanOffer({ lendContract, loan, from }) {
   const web3 = new Web3(Web3.givenProvider);
   const { active, account, chainId } = useWeb3React();
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   return (
     <div>
       <Row className="mb-2">
@@ -26,7 +28,14 @@ function StartLoanOffer({ lendContract, loan }) {
         className="action-btn mt-3"
         block
         onClick={() =>
-          pullAssets(lendContract, account, loan?.loanID, dispatch)
+          pullAssets(
+            lendContract,
+            account,
+            loan?.loanID,
+            dispatch,
+            queryClient,
+            from
+          )
         }
       >
         Start Loan

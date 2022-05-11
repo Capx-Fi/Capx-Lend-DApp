@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SvgSprite from "./utils/SvgSpriteLoader";
 import { Layout, Button } from "antd";
 import SideBar from "./components/layout/SideBar";
@@ -24,10 +24,14 @@ import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import Liquidation from "./containers/Liquidation";
 import { useSelector } from "react-redux";
 import CapxModal from "./components/common/modals/CapxModal";
+import { useHistory } from "react-router-dom";
+import { useQueryClient } from "react-query";
 
 const { Header, Content, Sider, Footer } = Layout;
 
 const App = () => {
+	const history = useHistory();
+	const queryClient = useQueryClient();
 	const [collapsed, setCollapsed] = React.useState(false);
 	const [loading, setLoading] = React.useState(true);
 	const isMobile = useMediaQuery({ query: "(max-width: 1240px)" });
@@ -37,6 +41,16 @@ const App = () => {
 	};
 	const isConnected = true;
 	console.log(isConnected.isConnected);
+
+	useEffect(() => {
+		console.log("useEffect", history?.location);
+		queryClient.invalidateQueries(
+			"lendDashboard",
+			"borrowDashboard",
+			"lendLB",
+			"borrowLB"
+		);
+	}, [history?.location]);
 
 	setTimeout(() => {
 		setLoading(false);

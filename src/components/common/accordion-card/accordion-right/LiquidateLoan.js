@@ -7,9 +7,9 @@ import { ERC20_ABI } from "../../../../contracts/ERC20";
 import { useDispatch } from "react-redux";
 import { convertToInternationalCurrencySystem } from "../../../../utils/convertToInternationalCurrencySystem";
 import BigNumber from "bignumber.js";
+import { useQueryClient } from "react-query";
 
-
-function LiquidateLoan({ lendContract, loan , masterContract}) {
+function LiquidateLoan({ lendContract, loan, masterContract, from }) {
   const [value, setValue] = React.useState(1);
   const onChange = (e) => {
     setValue(e.target.value);
@@ -17,6 +17,7 @@ function LiquidateLoan({ lendContract, loan , masterContract}) {
   const [approved, setApproved] = useState(false);
   const dispatch = useDispatch();
   const web3 = new Web3(Web3.givenProvider);
+  const queryClient = useQueryClient();
   const { active, account, chainId } = useWeb3React();
   return (
     <div>
@@ -38,37 +39,56 @@ function LiquidateLoan({ lendContract, loan , masterContract}) {
       <Row>
         <Col sm="7">Amount to be paid : &nbsp;</Col>
         <Col sm="5" className="text-right">
-          <b>{convertToInternationalCurrencySystem(new BigNumber(loan?.liquidationAmt).dividedBy(Math.pow(10,loan?.stableCoinDecimal)).toString(10))} {loan?.stableCoinTicker}</b>
+          <b>
+            {convertToInternationalCurrencySystem(
+              new BigNumber(loan?.liquidationAmt)
+                .dividedBy(Math.pow(10, loan?.stableCoinDecimal))
+                .toString(10)
+            )}{" "}
+            {loan?.stableCoinTicker}
+          </b>
         </Col>
       </Row>
-      { !approved ? (
-          <Button className="action-btn mt-3" block
-          onClick={() => approveLiquidation(
-            masterContract,
-            account,
-            loan?.loanID,
-            ERC20_ABI, 
-            lendContract._address,
-            loan?.stableCoinAddress,
-            setApproved,
-            dispatch
-          )}
+      {!approved ? (
+        <Button
+          className="action-btn mt-3"
+          block
+          onClick={() =>
+            approveLiquidation(
+              masterContract,
+              account,
+              loan?.loanID,
+              ERC20_ABI,
+              lendContract._address,
+              loan?.stableCoinAddress,
+              setApproved,
+              dispatch,
+              queryClient,
+              from
+            )
+          }
         >
           Approve Loan Liquidation
         </Button>
       ) : (
-        <Button className="action-btn mt-3" block
-        onClick={() => liquidation(
-          lendContract, 
-          account, 
-          loan?.loanID,
-          setApproved,
-          dispatch)}
-      >
-        Liquidate Loan
-      </Button>
-      )
-      }
+        <Button
+          className="action-btn mt-3"
+          block
+          onClick={() =>
+            liquidation(
+              lendContract,
+              account,
+              loan?.loanID,
+              setApproved,
+              dispatch,
+              queryClient,
+              from
+            )
+          }
+        >
+          Liquidate Loan
+        </Button>
+      )}
     </div>
   );
 }

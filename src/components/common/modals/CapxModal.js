@@ -41,6 +41,7 @@ const CapxModal = (modal) => {
 				onCancel={() => dispatch(hideModal())}
 				closable={modal.closable}
 				footer={" "}
+				keyboard={false}
 				maskClosable={false}
 				maskStyle={{
 					height: "calc(100vh - 90px)",
@@ -72,13 +73,15 @@ const CapxModal = (modal) => {
 							: modal.modalType === "CancelLoanSuccess"
 							? CancelLoanSuccess
 							: modal.modalType === "LiquidateLoan"
-							? LiquidationInBetween
+							? CancelLoanInProgress
 							: modal.modalType === "LiquidateLoanSuccess"
 							? CreateLoanSuccess
 							: modal.modalType === "RepayLoan"
 							? RepayInProgress
 							: modal.modalType === "RepayLoanSuccess"
 							? RepaySuccess
+							: modal.modalType === "ClaimSuccess"
+							? ApproveLoanSuccess
 							: CreateLoanInProgress
 					}
 				/>

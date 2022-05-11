@@ -34,6 +34,7 @@ function AccordionCard({
 	masterContract,
 	externalLiquidation,
 	isLendDashboard = false,
+	from,
 }) {
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const pathname = window.location.pathname;
@@ -61,7 +62,7 @@ function AccordionCard({
 					</div>
 					<div className="upper-right">
 						<span className="badge badge-green">{paymentType}</span>
-						{status && (
+						{status && !pathname.includes("/Liquidation") && (
 							<span className={`badge badge-${status.toLowerCase()}`}>
 								{status}
 							</span>
@@ -125,6 +126,7 @@ function AccordionCard({
 									<AcceptLoanOffer
 										masterContract={masterContract}
 										lendContract={lendContract}
+										from={from}
 										loan={loan}
 										amount={
 											isBorrower
@@ -147,6 +149,7 @@ function AccordionCard({
 									<ClaimAssets
 										lendContract={lendContract}
 										loan={loan}
+										from={from}
 										amount={
 											isBorrower
 												? convertToInternationalCurrencySystem(
@@ -163,11 +166,29 @@ function AccordionCard({
 										penalty={(loan?.penalty).toString() + " %"}
 									/>
 								)}
-								{status === "Funded" && (
-									<StartLoanOffer lendContract={lendContract} loan={loan} />
+								{status === "Funded" && !isLendDashboard && (
+									<StartLoanOffer
+										from={from}
+										lendContract={lendContract}
+										loan={loan}
+									/>
+								)}
+								{status === "Funded" && isLendDashboard && (
+									<div className="statusIcon">
+										<SvgIcon
+											name="completed-loan"
+											viewBox="0 0 115.002 115.002"
+											width="6.5rem"
+											fill="#82735f"
+										/>
+										<div className="statusTitle" style={{ color: "#82735f" }}>
+											{"Loan Funded"}
+										</div>
+									</div>
 								)}
 								{status === "Active" && !isLendDashboard && (
 									<RepayLoan
+										from={from}
 										lendContract={lendContract}
 										loan={loan}
 										masterContract={masterContract}

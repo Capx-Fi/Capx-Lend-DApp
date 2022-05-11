@@ -16,7 +16,9 @@ export const approveAcceptLoan = async (
   isBorrower, // Stable coin amount of loan in case of Borrower accepting the loan else WVT amount of the loan.
   loan,
   setApproved,
-  dispatch
+  dispatch,
+  queryClient,
+  from
 ) => {
   let result = null;
   const web3 = new Web3(Web3.givenProvider);
@@ -33,9 +35,9 @@ export const approveAcceptLoan = async (
     if (isBorrower) {
       result = await masterContract.methods
         .wvtAmountCalculation(
-          new BigNumber(loan?.stableCoinAmt).multipliedBy(
-            Math.pow(10, loan?.stableCoinDecimal)
-          ).toString(10),
+          new BigNumber(loan?.stableCoinAmt)
+            .multipliedBy(Math.pow(10, loan?.stableCoinDecimal))
+            .toString(10),
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
@@ -48,9 +50,9 @@ export const approveAcceptLoan = async (
     } else {
       result = await masterContract.methods
         .stablecoinAmountCalculation(
-          new BigNumber(loan?.collateralAmt).multipliedBy(
-            Math.pow(10, loan?.collateralDecimal)
-          ).toString(10),
+          new BigNumber(loan?.collateralAmt)
+            .multipliedBy(Math.pow(10, loan?.collateralDecimal))
+            .toString(10),
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
@@ -108,7 +110,9 @@ export const acceptLoan = async (
   loanID,
   externalLiquidateFlag,
   setApproved,
-  dispatch
+  dispatch,
+  queryClient,
+  from
 ) => {
   let result = null;
   dispatch(
@@ -133,6 +137,9 @@ export const acceptLoan = async (
     setApproved(false);
     setTimeout(() => {
       dispatch(hideModal());
+      setTimeout(() => {
+        from && queryClient.invalidateQueries(from);
+      }, 3000);
     }, 3000);
   } catch (error) {
     console.log(error);
