@@ -215,6 +215,7 @@ const LendTabLB = (collapsed) => {
 											lendContract={lendContract}
 											masterContract={masterContract}
 											externalLiquidation={true} // needs to be updated from the UI
+											isLendMarket={true}
 										/>
 									);
 								})}

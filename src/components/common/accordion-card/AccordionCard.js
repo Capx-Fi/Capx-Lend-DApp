@@ -35,6 +35,7 @@ function AccordionCard({
 	externalLiquidation,
 	isLendDashboard = false,
 	from,
+	isLendMarket = false,
 }) {
 	const [isCollapsed, setIsCollapsed] = useState(true);
 	const pathname = window.location.pathname;
@@ -143,6 +144,7 @@ function AccordionCard({
 										}
 										isBorrower={isBorrower}
 										externalLiquidation={externalLiquidation}
+										isLendMarket={isLendMarket}
 									/>
 								)}
 								{status === "Expired" && (
