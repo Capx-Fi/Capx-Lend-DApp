@@ -18,108 +18,119 @@ import { fetchLoanDetails } from "../../utils/fetchLoanDetails";
 import { fetchLiquidationLoans } from "../../utils/fetchLiquidationLoans";
 import noLiquidate from "../../assets/images/svg/no-liquidate.svg";
 import { useQuery } from "react-query";
+import {
+	getLendContract,
+	getMasterContract,
+	getMasterURL,
+	getOracleContract,
+} from "../../constants/getChainConfig";
 const { Option } = Select;
 const Liquidation = () => {
-  const [filters, setFilters] = useState({
-    lendAsset: "",
-    companyAsset: "",
-    status: "",
-  });
-  const [filteredLoans, setFilteredLoans] = useState(null);
-  const [sortBy, setSortBy] = useState("stableCoinAmt");
-  const web3 = new Web3(Web3.givenProvider);
-  const masterContract = new web3.eth.Contract(
-    MASTER_ABI,
-    "0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
-  );
-  const oracleContract = new web3.eth.Contract(
-    ORACLE_ABI,
-    "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
-  );
-  const lendContract = new web3.eth.Contract(
-    LEND_ABI,
-    "0x309D0Ff4b655bAD183A3FA88A0547b41e877DcF1"
-  );
-  const { active, account, chainId } = useWeb3React();
+	const [filters, setFilters] = useState({
+		lendAsset: "",
+		companyAsset: "",
+		status: "",
+	});
+	const [filteredLoans, setFilteredLoans] = useState(null);
+	const [sortBy, setSortBy] = useState("stableCoinAmt");
+	const web3 = new Web3(Web3.givenProvider);
+	const { active, account, chainId } = useWeb3React();
 
-  const getLoans = async () => {
-    const _loans = await fetchLiquidationLoans(
-      account,
-      "https://api.thegraph.com/subgraphs/name/shreyas3336/capx-lend",
-      masterContract,
-      oracleContract
-    );
-    console.log("L", _loans);
-    console.log("Filters", getFilterValues(_loans, "stableCoinTicker"));
-    return _loans;
-  };
+	const masterContract = new web3.eth.Contract(
+		MASTER_ABI,
+		getMasterContract(chainId)
+	);
 
-  const {
-    data: loans,
-    isLoading,
-    isFetched,
-    isFetchedAfterMount,
-    isFetching,
-  } = useQuery(["liquidation", account, chainId, active], getLoans);
+	const oracleContract = new web3.eth.Contract(
+		ORACLE_ABI,
+		getOracleContract(chainId)
+	);
 
-  useEffect(() => {
-    if (loans) {
-      let finalLoans = loans;
-      if (filters?.lendAsset !== "") {
-        finalLoans = finalLoans.filter(
-          (loan) => loan.stableCoinTicker === filters.lendAsset
-        );
-      }
-      if (filters?.companyAsset !== "") {
-        finalLoans = finalLoans.filter(
-          (loan) => loan.collateralTicker === filters.companyAsset
-        );
-      }
-      if (filters?.status !== "") {
-        finalLoans = finalLoans.filter(
-          (loan) => loan.status === filters.status
-        );
-      }
-      sortLoans(finalLoans);
-    }
-  }, [isFetching, loans, filters, sortBy]);
+	const lendContract = new web3.eth.Contract(
+		LEND_ABI,
+		getLendContract(chainId)
+	);
 
-  function availableLoanStatus(loans) {
-    let status = [];
-    loans.forEach((loan) => {
-      if (!status.includes(loan.status)) status.push(loan.status);
-    });
-    return status;
-  }
-  function filterLoansByCompanyAsset(companyAsset) {
-    setFilters({ ...filters, companyAsset });
-  }
+	const masterURL = getMasterURL(chainId);
 
-  function filterLoansByLendAsset(lendAsset) {
-    setFilters({ ...filters, lendAsset });
-  }
+	const getLoans = async () => {
+		const _loans = await fetchLiquidationLoans(
+			account,
+			masterURL,
+			masterContract,
+			oracleContract
+		);
+		console.log("L", _loans);
+		console.log("Filters", getFilterValues(_loans, "stableCoinTicker"));
+		return _loans;
+	};
 
-  function sortLoans(finalLoans) {
-    console.log("sortLoans", sortBy);
-    let arrayCopy = [...finalLoans];
-    arrayCopy.sort((a, b) => {
-      console.log("a", b[sortBy]);
-      if (parseFloat(a[sortBy]) < parseFloat(b[sortBy])) return -1;
-      if (parseFloat(a[sortBy]) > parseFloat(b[sortBy])) return 1;
-      return 0;
-    });
-    setFilteredLoans(arrayCopy);
-  }
-  return !isLoading && !isFetching && filteredLoans ? (
-    <>
-      <Row className="heading-row">
-        <Col sm="12">
-          <h2>Liquidation Market</h2>
-          <p>Liquidate the collateral from Defaulted loans.</p>
-        </Col>
-        <Col className="left-col">
-          <h3> Filter By </h3>
-          {/* <Select
+	const {
+		data: loans,
+		isLoading,
+		isFetched,
+		isFetchedAfterMount,
+		isFetching,
+	} = useQuery(["liquidation", account, chainId, active], getLoans);
+
+	useEffect(() => {
+		if (loans) {
+			let finalLoans = loans;
+			if (filters?.lendAsset !== "") {
+				finalLoans = finalLoans.filter(
+					(loan) => loan.stableCoinTicker === filters.lendAsset
+				);
+			}
+			if (filters?.companyAsset !== "") {
+				finalLoans = finalLoans.filter(
+					(loan) => loan.collateralTicker === filters.companyAsset
+				);
+			}
+			if (filters?.status !== "") {
+				finalLoans = finalLoans.filter(
+					(loan) => loan.status === filters.status
+				);
+			}
+			sortLoans(finalLoans);
+		}
+	}, [isFetching, loans, filters, sortBy]);
+
+	function availableLoanStatus(loans) {
+		let status = [];
+		loans.forEach((loan) => {
+			if (!status.includes(loan.status)) status.push(loan.status);
+		});
+		return status;
+	}
+	function filterLoansByCompanyAsset(companyAsset) {
+		setFilters({ ...filters, companyAsset });
+	}
+
+	function filterLoansByLendAsset(lendAsset) {
+		setFilters({ ...filters, lendAsset });
+	}
+
+	function sortLoans(finalLoans) {
+		console.log("sortLoans", sortBy);
+		let arrayCopy = [...finalLoans];
+		arrayCopy.sort((a, b) => {
+			console.log("a", b[sortBy]);
+			if (parseFloat(a[sortBy]) < parseFloat(b[sortBy])) return -1;
+			if (parseFloat(a[sortBy]) > parseFloat(b[sortBy])) return 1;
+			return 0;
+		});
+		setFilteredLoans(arrayCopy);
+	}
+	return !isLoading && !isFetching && filteredLoans ? (
+		<>
+			<Row className="heading-row">
+				<Col sm="12">
+					<h2>Liquidation Market</h2>
+					<p>Liquidate the collateral from Defaulted loans.</p>
+				</Col>
+				<Col className="left-col">
+					<h3> Filter By </h3>
+					{/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Loan Type"
@@ -128,43 +139,43 @@ const Liquidation = () => {
             <Option value="Single Repayment">Single Repayment</Option>
             <Option value="Instalment Repayment">Instalment Repayment</Option>
           </Select> */}
-          <div className="filter-container">
-            <div className="select-container">
-              <p>{"Company Asset:"}</p>
-              <Select
-                dropdownClassName="capx-dropdown"
-                suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
-                defaultValue=""
-                bordered={false}
-                onChange={(e) => filterLoansByCompanyAsset(loans, e)}
-              >
-                <Option value={""}>All</Option>
-                {getFilterValues(loans, "collateralTicker").map(function (
-                  wvt_asset
-                ) {
-                  return <Option value={wvt_asset}>{wvt_asset}</Option>;
-                })}
-              </Select>
-            </div>
-            <div className="select-container">
-              <p>{"Lending Asset"}</p>
-              <Select
-                dropdownClassName="capx-dropdown"
-                suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
-                defaultValue=""
-                bordered={false}
-                onChange={(e) => filterLoansByLendAsset(loans, e)}
-              >
-                <Option value={""}>All</Option>
-                {getFilterValues(loans, "stableCoinTicker").map(function (
-                  wvt_asset
-                ) {
-                  return <Option value={wvt_asset}>{wvt_asset}</Option>;
-                })}
-              </Select>
-            </div>
-          </div>
-          {/* <Select
+					<div className="filter-container">
+						<div className="select-container">
+							<p>{"Company Asset:"}</p>
+							<Select
+								dropdownClassName="capx-dropdown"
+								suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
+								defaultValue=""
+								bordered={false}
+								onChange={(e) => filterLoansByCompanyAsset(loans, e)}
+							>
+								<Option value={""}>All</Option>
+								{getFilterValues(loans, "collateralTicker").map(function (
+									wvt_asset
+								) {
+									return <Option value={wvt_asset}>{wvt_asset}</Option>;
+								})}
+							</Select>
+						</div>
+						<div className="select-container">
+							<p>{"Lending Asset"}</p>
+							<Select
+								dropdownClassName="capx-dropdown"
+								suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
+								defaultValue=""
+								bordered={false}
+								onChange={(e) => filterLoansByLendAsset(loans, e)}
+							>
+								<Option value={""}>All</Option>
+								{getFilterValues(loans, "stableCoinTicker").map(function (
+									wvt_asset
+								) {
+									return <Option value={wvt_asset}>{wvt_asset}</Option>;
+								})}
+							</Select>
+						</div>
+					</div>
+					{/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
             placeholder="Loan Status"
@@ -176,63 +187,63 @@ const Liquidation = () => {
               return <Option value={status}>{status}</Option>;
             })}
           </Select> */}
-        </Col>
-        <Col className="right-col">
-          <Select
-            dropdownClassName="capx-dropdown"
-            suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
-            placeholder="Sort By"
-            style={{ minWidth: 120 }}
-            value={sortBy}
-            onChange={(e) => setSortBy(e)}
-          >
-            <Option value="stableCoinAmt">Loan Amount</Option>
-            <Option value="interestRate">Interest Rate</Option>
-            <Option value="loanToValue">Loan-To-Value</Option>
-          </Select>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <div className="order-list">
-            <h2 className="card-title">Defaulted Loans</h2>
-            {availableLoanStatus(filteredLoans).map(function (status) {
-              return (
-                <div className="orderlist-card">
-                  {filteredLoans.map(function (loan) {
-                    return (
-                      loan.status === status && (
-                        <AccordionCard
-                          orderId={loan.loanID}
-                          healthFactor={loan.healthFactor}
-                          paymentType={loan.repaymentType}
-                          orderDetails={getOrderDetails(loan)}
-                          additonalInfo={getAdditionalInfo(loan)}
-                          loan={loan}
-                          isBorrower={false}
-                          from={"liquidation"}
-                          status={loan.status}
-                          lendContract={lendContract}
-                          masterContract={masterContract}
-                        />
-                      )
-                    );
-                  })}
-                </div>
-              );
-            })}
-            {availableLoanStatus(filteredLoans)?.length === 0 && (
-              <div className="no-orders">
-                <img src={noLiquidate} alt="No Borrows" />
-                <h2>Nothing to Liquidate!</h2>
-              </div>
-            )}
-          </div>
-        </Col>
-      </Row>
-    </>
-  ) : (
-    <LiquidationLoader />
-  );
+				</Col>
+				<Col className="right-col">
+					<Select
+						dropdownClassName="capx-dropdown"
+						suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
+						placeholder="Sort By"
+						style={{ minWidth: 120 }}
+						value={sortBy}
+						onChange={(e) => setSortBy(e)}
+					>
+						<Option value="stableCoinAmt">Loan Amount</Option>
+						<Option value="interestRate">Interest Rate</Option>
+						<Option value="loanToValue">Loan-To-Value</Option>
+					</Select>
+				</Col>
+			</Row>
+			<Row>
+				<Col>
+					<div className="order-list">
+						<h2 className="card-title">Defaulted Loans</h2>
+						{availableLoanStatus(filteredLoans).map(function (status) {
+							return (
+								<div className="orderlist-card">
+									{filteredLoans.map(function (loan) {
+										return (
+											loan.status === status && (
+												<AccordionCard
+													orderId={loan.loanID}
+													healthFactor={loan.healthFactor}
+													paymentType={loan.repaymentType}
+													orderDetails={getOrderDetails(loan)}
+													additonalInfo={getAdditionalInfo(loan)}
+													loan={loan}
+													isBorrower={false}
+													from={"liquidation"}
+													status={loan.status}
+													lendContract={lendContract}
+													masterContract={masterContract}
+												/>
+											)
+										);
+									})}
+								</div>
+							);
+						})}
+						{availableLoanStatus(filteredLoans)?.length === 0 && (
+							<div className="no-orders">
+								<img src={noLiquidate} alt="No Borrows" />
+								<h2>Nothing to Liquidate!</h2>
+							</div>
+						)}
+					</div>
+				</Col>
+			</Row>
+		</>
+	) : (
+		<LiquidationLoader />
+	);
 };
 export default Liquidation;
