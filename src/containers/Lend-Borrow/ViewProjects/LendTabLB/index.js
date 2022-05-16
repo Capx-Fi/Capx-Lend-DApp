@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Select } from "antd";
 import { SvgIcon, Row, Col } from "../../../../components/common";
 import "./index.less";
+import { Scrollbar } from "react-scrollbars-custom";
 import MarketLoader from "../../../../components/common/market-loader/MarketLoader";
 import { LEND_ABI } from "../../../../contracts/Lend";
 import { MASTER_ABI } from "../../../../contracts/Master";
@@ -196,38 +197,40 @@ const LendTabLB = (collapsed) => {
 						<h2>All Offers</h2>
 					</Col>
 					<Col>
-						<div className="order-list">
-							{/* {availableLoanStatus(filteredLoans).map(function (status) {
-								return ( */}
-							<div className="orderlist-card">
-								{filteredLoans.map(function (loan) {
-									return (
-										<AccordionCard
-											orderId={loan.loanID}
-											healthFactor={loan.healthFactor}
-											paymentType={loan.repaymentType}
-											//   status={loan.status}
-											orderDetails={getOrderDetails(loan)}
-											additonalInfo={getAdditionalInfo(loan)}
-											loan={loan}
-											from={"lendLB"}
-											isBorrower={false}
-											lendContract={lendContract}
-											masterContract={masterContract}
-											externalLiquidation={true} // needs to be updated from the UI
-											isLendMarket={true}
-										/>
-									);
-								})}
-							</div>
-
-							{availableLoanStatus(filteredLoans)?.length === 0 && (
-								<div className="no-orders">
-									<img src={noLend} alt="No Lend Orders" />
-									<h2>Oops! No Lend Orders Found!</h2>
+						<Scrollbar style={{ height: "calc(100vh - 392px)" }}>
+							<div className="order-list">
+								{/* {availableLoanStatus(filteredLoans).map(function (status) {
+									return ( */}
+								<div className="orderlist-card">
+									{filteredLoans.map(function (loan) {
+										return (
+											<AccordionCard
+												orderId={loan.loanID}
+												healthFactor={loan.healthFactor}
+												paymentType={loan.repaymentType}
+												//   status={loan.status}
+												orderDetails={getOrderDetails(loan)}
+												additonalInfo={getAdditionalInfo(loan)}
+												loan={loan}
+												from={"lendLB"}
+												isBorrower={false}
+												lendContract={lendContract}
+												masterContract={masterContract}
+												externalLiquidation={true} // needs to be updated from the UI
+												isLendMarket={true}
+											/>
+										);
+									})}
 								</div>
-							)}
-						</div>
+
+								{availableLoanStatus(filteredLoans)?.length === 0 && (
+									<div className="no-orders">
+										<img src={noLend} alt="No Lend Orders" />
+										<h2>Oops! No Lend Orders Found!</h2>
+									</div>
+								)}
+							</div>
+						</Scrollbar>
 					</Col>
 				</Row>
 			</>
