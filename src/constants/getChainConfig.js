@@ -11,26 +11,36 @@ import {
 	CONTRACT_ADDRESS_ORACLE_ETHEREUM,
 	CONTRACT_ADDRESS_LEND_ETHEREUM,
 	ETHEREUM_CHAIN_ID,
+	CONTRACT_ADDRESS_MASTER_BSC,
+	CONTRACT_ADDRESS_ORACLE_BSC,
 } from "./config.js";
 
 
 export const getMasterURL = (chainId) => {
-	const masterURL = chainId.toString() === ETHEREUM_CHAIN_ID.toString() ? GRAPHAPIURL_MASTER_ETHEREUM : GRAPHAPIURL_MASTER_ETHEREUM;
+	const masterURL = chainId.toString() === ETHEREUM_CHAIN_ID.toString() ? GRAPHAPIURL_MASTER_ETHEREUM :
+	chainId.toString() === BSC_CHAIN_ID.toString() ? GRAPHAPIURL_MASTER_BSC :
+	 GRAPHAPIURL_MASTER_ETHEREUM;
 	return masterURL;
 };
 
 export const getMasterContract = (chainId) => {
-	const masterContract = chainId.toString() === ETHEREUM_CHAIN_ID.toString() ? CONTRACT_ADDRESS_MASTER_ETHEREUM : CONTRACT_ADDRESS_MASTER_ETHEREUM;
+	const masterContract = chainId.toString() === ETHEREUM_CHAIN_ID.toString() ? CONTRACT_ADDRESS_MASTER_ETHEREUM :
+	chainId.toString() === BSC_CHAIN_ID.toString() ? CONTRACT_ADDRESS_MASTER_BSC :
+	 CONTRACT_ADDRESS_MASTER_ETHEREUM;
 
 	return masterContract;
 };
 
 export const getOracleContract = (chainId) => {
-	const oracleContract = chainId.toString() === ETHEREUM_CHAIN_ID.toString() ? CONTRACT_ADDRESS_ORACLE_ETHEREUM : CONTRACT_ADDRESS_ORACLE_ETHEREUM;
+	const oracleContract = chainId.toString() === ETHEREUM_CHAIN_ID.toString() ? CONTRACT_ADDRESS_ORACLE_ETHEREUM :
+	chainId.toString() === BSC_CHAIN_ID.toString() ? CONTRACT_ADDRESS_ORACLE_BSC :
+	CONTRACT_ADDRESS_ORACLE_ETHEREUM;
 	return oracleContract;
 };
 
 export const getLendContract = (chainId) => {
-	const lendContract = chainId.toString() === ETHEREUM_CHAIN_ID.toString() ? CONTRACT_ADDRESS_LEND_ETHEREUM : CONTRACT_ADDRESS_LEND_ETHEREUM;
+	const lendContract = chainId.toString() === ETHEREUM_CHAIN_ID.toString() ? CONTRACT_ADDRESS_LEND_ETHEREUM :
+	chainId.toString() === BSC_CHAIN_ID.toString() ? CONTRACT_ADDRESS_LEND_ETHEREUM :
+	CONTRACT_ADDRESS_LEND_ETHEREUM;
 	return lendContract;
 };
