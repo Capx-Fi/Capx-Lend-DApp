@@ -204,12 +204,29 @@ b {
 }
 
 .main-content {
+	//hidden below 1920*1080
+	@media (max-width: 1919px) {
+		display: none;
+	}
 	.ant-layout-sider {
 		background: @sidebar-bg;
 		width: 100%;
 		max-width: 290px;
 	}
 	.right-content-wrapper {
+		min-height: calc(100vh - 95px);
+		background: none;
+		padding: 15px 45px 0 45px;
+	}
+}
+
+.breakpoint {
+	//visible below 1920*1080
+	@media (max-width: 1919px) {
+		display: flex;
+		width: 100%;
+	}
+	.content-wrapper {
 		min-height: calc(100vh - 95px);
 		background: none;
 		padding: 15px 45px 0 45px;
