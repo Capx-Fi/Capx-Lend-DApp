@@ -204,7 +204,7 @@ const Liquidation = () => {
 					</Select>
 				</Col>
 			</Row>
-			<Row>
+			<Row> 
 				<Col>
 					<Scrollbar style={{ height: "calc(100vh - 322px)" }}>
 						<div className="order-list">
