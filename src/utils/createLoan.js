@@ -31,26 +31,72 @@ export const approveCreateLoan = async (
   );
   try {
     let erc20Contract = null;
+
     if (isBorrower) {
       erc20Contract = new web3.eth.Contract(ERC20_ABI, wvtAddress);
     } else {
       erc20Contract = new web3.eth.Contract(ERC20_ABI, scAddress);
     }
-    approvalResult = await erc20Contract.methods
-      .approve(LEND_CONTRACT_ADDRESS, amount.toString(10))
-      .send({ from: account });
 
-    dispatch(
-      showModal({
-        modalType: "ApproveLoanSuccess",
-        modalTitle: "Approved Loan Successfully",
-        modalSubtitle: "You can now initiate the loan request",
-      })
-    );
-    setApproved(true);
-    setTimeout(() => {
-      dispatch(hideModal());
-    }, 3000);
+    //check approved amount
+    let approvedAmount = null;
+    try {
+      approvedAmount = await erc20Contract.methods
+        .allowance(account, LEND_CONTRACT_ADDRESS)
+        .call();
+
+      console.log("Approved Amount: ", approvedAmount);
+      approvedAmount = new BigNumber(approvedAmount);
+      console.log(
+        "Approved Amount: ",
+        approvedAmount.toString(),
+        "amount",
+        amount.toString()
+      );
+      if (approvedAmount.isGreaterThanOrEqualTo(amount)) {
+        setApproved(true);
+        dispatch(
+          showModal({
+            modalType: "ApproveLoanSuccess",
+            modalTitle: "Approved Loan Successfully",
+            modalSubtitle: "You can now initiate the loan request",
+          })
+        );
+
+        setTimeout(() => {
+          dispatch(hideModal());
+        }, 3000);
+      } else {
+        approvalResult = await erc20Contract.methods
+          .approve(LEND_CONTRACT_ADDRESS, amount.toString(10))
+          .send({ from: account });
+      }
+      setApproved(true);
+      dispatch(
+        showModal({
+          modalType: "ApproveLoanSuccess",
+          modalTitle: "Approved Loan Successfully",
+          modalSubtitle: "You can now initiate the loan request",
+        })
+      );
+
+      setTimeout(() => {
+        dispatch(hideModal());
+      }, 3000);
+    } catch (err) {
+      console.log("Create Approval Error", err);
+      dispatch(
+        showModal({
+          modalType: "Error",
+          modalTitle: "Error",
+          modalSubtitle: "Approval Error",
+          closable: false,
+        })
+      );
+      setTimeout(() => {
+        dispatch(hideModal());
+      }, 3000);
+    }
   } catch (err) {
     console.log("ERC20 - Approve | Accept Loan Amount ERR: \n", err);
     dispatch(
