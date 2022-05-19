@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Select } from "antd";
+import { Scrollbar } from "react-scrollbars-custom";
 import { SvgIcon, Row, Col } from "../../components/common";
 import "./index.less";
 import LiquidationLoader from "../../components/common/liquidation-loader/LiquidationLoader";
@@ -205,40 +206,42 @@ const Liquidation = () => {
 			</Row>
 			<Row>
 				<Col>
-					<div className="order-list">
-						<h2 className="card-title">Defaulted Loans</h2>
-						{availableLoanStatus(filteredLoans).map(function (status) {
-							return (
-								<div className="orderlist-card">
-									{filteredLoans.map(function (loan) {
-										return (
-											loan.status === status && (
-												<AccordionCard
-													orderId={loan.loanID}
-													healthFactor={loan.healthFactor}
-													paymentType={loan.repaymentType}
-													orderDetails={getOrderDetails(loan)}
-													additonalInfo={getAdditionalInfo(loan)}
-													loan={loan}
-													isBorrower={false}
-													from={"liquidation"}
-													status={loan.status}
-													lendContract={lendContract}
-													masterContract={masterContract}
-												/>
-											)
-										);
-									})}
+					<Scrollbar style={{ height: "calc(100vh - 322px)" }}>
+						<div className="order-list">
+							<h2 className="card-title">Defaulted Loans</h2>
+							{availableLoanStatus(filteredLoans).map(function (status) {
+								return (
+									<div className="orderlist-card">
+										{filteredLoans.map(function (loan) {
+											return (
+												loan.status === status && (
+													<AccordionCard
+														orderId={loan.loanID}
+														healthFactor={loan.healthFactor}
+														paymentType={loan.repaymentType}
+														orderDetails={getOrderDetails(loan)}
+														additonalInfo={getAdditionalInfo(loan)}
+														loan={loan}
+														isBorrower={false}
+														from={"liquidation"}
+														status={loan.status}
+														lendContract={lendContract}
+														masterContract={masterContract}
+													/>
+												)
+											);
+										})}
+									</div>
+								);
+							})}
+							{availableLoanStatus(filteredLoans)?.length === 0 && (
+								<div className="no-orders">
+									<img src={noLiquidate} alt="No Borrows" />
+									<h2>Nothing to Liquidate!</h2>
 								</div>
-							);
-						})}
-						{availableLoanStatus(filteredLoans)?.length === 0 && (
-							<div className="no-orders">
-								<img src={noLiquidate} alt="No Borrows" />
-								<h2>Nothing to Liquidate!</h2>
-							</div>
-						)}
-					</div>
+							)}
+						</div>
+					</Scrollbar>
 				</Col>
 			</Row>
 		</>

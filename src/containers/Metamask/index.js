@@ -23,7 +23,7 @@ const Metamask = () => {
 		<SvgIcon
 			className={"closeIcon"}
 			name="close"
-			viewBox="0 0 19 19"
+			viewbox="0 0 19 19"
 			fill={"#ffffff"}
 		/>
 	);
@@ -37,7 +37,7 @@ const Metamask = () => {
 					icon: (
 						<SvgIcon
 							name="info"
-							viewBox="0 0 22 22.001"
+							viewbox="0 0 22 22.001"
 							width={"1.5rem"}
 							height={"1.5rem"}
 							fill={"#ffffff"}
