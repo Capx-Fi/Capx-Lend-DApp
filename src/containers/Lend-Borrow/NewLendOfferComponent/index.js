@@ -27,6 +27,7 @@ import {
 	getMasterContract,
 	getOracleContract,
 } from "../../../constants/getChainConfig";
+import { stableCoinListConfig } from "../../../constants/config";
 BigNumber.config({
 	ROUNDING_MODE: 3,
 	DECIMAL_PLACES: 18,
@@ -100,19 +101,7 @@ const marks = {
 	100: { label: "100%", style: { fontSize: "13px" } },
 };
 
-const stableCoinList = [
-	{
-		stableCoin: "USDT",
-		stableCoinAdd: "0x96711f91eb24a3d1dfa3ed308a84380dfd4cc1c7",
-		stableCoinDecimal: "18",
-	},
-	{
-		stableCoin: "USDC",
-		stableCoinAdd: "0xd18062920706712ed789f81004780499dbe5d0c5",
-		stableCoinDecimal: "18",
-	},
-];
-
+const stableCoinList = stableCoinListConfig;
 const NewLendOfferComponent = (props) => {
 	const web3 = new Web3(Web3.givenProvider);
 	const [globalDisabled, setGlobalDisabled] = useState(0); //0 is Loading, 1 is disabled due to empty wvt array, 2 is active

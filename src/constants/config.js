@@ -1,5 +1,16 @@
 export const WRONG_CHAIN_MESSAGE = process.env.REACT_APP_WRONG_CHAIN_MESSAGE;
 export const SUPPORTED_CHAIN_IDS = process.env.REACT_APP_SUPPORTED_CHAIN_IDS;
+export const stableCoinSymbols = process.env.REACT_APP_STABLE_COIN_SYMBOLS;
+export const stableCoinAddresses = process.env.REACT_APP_STABLE_COIN_ADDRESSES;
+export const stableCoinDecimals = process.env.REACT_APP_STABLE_COIN_DECIMALS;
+
+export const stableCoinListConfig = stableCoinSymbols.split(',').map((symbol, index) => {
+	  return {
+		  stableCoin: symbol,
+		  stableCoinAdd: stableCoinAddresses.split(',')[index],
+		  stableCoinDecimal: stableCoinDecimals.split(',')[index]
+									  }					
+									  });
 
 
 //ETHEREUM
