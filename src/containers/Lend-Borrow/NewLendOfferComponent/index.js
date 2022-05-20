@@ -26,6 +26,7 @@ import BigNumber from "bignumber.js";
 import {
   getMasterContract,
   getOracleContract,
+  getWrappedURL,
   stableCoinListConfig,
 } from "../../../constants/getChainConfig";
 
@@ -155,6 +156,7 @@ const NewLendOfferComponent = (props) => {
     setCanLiquidateLoan(e.target.checked);
   };
 
+  const wrappedURL = chainId && getWrappedURL(chainId);
   useEffect(() => {
     setGlobalDisabled(0);
     active &&
@@ -166,7 +168,7 @@ const NewLendOfferComponent = (props) => {
         }
         setUserWVTs(wvts);
       });
-  }, [account]);
+  }, [account, chainId, active]);
 
   useEffect(() => {
     if (props.lend_loan_assets) {
@@ -193,18 +195,14 @@ const NewLendOfferComponent = (props) => {
         }
       }
     }
-  }, [userWVTs, collatCurrency, currentCoinIndex, account]);
+  }, [userWVTs, collatCurrency, currentCoinIndex, account, chainId, active]);
 
   const getUserWVTs = async () => {
     const _WVTs = props.lend_loan_assets
-      ? await fetchAllWVTs(
-          "https://api.studio.thegraph.com/query/16341/liquid-original/v3.0.0",
-          masterContract,
-          oracleContract
-        )
+      ? await fetchAllWVTs(wrappedURL, masterContract, oracleContract)
       : await fetchUserWVTs(
           account,
-          "https://api.studio.thegraph.com/query/16341/liquid-original/v3.0.0",
+          wrappedURL,
           masterContract,
           oracleContract
         );
@@ -364,6 +362,8 @@ const NewLendOfferComponent = (props) => {
     currentCoinIndex,
     collatCurrency,
     active,
+    chainId,
+    account,
   ]);
 
   function calculateCollateralVal(marketPrice, wvtAmt, discount) {

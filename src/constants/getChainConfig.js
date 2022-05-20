@@ -36,6 +36,10 @@ import {
   STABLE_COIN_DECIMALS_BSC,
   STABLE_COIN_DECIMALS_POLYGON,
   STABLE_COIN_DECIMALS_AVALANCHE,
+  WRAPPED_URL_ETHEREUM,
+  WRAPPED_URL_BSC,
+  WRAPPED_URL_POLYGON,
+  WRAPPED_URL_AVALANCHE,
 } from "./config.js";
 
 export const getMasterURL = (chainId) => {
@@ -80,6 +84,7 @@ export const getOracleContract = (chainId) => {
   return oracleContract;
 };
 
+//get lend contract address
 export const getLendContract = (chainId) => {
   const lendContract =
     chainId.toString() === ETHEREUM_CHAIN_ID.toString()
@@ -92,6 +97,21 @@ export const getLendContract = (chainId) => {
       ? CONTRACT_ADDRESS_LEND_AVALANCHE
       : CONTRACT_ADDRESS_LEND_ETHEREUM;
   return lendContract;
+};
+
+//get wrapped url
+export const getWrappedURL = (chainId) => {
+  const wrappedURL =
+    chainId.toString() === ETHEREUM_CHAIN_ID.toString()
+      ? WRAPPED_URL_ETHEREUM
+      : chainId.toString() === BSC_CHAIN_ID.toString()
+      ? WRAPPED_URL_BSC
+      : chainId.toString() === POLYGON_CHAIN_ID.toString()
+      ? WRAPPED_URL_POLYGON
+      : chainId.toString() === AVALANCHE_CHAIN_ID.toString()
+      ? WRAPPED_URL_AVALANCHE
+      : WRAPPED_URL_ETHEREUM;
+  return wrappedURL;
 };
 
 export const stableCoinListConfig = (chainId) => {
