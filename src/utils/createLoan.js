@@ -128,7 +128,8 @@ export const createLoan = async (
   discount,
   externalLiquidation,
   dispatch,
-  setApproved
+  setApproved,
+  history
 ) => {
   dispatch(
     showModal({
@@ -166,6 +167,7 @@ export const createLoan = async (
     setApproved(false);
     setTimeout(() => {
       dispatch(hideModal());
+      history.push("/market");
     }, 3000);
   } catch (error) {
     console.log(error);
