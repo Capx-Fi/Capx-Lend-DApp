@@ -1,5 +1,19 @@
 export const WRONG_CHAIN_MESSAGE = process.env.REACT_APP_WRONG_CHAIN_MESSAGE;
 export const SUPPORTED_CHAIN_IDS = process.env.REACT_APP_SUPPORTED_CHAIN_IDS;
+export const SUPPORTED_CHAIN_NAMES =
+  process.env.REACT_APP_SUPPORTED_CHAIN_NAMES;
+
+//get suppoertedChainNames
+export const getSupportedChainNames = () => {
+  let chains = {};
+  SUPPORTED_CHAIN_IDS.split(",").map((id) => {
+    chains[parseInt(id.trim())] =
+      SUPPORTED_CHAIN_NAMES.split(",")[
+        SUPPORTED_CHAIN_IDS.split(",").indexOf(id)
+      ].trim();
+  });
+  return chains;
+};
 
 //ETHEREUM
 export const GRAPHAPIURL_MASTER_ETHEREUM =
