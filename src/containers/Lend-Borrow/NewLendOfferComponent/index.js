@@ -217,7 +217,7 @@ const NewLendOfferComponent = (props) => {
   };
   const onCollateralChange = (e) => {
     const val = e.target.value;
-    if (isNaN(val) || val < 0 || val > balance) {
+    if (isNaN(val) || val < 0) {
       return;
     }
     setCollateral(val);
@@ -225,7 +225,7 @@ const NewLendOfferComponent = (props) => {
 
   const onLoanAmountChange = (e) => {
     const val = e.target.value;
-    if (isNaN(val) || val < 0 || val > balance) {
+    if (isNaN(val) || val < 0) {
       return;
     }
     setLoanAmount(val);
@@ -441,7 +441,8 @@ const NewLendOfferComponent = (props) => {
                         className={
                           !isNumeric(collateral) ||
                           parseFloat(collateral) === 0 ||
-                          collateral === ""
+                          collateral === "" ||
+                          parseFloat(collateral) > parseFloat(balance)
                             ? "ant-input-status-error"
                             : ""
                         }
@@ -505,6 +506,15 @@ const NewLendOfferComponent = (props) => {
                           viewbox="0 0 18.988 15.511"
                         />
                         <span>Invalid Collateral Amount</span>
+                      </div>
+                    )}
+                    {parseFloat(collateral) > parseFloat(balance) && (
+                      <div className="insufficient-loan-error">
+                        <SvgIcon
+                          name="error-icon"
+                          viewbox="0 0 18.988 15.511"
+                        />
+                        <span>Not enough balance</span>
                       </div>
                     )}
                   </Col>
@@ -1181,9 +1191,11 @@ const NewLendOfferComponent = (props) => {
             collateralAmount={
               props.borrow_loan_assets
                 ? isNumeric(collateral) && collateral > 0
-                  ? `${convertToInternationalCurrencySystem(collateral)} ${
-                      collatCurrency !== null ? collatCurrency : ""
-                    }`
+                  ? parseFloat(collateral) > parseFloat(balance)
+                    ? "-"
+                    : `${convertToInternationalCurrencySystem(collateral)} ${
+                        collatCurrency !== null ? collatCurrency : ""
+                      }`
                   : "-"
                 : isNumeric(collateralLend) && collateralLend > 0
                 ? `${convertToInternationalCurrencySystem(collateralLend)} ${
