@@ -369,7 +369,7 @@ const NewLendOfferComponent = (props) => {
   function calculateCollateralVal(marketPrice, wvtAmt, discount) {
     return new BigNumber(marketPrice)
       .multipliedBy(new BigNumber(wvtAmt))
-      .multipliedBy(new BigNumber(discount))
+      .multipliedBy(new BigNumber(100 - discount))
       .dividedBy(new BigNumber(100))
       .toString(10);
   }

@@ -142,6 +142,7 @@ export const createLoan = async (
 
   let result = null;
   try {
+    console.log("Create Loan", lendContract);
     result = await lendContract.methods
       .createLoan(
         wvtAddress,
