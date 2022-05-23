@@ -737,7 +737,7 @@ const NewLendOfferComponent = (props) => {
                     <Tooltip
                       className="tooltip-icon"
                       placement="top"
-                      title="text" //update this tooltip text
+                      title="Allowing anyone including than the lender can liquidate the loan, in-case the loan is defaulted." //update this tooltip text
                     >
                       <SvgIcon name="info" viewbox="0 0 22 22.001" />
                     </Tooltip>
@@ -752,7 +752,7 @@ const NewLendOfferComponent = (props) => {
                   <Tooltip
                     className="tooltip-icon"
                     placement="top"
-                    title="text"
+                    title="The ratio of a loan to the value of an asset purchased."
                   >
                     <SvgIcon name="info" viewbox="0 0 22 22.001" />
                   </Tooltip>
@@ -775,7 +775,7 @@ const NewLendOfferComponent = (props) => {
                   <Tooltip
                     className="tooltip-icon"
                     placement="top"
-                    title="text"
+                    title="the percentage at which a loan is defined as undercollateralised"
                   >
                     <SvgIcon name="info" viewbox="0 0 22 22.001" />
                   </Tooltip>
@@ -800,7 +800,7 @@ const NewLendOfferComponent = (props) => {
                       <Tooltip
                         className="tooltip-icon"
                         placement="top"
-                        title="text"
+                        title="The duration of the loan from the acceptance of the loan."
                       >
                         <SvgIcon name="info" viewbox="0 0 22 22.001" />
                       </Tooltip>
@@ -931,7 +931,7 @@ const NewLendOfferComponent = (props) => {
                       <Tooltip
                         className="tooltip-icon"
                         placement="top"
-                        title="text"
+                        title="The amount charged on top of the principal by a lender to a borrower for the use of assets."
                       >
                         <SvgIcon name="info" viewbox="0 0 22 22.001" />
                       </Tooltip>
@@ -984,7 +984,7 @@ const NewLendOfferComponent = (props) => {
                       <Tooltip
                         className="tooltip-icon"
                         placement="top"
-                        title="text"
+                        title="Deduction from the market price of the collateral asset."
                       >
                         <SvgIcon name="info" viewbox="0 0 22 22.001" />
                       </Tooltip>
@@ -1043,7 +1043,7 @@ const NewLendOfferComponent = (props) => {
                       <Tooltip
                         className="tooltip-icon"
                         placement="top"
-                        title="text"
+                        title="The duration of the loan from the acceptance of the loan."
                       >
                         <SvgIcon name="info" viewbox="0 0 22 22.001" />
                       </Tooltip>
@@ -1084,7 +1084,7 @@ const NewLendOfferComponent = (props) => {
                       <Tooltip
                         className="tooltip-icon"
                         placement="top"
-                        title="text"
+                        title="The amount charged on top of the principal by a lender to a borrower for the use of assets."
                       >
                         <SvgIcon name="info" viewbox="0 0 22 22.001" />
                       </Tooltip>
@@ -1104,7 +1104,7 @@ const NewLendOfferComponent = (props) => {
                       <Tooltip
                         className="tooltip-icon"
                         placement="top"
-                        title="text"
+                        title="Number of installments in which the loan will be repayed"
                       >
                         <SvgIcon name="info" viewbox="0 0 22 22.001" />
                       </Tooltip>
@@ -1130,7 +1130,7 @@ const NewLendOfferComponent = (props) => {
                       <Tooltip
                         className="tooltip-icon"
                         placement="top"
-                        title="text"
+                        title="Deduction from the market price of the collateral asset."
                       >
                         <SvgIcon name="info" viewbox="0 0 22 22.001" />
                       </Tooltip>
@@ -1150,7 +1150,7 @@ const NewLendOfferComponent = (props) => {
                       <Tooltip
                         className="tooltip-icon"
                         placement="top"
-                        title="text"
+                        title="Number of installments in which the loan will be repayed"
                       >
                         <SvgIcon name="info" viewbox="0 0 22 22.001" />
                       </Tooltip>
