@@ -55,7 +55,7 @@ export const fetchWVTAmt = async (
   let result = null;
   try {
     result = await masterContract.methods
-      .wvtAmountCalculation(scAmt, wvtAddress, scAddress, ltv, discount)
+      .wvtAmountCalculation(scAmt, wvtAddress, scAddress, ltv, 10000-discount)
       .call();
     if (result) {
       console.log("WVT Amount :", result);
@@ -82,7 +82,7 @@ export const fetchSCAmt = async (
         wvtAddress,
         scAddress,
         ltv,
-        discount
+        10000-discount
       )
       .call();
     if (result) {
