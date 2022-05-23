@@ -45,20 +45,65 @@ export const approveLiquidation = async (
   let approvalResult = null;
   try {
     const erc20Contract = new web3.eth.Contract(ERC20_ABI, scAddress);
-    approvalResult = await erc20Contract.methods
-      .approve(LEND_CONTRACT_ADDRESS, approvalAmt)
-      .send({ from: account });
-    dispatch(
-      showModal({
-        modalType: "ApproveLoanSuccess",
-        modalTitle: "Approval Successfully",
-        modalSubtitle: "You can now Liquidate the loan.",
-      })
-    );
-    setApproved(true);
-    setTimeout(() => {
-      dispatch(hideModal());
-    }, 3000);
+    //check approved amount
+    let approvedAmount = null;
+    try {
+      approvedAmount = await erc20Contract.methods
+        .allowance(account, LEND_CONTRACT_ADDRESS)
+        .call();
+
+      console.log("Approved Amount: ", approvedAmount);
+      approvedAmount = new BigNumber(approvedAmount);
+      console.log(
+        "Approved Amount: ",
+        approvedAmount.toString(),
+        "amount",
+        approvalAmt.toString()
+      );
+      if (approvedAmount.isGreaterThanOrEqualTo(approvalAmt)) {
+        setApproved(true);
+        dispatch(
+          showModal({
+            modalType: "ApproveLoanSuccess",
+            modalTitle: "Approved Loan Successfully",
+            modalSubtitle: "You can now initiate the loan request",
+          })
+        );
+
+        setTimeout(() => {
+          dispatch(hideModal());
+        }, 3000);
+      } else {
+        approvalResult = await erc20Contract.methods
+          .approve(LEND_CONTRACT_ADDRESS, approvalAmt.toString(10))
+          .send({ from: account });
+      }
+      setApproved(true);
+      dispatch(
+        showModal({
+          modalType: "ApproveLoanSuccess",
+          modalTitle: "Approved Loan Successfully",
+          modalSubtitle: "You can now initiate the loan request",
+        })
+      );
+
+      setTimeout(() => {
+        dispatch(hideModal());
+      }, 3000);
+    } catch (err) {
+      console.log("Create Approval Error", err);
+      dispatch(
+        showModal({
+          modalType: "Error",
+          modalTitle: "Error",
+          modalSubtitle: "Approval Error",
+          closable: false,
+        })
+      );
+      setTimeout(() => {
+        dispatch(hideModal());
+      }, 3000);
+    }
   } catch (err) {
     dispatch(
       showModal({

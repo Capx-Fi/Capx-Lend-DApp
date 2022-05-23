@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import CapxModal from "./components/common/modals/CapxModal";
 import { useHistory } from "react-router-dom";
 import { useQueryClient } from "react-query";
+import Breakpoint from "./containers/Breakpoint";
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -79,7 +80,7 @@ const App = () => {
 							<Header className="header">
 								<NavigationBar />
 							</Header>
-							<Layout className="main-content">
+							<Layout className="main-content ">
 								{active ? (
 									<>
 										{modal.modalType !== null && <CapxModal {...modal} />}
@@ -127,6 +128,11 @@ const App = () => {
 										<Metamask />
 									</Content>
 								)}
+							</Layout>
+							<Layout className="breakpoint">
+								<Content className="content-wrapper">
+									<Breakpoint />
+								</Content>
 							</Layout>
 							<Footer className="main-footer">
 								© 2021 Capx All rights reserved.

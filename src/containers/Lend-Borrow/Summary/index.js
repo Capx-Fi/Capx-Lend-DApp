@@ -11,6 +11,12 @@ import { useWeb3React } from "@web3-react/core";
 import { convertToInternationalCurrencySystemTotalInterest } from "../../../utils/convertToInternationalCurrencySystem";
 import { getInterest } from "../../../utils/fetchLoanDetails";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import {
+  getLendContract,
+  getMasterContract,
+  getOracleContract,
+} from "../../../constants/getChainConfig";
 BigNumber.config({
   ROUNDING_MODE: 3,
   DECIMAL_PLACES: 18,
@@ -22,26 +28,20 @@ const Summary = (props) => {
   const { active, account, chainId } = useWeb3React();
   const approved = props.approved;
   const setApproved = props.setApproved;
-  const masterContract = new web3.eth.Contract(
-    MASTER_ABI,
-    "0x793130DFbFDC30629015C0f07b41Dc97ec14d8B5"
-  );
+  const masterContract =
+    chainId && new web3.eth.Contract(MASTER_ABI, getMasterContract(chainId));
 
-  const oracleContract = new web3.eth.Contract(
-    ORACLE_ABI,
-    "0x49d396Eb1B3E2198C32D2FE2C7146FD64f8BcF27"
-  );
+  const oracleContract =
+    chainId && new web3.eth.Contract(ORACLE_ABI, getOracleContract(chainId));
 
   useEffect(() => {
     setIsValid(Object.values(props).every((item) => item !== "-"));
   }, [props]);
 
-  const lendContract = new web3.eth.Contract(
-    LEND_ABI,
-    "0x309D0Ff4b655bAD183A3FA88A0547b41e877DcF1"
-  );
+  const lendContract =
+    chainId && new web3.eth.Contract(LEND_ABI, getLendContract(chainId));
   console.log(props.durationValid);
-
+  const history = useHistory();
   console.log(props.collateralAmount);
   const dispatch = useDispatch();
   return (
@@ -233,7 +233,8 @@ const Summary = (props) => {
                   props.discount * 100,
                   props.isBorrower ? false : false,
                   dispatch,
-                  setApproved
+                  setApproved,
+                  history
                 )
               }
             >
