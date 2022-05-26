@@ -61,12 +61,13 @@ const Breakpoint = () => {
 	return (
 		<>
 			<div className="main-container-bp">
-				<p className="header-bp">
-				Please open Capx Lend on a larger viewport<br/> .i.e Desktops or
-					Laptops to leverage the full experience
-				</p>
-				<img src={BreakpointIcon}></img>
-				
+				<div className="main-container-bp-inner">
+					<p className="header-bp">
+					Please open Capx Lend on a larger viewport<br/> .i.e Desktops or
+						Laptops to leverage the full experience
+					</p>
+					<img className="breakpoint-image" src={BreakpointIcon}></img>
+				</div>
 			</div>
 		</>
 	);

@@ -23,6 +23,8 @@ import {
 	getMasterURL,
 	getOracleContract,
 } from "../../../../constants/getChainConfig";
+import { useMediaQuery } from 'react-responsive'
+
 
 const { Option } = Select;
 
@@ -127,6 +129,10 @@ const BorrowTabLB = () => {
 		});
 		setFilteredLoans(arrayCopy);
 	}
+
+	const isDesktop1440 = useMediaQuery({
+		query: '(min-width: 1441px)'
+	})
 
 	const pathname = window.location.pathname;
 	return !pathname.includes("/new") ? (

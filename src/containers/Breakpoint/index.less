@@ -1,28 +1,39 @@
 @import "../../assets/less/_variables.less";
 
 .main-container-bp {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	top: 7.5rem;
-	position: relative;
-	padding: 40px;
-	border-radius: 2rem;
+	width: 100%;
+	max-width: 800px;
 	margin: auto;
-	background: linear-gradient(
-		270.08deg,
-		rgba(132, 214, 164, 0.3) 0.02%,
-		rgba(18, 28, 32, 0.3) 117.26%
-	);
-	width: fit-content;
-	height: fit-content;
-	text-align: center;
+	display: flex;
+	align-items: center;
+	height: calc(100vh - 115px);
+	.main-container-bp-inner{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		padding: 40px;
+		border-radius: 2rem;
+		margin: auto;
+		background: linear-gradient(
+			270.08deg,
+			rgba(132, 214, 164, 0.3) 0.02%,
+			rgba(18, 28, 32, 0.3) 117.26%
+		);
+		width: fit-content;
+		height: fit-content;
+		text-align: center;
+	}
 
 	.header-bp {
 		color: white;
 		font-size: 18px;
 		text-align: center;
+
+	}
+	.breakpoint-image{
+		width: 80%;
 	}
 	.connect-btn {
 		color: black;
