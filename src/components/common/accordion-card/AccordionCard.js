@@ -18,6 +18,8 @@ import loanApproved from "../../../assets/images/loanApproved.png";
 import loanCancelled from "../../../assets/images/loanCancelled.png";
 import loanDefaulted from "../../../assets/images/loanDefaulted.png";
 import loanInitiated from "../../../assets/images/loanInitiated.png";
+import loanLiquidated from "../../../assets/images/loanLiquidated.png";
+import loanFunded from "../../../assets/images/loanFunded.png";
 
 function AccordionCard({
 	orderId,
@@ -177,11 +179,10 @@ function AccordionCard({
 								)}
 								{status === "Funded" && isLendDashboard && (
 									<div className="statusIllustration">
-										<SvgIcon
-											name="completed-loan"
-											viewBox="0 0 115.002 115.002"
-											width="6.5rem"
-											fill="#82735f"
+										<img
+											className="statusIcon"
+											src={loanFunded}
+											alt="Loan cancelled illustration"
 										/>
 										<div className="statusTitle">{"Loan Funded"}</div>
 									</div>
@@ -198,17 +199,16 @@ function AccordionCard({
 								)}
 								{status === "Active" && isLendDashboard && (
 									<div className="statusIllustration">
-										<SvgIcon
-											name="completed-loan"
-											viewBox="0 0 115.002 115.002"
-											width="6.5rem"
-											fill="#48547e"
+										<img
+											className="statusIcon"
+											src={loanApproved}
+											alt="Loan Active illustration"
 										/>
 										<div className="statusTitle">{"Loan Active"}</div>
 									</div>
 								)}
 								{status === "Initiated" && (
-									<CancelLoan lendContract={lendContract} loan={loan} />
+									<CancelLoan lendContract={lendContract} loan={loan} from={from}/>
 								)}
 								{statusType && (
 									<StatusText type={statusType} title={statusTitle} />
@@ -220,7 +220,7 @@ function AccordionCard({
 											src={loanApproved}
 											alt="Loan cancelled illustration"
 										/>
-										<div className="statusTitle">{"Completed"}</div>
+										<div className="statusTitle">{"Loan Completed"}</div>
 									</div>
 								)}
 								{status === "Defaulted" &&
@@ -228,6 +228,7 @@ function AccordionCard({
 										<LiquidateLoan
 											lendContract={lendContract}
 											loan={loan}
+											from={from}
 											masterContract={masterContract}
 										/>
 									)}
@@ -243,12 +244,10 @@ function AccordionCard({
 								)}
 								{status === "Liquidated" && (
 									<div className="statusIllustration">
-										<SvgIcon
+										<img
 											className="statusIcon"
-											name="defaulted-loan"
-											viewBox="0 0 115.002 115.002"
-											width="6.5rem"
-											fill="#5ba1ca"
+											src={loanLiquidated}
+											alt="Loan Liquidated illustration"
 										/>
 										<div className="statusTitle">{"Loan Liquidated"}</div>
 									</div>

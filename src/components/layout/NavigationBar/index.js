@@ -8,6 +8,10 @@ import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import { injected } from "../../../utils/connector";
 
 import Web3 from "web3";
+import {
+	getSupportedChainNames,
+	supportedChainsObject,
+} from "../../../constants/config";
 
 const { Option } = Select;
 
@@ -18,14 +22,12 @@ const NavigationBar = () => {
 	const web3 = new Web3(Web3.currentProvider);
 	console.log(chainId);
 
-	const chainNames = {
-		// 1: "mainnet",
-		4: "Ethereum",
-		97: "BSC",
-		80001: "Matic",
-	};
+	const chainNames = getSupportedChainNames();
+
+	console.log(getSupportedChainNames());
 
 	const chainChange = async (chainName) => {
+		console.log(chainName);
 		if (chainName === "Ethereum") {
 			try {
 				await web3?.givenProvider?.request({
@@ -77,7 +79,7 @@ const NavigationBar = () => {
 			}
 		} else if (chainName === "Avalanche") {
 			try {
-				await web3.currentProvider.request({
+				await web3?.givenProvider?.request({
 					method: "wallet_addEthereumChain",
 					params: [
 						{
@@ -94,7 +96,7 @@ const NavigationBar = () => {
 					],
 				});
 			} catch (error) {
-				console.log(error);
+				console.log(error, "AVALANCHE ERR");
 			}
 		}
 	};
@@ -143,7 +145,7 @@ const NavigationBar = () => {
 								<div className="name">Ethereum</div>
 							</div>
 						</Option>
-						{/* <Option key="2" value="Matic">
+						<Option key="2" value="Matic">
 							<div className="select-inner">
 								<div className="svg-icon">
 									<div className="svg-icon-inner">
@@ -162,7 +164,17 @@ const NavigationBar = () => {
 								</div>
 								<div className="name">BSC</div>
 							</div>
-						</Option> */}
+						</Option>
+						<Option key="4" value="Avalanche">
+							<div className="select-inner">
+								<div className="svg-icon">
+									<div className="svg-icon-inner">
+										<SvgIcon name="avax-icon" viewbox="0 0 38.3 33.7" />
+									</div>
+								</div>
+								<div className="name">Avalanche</div>
+							</div>
+						</Option>
 					</Select>
 					<div className="wallet-address" onClick={deactivate}>
 						<Button

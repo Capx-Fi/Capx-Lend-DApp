@@ -90,7 +90,7 @@ async function getHealthFactor(
 		(price *
 			Math.pow(10, scDecimal) *
 			new BigNumber(wvtAmt).multipliedBy(Math.pow(10, wvtDecimal)) *
-			discount) /
+			(10000 - discount)) /
 		(10000 * Math.pow(10, wvtDecimal));
 	let healthFactor =
 		(collateralVal * lt) /
@@ -308,7 +308,7 @@ export const fetchLoanDetails = async (
 								)
 						  ).dividedBy(Math.pow(10, loan?.stableCoinDecimal));
 				const _collateralValue =
-					_wvtAmt * Math.floor((_marketPrice * _discount) / 100);
+					_wvtAmt * Math.floor((_marketPrice * (10000 -_discount)) / 100);
 
 				if (loan?.stageOfLoan === "4") {
 					_totalInterest =
@@ -365,7 +365,7 @@ export const fetchLoanDetails = async (
 					lenderAddress: loan?.lenderAddress,
 					liquidationAmt: _liquidationAmount,
 					description: loan?.description,
-          loanEndTime: loan?.endTime,
+					loanEndTime: loan?.endTime,
 				};
 				return data;
 			})

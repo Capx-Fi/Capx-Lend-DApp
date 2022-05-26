@@ -74,7 +74,6 @@ const LendTab = (collapsed) => {
 		const _loans = await fetchLenderLoans(
 			account,
 			masterURL,
-			masterURL,
 			masterContract,
 			oracleContract
 		);
