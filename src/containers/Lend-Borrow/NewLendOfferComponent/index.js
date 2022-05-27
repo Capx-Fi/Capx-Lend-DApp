@@ -451,10 +451,8 @@ const NewLendOfferComponent = (props) => {
                             ? {
                                 background: "#192229",
                                 color: "white",
-                                width: "70%",
                               }
                             : {
-                                width: "70%",
                                 background: "#233039",
                                 color: "white",
                               }
@@ -478,10 +476,8 @@ const NewLendOfferComponent = (props) => {
                             ? {
                                 background: "#192229",
                                 color: "white",
-                                width: "30%",
                               }
                             : {
-                                width: "30%",
                                 background: "#233039",
                                 color: "white",
                               }
@@ -527,10 +523,8 @@ const NewLendOfferComponent = (props) => {
                             ? {
                                 background: "#192229",
                                 color: "white",
-                                width: "70%",
                               }
                             : {
-                                width: "70%",
                                 background: "#233039",
                                 color: "white",
                               }
@@ -545,7 +539,6 @@ const NewLendOfferComponent = (props) => {
                       <Select
                         dropdownClassName="capx-dropdown"
                         disabled={approved || globalDisabled !== 2}
-                        style={{ width: "30%" }}
                         onSelect={onCoinChange}
                         value={stableCoinList[currentCoinIndex].stableCoin}
                         suffixIcon={
@@ -609,10 +602,8 @@ const NewLendOfferComponent = (props) => {
                           ? {
                               background: "#192229",
                               color: "white",
-                              width: "70%",
                             }
                           : {
-                              width: "70%",
                               background: "#233039",
                               color: "white",
                             }
@@ -624,7 +615,6 @@ const NewLendOfferComponent = (props) => {
                     <Select
                       dropdownClassName="capx-dropdown"
                       disabled={approved || globalDisabled !== 2}
-                      style={{ width: "30%" }}
                       onSelect={onCoinChange}
                       value={stableCoinList[currentCoinIndex].stableCoin}
                       suffixIcon={
@@ -668,10 +658,8 @@ const NewLendOfferComponent = (props) => {
                           ? {
                               background: "#192229",
                               color: "white",
-                              width: "70%",
                             }
                           : {
-                              width: "70%",
                               background: "#233039",
                               color: "white",
                             }
@@ -697,10 +685,8 @@ const NewLendOfferComponent = (props) => {
                           ? {
                               background: "#192229",
                               color: "white",
-                              width: "30%",
                             }
                           : {
-                              width: "30%",
                               background: "#233039",
                               color: "white",
                             }

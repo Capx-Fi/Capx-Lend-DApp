@@ -44,11 +44,20 @@ h1 {
 	color: @text-color-primary;
 	font-size: 2rem;
 	font-weight: bold;
+	@media screen and (max-width:1440px) {
+		font-size: 24px;
+	}
 }
 
 h2 {
 	color: @text-color-primary;
 	font-weight: bold;
+	@media screen and (max-width:1440px) {
+		font-size: 18px;
+	}
+	@media screen and (max-width:1280px) {
+		font-size: 16px;
+	}
 }
 
 h3 {
@@ -205,13 +214,19 @@ b {
 
 .main-content {
 	//hidden below 1920*1080
-	@media (max-width: 1919px) {
+	@media (max-width: 1279px) {
 		display: none;
 	}
-	.ant-layout-sider {
-		background: @sidebar-bg;
-		width: 100%;
-		max-width: 290px;
+	.capx-sider{
+		&.ant-layout-sider {
+			background: @sidebar-bg;
+			&.sidebar-open{
+				width: 100%;
+				max-width: 300px;
+				width: 300px;
+				min-width: 300px;
+			}
+		}
 	}
 	.right-content-wrapper {
 		min-height: calc(100vh - 95px);
@@ -222,7 +237,7 @@ b {
 
 .breakpoint {
 	//visible below 1920*1080
-	@media (min-width: 1919px) {
+	@media (min-width: 1279px) {
 		display: none;
 		width: 100%;
 	}
@@ -273,9 +288,16 @@ b {
 			border-color: @border-dark-green;
 			width: 20px;
 			height: 20px;
+			@media screen and (max-width:1280px) {
+				width: 16px;
+				height: 16px;
+			}
 			&::after {
 				top: 52%;
 				left: 24.5%;
+				@media screen and (max-width:1280px) {
+					top: 48%;
+				}
 			}
 		}
 		&.ant-checkbox-checked {
