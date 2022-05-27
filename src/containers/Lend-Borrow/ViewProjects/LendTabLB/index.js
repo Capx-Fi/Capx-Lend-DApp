@@ -133,8 +133,8 @@ const LendTabLB = (collapsed) => {
 			<>
 				<h1 className="mb-2">Marketplace</h1>
 				<Row className="heading-row">
+					<Col sm="12" className="filterby-heading"><h3> Filter By </h3></Col>
 					<Col className="left-col">
-						<h3> Filter By </h3>
 						<div className="filter-container">
 							<div className="select-container">
 								<p>{"Company Asset:"}</p>

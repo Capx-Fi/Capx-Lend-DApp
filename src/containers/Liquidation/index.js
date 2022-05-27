@@ -129,8 +129,8 @@ const Liquidation = () => {
 					<h2>Liquidation Market</h2>
 					<p>Liquidate the collateral from Defaulted loans.</p>
 				</Col>
+				<Col sm="12" className="filterby-heading"><h3> Filter By </h3></Col>
 				<Col className="left-col">
-					<h3> Filter By </h3>
 					{/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
