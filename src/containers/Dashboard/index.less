@@ -18,6 +18,10 @@
 					padding: 0 26px;
 					background: none;
 					border-radius: 10px;
+					@media screen and (max-width:1366px) {
+						font-size: 13px;
+						height: 30px;
+					}
 					.ant-tabs-tab-btn {
 						color: @text-white;
 						font-weight: 600;
@@ -44,6 +48,9 @@
 		font-weight: 700;
 		@media screen and (max-width:1440px) {
 			font-size: 24px;
+		}
+		@media screen and (max-width:1366px) {
+			font-size: 20px;
 		}
 	}
 	.left-col {
@@ -127,25 +134,6 @@
 	}
 }
 
-.filter-container {
-	display: flex;
-	.select-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		.capx-dropdown {
-			width: 10px;
-			&:hover {
-				border-color: none !important;
-				box-shadow: none !important;
-			}
-		}
-		p {
-			margin-bottom: 0;
-		}
-	}
-}
 
 .orderlist-card {
 	margin-bottom: 15px;

@@ -47,6 +47,9 @@ h1 {
 	@media screen and (max-width:1440px) {
 		font-size: 24px;
 	}
+	@media screen and (max-width:1366px) {
+		font-size: 20px;
+	}
 }
 
 h2 {
@@ -154,18 +157,33 @@ b {
 			color: @text-white;
 			border: 1px solid @border-dark-green;
 			border-radius: 6px;
+			@media screen and (max-width:1366px) {
+				height: 36px;
+				line-height: 36px;
+			}
 			input {
 				height: 40px !important;
 				line-height: 100%;
+				@media screen and (max-width:1366px) {
+					height: 36px !important;
+				}
 			}
 			.ant-select-selection-item {
 				font-size: @font-size-base - 1;
 				line-height: 38px;
 				color: @text-white;
+				@media screen and (max-width:1366px) {
+					line-height: 36px;
+					font-size: @font-size-base - 2;
+				}
 			}
 			.ant-select-selection-placeholder {
 				line-height: 38px;
 				color: @text-white;
+				@media screen and (max-width:1366px) {
+					line-height: 36px;
+					font-size: @font-size-base - 2;
+				}
 			}
 		}
 		&:hover,
@@ -207,6 +225,11 @@ b {
 			&.ant-select-item-option-active,
 			.ant-select-item-option-selected {
 				background: #1d282f;
+			}
+			.ant-select-item-option-content{
+				@media screen and (max-width:1366px) {
+					font-size: @font-size-base - 2;
+				}
 			}
 		}
 	}
@@ -354,11 +377,17 @@ b {
 
 		.ant-select{
 			width: 180px;
+			@media screen and (max-width:1366px) {
+				width: 140px;
+			}
 			.ant-select-selector{
 				width: 95%;
 			}
 			.ant-select-selection-item{
 				font-size: @font-size-base - 1;
+				@media screen and (max-width:1366px) {
+					font-size: @font-size-base - 3;
+				}
 			}
 		}
 
@@ -371,9 +400,13 @@ b {
 		}
 		p {
 			margin-bottom: 0;
+			@media screen and (max-width:1366px) {
+				font-size: 12px;
+			}
 		}
 	}
 }
+
 
 .capx-modal{
 	&.capx-modal-loading{
