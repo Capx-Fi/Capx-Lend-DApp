@@ -8,6 +8,50 @@ BigNumber.config({
   EXPONENTIAL_AT: [-18, 36],
 });
 
+export const checkApproveCreateLoan = async (
+  account,
+  ERC20_ABI,
+  LEND_CONTRACT_ADDRESS,
+  isBorrower, // Determining which function to call.
+  amount, // WVT in case of Borrower creating the loan else SC. (In BigNumber Format)
+  wvtAddress,
+  scAddress,
+  dispatch,
+  setApproved
+) => {
+  const web3 = new Web3(Web3.givenProvider);
+  // Approving the tokens
+  let approvalResult = null;
+
+  try {
+    let erc20Contract = null;
+
+    if (isBorrower) {
+      erc20Contract = new web3.eth.Contract(ERC20_ABI, wvtAddress);
+    } else {
+      erc20Contract = new web3.eth.Contract(ERC20_ABI, scAddress);
+    }
+
+    //check approved amount
+    let approvedAmount = null;
+    try {
+      approvedAmount = await erc20Contract.methods
+        .allowance(account, LEND_CONTRACT_ADDRESS)
+        .call();
+
+      approvedAmount = new BigNumber(approvedAmount);
+
+      if (approvedAmount.isGreaterThanOrEqualTo(amount)) {
+        setApproved(true);
+      }
+    } catch (err) {
+      console.log("Create Approval Error", err);
+    }
+  } catch (err) {
+    console.log("ERC20 - Approve | Accept Loan Amount ERR: \n", err);
+  }
+};
+
 export const approveCreateLoan = async (
   account,
   ERC20_ABI,

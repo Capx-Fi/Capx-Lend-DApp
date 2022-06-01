@@ -41,7 +41,7 @@ export const approveAcceptLoan = async (
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
-          new BigNumber(100 - loan?.discount).multipliedBy(100).toString(10)
+          new BigNumber(loan?.discount).multipliedBy(100).toString(10)
         )
         .call();
       if (result) {
@@ -148,6 +148,87 @@ export const approveAcceptLoan = async (
     setTimeout(() => {
       dispatch(hideModal());
     }, 3000);
+  }
+};
+
+export const checkApproveAcceptLoan = async (
+  masterContract,
+  account,
+  ERC20_ABI,
+  LEND_CONTRACT_ADDRESS,
+  loanID,
+  isBorrower, // Stable coin amount of loan in case of Borrower accepting the loan else WVT amount of the loan.
+  loan,
+  setApproved,
+  dispatch,
+  queryClient,
+  from
+) => {
+  let result = null;
+  const web3 = new Web3(Web3.givenProvider);
+  let approvalAmt = null;
+
+  try {
+    if (isBorrower) {
+      result = await masterContract.methods
+        .wvtAmountCalculation(
+          new BigNumber(loan?.stableCoinAmt)
+            .multipliedBy(Math.pow(10, loan?.stableCoinDecimal))
+            .toString(10),
+          loan?.collateralAddress,
+          loan?.stableCoinAddress,
+          new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
+          new BigNumber(loan?.discount).multipliedBy(100).toString(10)
+        )
+        .call();
+      if (result) {
+        approvalAmt = result.toString(10);
+      }
+    } else {
+      result = await masterContract.methods
+        .stablecoinAmountCalculation(
+          new BigNumber(loan?.collateralAmt)
+            .multipliedBy(Math.pow(10, loan?.collateralDecimal))
+            .toString(10),
+          loan?.collateralAddress,
+          loan?.stableCoinAddress,
+          new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
+          new BigNumber(100 - loan?.discount).multipliedBy(100).toString(10)
+        )
+        .call();
+      if (result) {
+        approvalAmt = result.toString(10);
+      }
+    }
+  } catch (error) {
+    console.log("Master - Accept Loan Amount ERR: \n", error);
+  }
+
+  try {
+    let erc20Contract = null;
+    if (isBorrower) {
+      erc20Contract = new web3.eth.Contract(ERC20_ABI, loan?.collateralAddress);
+    } else {
+      erc20Contract = new web3.eth.Contract(ERC20_ABI, loan?.stableCoinAddress);
+    }
+
+    //check approved amount
+    let approvedAmount = null;
+    try {
+      approvedAmount = await erc20Contract.methods
+        .allowance(account, LEND_CONTRACT_ADDRESS)
+        .call();
+      console.log("Approved Amount - accept : ", approvedAmount);
+      approvedAmount = new BigNumber(approvedAmount);
+
+      if (approvedAmount.isGreaterThanOrEqualTo(approvalAmt)) {
+        setApproved(true);
+      }
+    } catch (err) {
+      console.log("Create Approval Error", err);
+    }
+  } catch (err) {
+    console.log("ERC20 - Approve | Accept Loan Amount ERR: \n", err);
   }
 };
 
