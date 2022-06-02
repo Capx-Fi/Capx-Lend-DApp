@@ -206,7 +206,7 @@ const Liquidation = () => {
 			</Row>
 			<Row> 
 				<Col>
-					<Scrollbar style={{ height: "calc(100vh - 322px)" }}>
+					<Scrollbar className="luqidation-scroll">
 						<div className="order-list">
 							<h2 className="card-title">Defaulted Loans</h2>
 							{availableLoanStatus(filteredLoans).map(function (status) {

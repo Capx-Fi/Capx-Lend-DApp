@@ -7,3 +7,15 @@
 	justify-content: center;
 	align-items: center;
 }
+
+.ScrollbarsCustom {
+	&.luqidation-scroll{
+		height: calc(100vh - 322px) !important;
+		@media screen and (max-width:1440px) {
+			height: calc(100vh - 300px) !important;
+		}
+		@media screen and (max-width:1366px) {
+            height: calc(100vh - 280px) !important;
+        }
+	}
+}

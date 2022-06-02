@@ -203,7 +203,7 @@ const BorrowTabLB = () => {
 						<h2>All Offers</h2>
 					</Col>
 					<Col>
-						<Scrollbar style={{ height: "calc(100vh - 392px)" }}>
+						<Scrollbar className="lendbrrow-scroll">
 							<div className="order-list">
 								{/* {availableLoanStatus(filteredLoans).map(function (status) {
 									return ( */}

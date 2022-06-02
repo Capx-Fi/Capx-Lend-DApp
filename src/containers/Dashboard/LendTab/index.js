@@ -281,7 +281,7 @@ const LendTab = (collapsed) => {
 			</Row>
 			<Row>
 				<Col>
-					<Scrollbar style={{ height: "calc(100vh - 510px)" }}>
+					<Scrollbar className="dashboard-scroll">
 						<div className="order-list">
 							{/* {availableLoanStatus(filteredLoans).map(function (status) {
                 return ( */}

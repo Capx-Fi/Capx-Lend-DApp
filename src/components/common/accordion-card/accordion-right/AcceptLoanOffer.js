@@ -37,10 +37,10 @@ function AcceptLoanOffer({
 			<div style={{ marginTop: "-1rem", paddingBottom: "1.5rem" }}>
 				<Row className="mb-2">
 					<Col sm="12">
-						<b>Accept Loan Offer</b>
+						<b className="titles-right">Accept Loan Offer</b>
 					</Col>
 				</Row>
-				<Row>
+				<Row className="align-items-center">
 					<Col sm="7">Loan Amount : $ &nbsp;</Col>
 					<Col sm="5" className="text-right">
 						<b> {amount}</b>

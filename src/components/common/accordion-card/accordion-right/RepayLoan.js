@@ -38,7 +38,7 @@ function RepayLoan({ lendContract, loan, masterContract, from }) {
       )} */}
       <Row className="mb-2">
         <Col sm="12">
-          <b>Repay Loan</b>
+          <b className="titles-right">Repay Loan</b>
         </Col>
       </Row>
       <Row>

@@ -124,7 +124,7 @@
 				@media screen and (max-width:1280px) {
 					font-size: 10px;
 					height: 26px;
-					line-height: 26px;
+					line-height: 25px;
 				}
 				&:last-child {
 					margin-right: 0;
@@ -223,6 +223,9 @@
 			padding: 38px 25px 20px 25px;
 			h3 {
 				font-size: 20px;
+				@media screen and (max-width:1440px) {
+					font-size: 18px;
+				}
 			}
 			.additional-info-dtl {
 				display: flex;
@@ -265,7 +268,10 @@
 								font-weight: 600;
 								color: @text-white;
 								@media screen and (max-width:1440px) {
-									font-size: 17px;
+									font-size: 15px;
+								}
+								@media screen and (max-width:1280px) {
+									font-size: 14px;
 								}
 							}
 						}
@@ -281,6 +287,9 @@
 					color: @text-white;
 					.additionalinfo-right-inner {
 						width: 80%;
+						@media screen and (max-width:1280px) {
+							font-size: 14px;
+						}
 						.action-btn {
 							background: @btn-gradient;
 							color: @secondary-color;
@@ -297,6 +306,9 @@
 						}
 						b {
 							font-size: 16px;
+							@media screen and (max-width:1280px) {
+								font-size: 14px;
+							}
 						}
 						.tooltip-icon {
 							width: 13px;

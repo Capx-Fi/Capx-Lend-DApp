@@ -169,7 +169,7 @@ const NavigationBar = () => {
 							<div className="select-inner">
 								<div className="svg-icon">
 									<div className="svg-icon-inner">
-										<SvgIcon name="avax-icon" viewbox="0 0 38.3 33.7" />
+										<SvgIcon name="avax-icon" viewbox="0 0 35.049 35.049" />
 									</div>
 								</div>
 								<div className="name">Avalanche</div>
