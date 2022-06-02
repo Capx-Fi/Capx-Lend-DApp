@@ -1,9 +1,10 @@
 import { Button, Col, Radio, Row, Tooltip } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SvgIcon from "../../svg-icon/svg-icon";
 import {
   repaymentLoan,
   approveRepaymentLoan,
+  checkApproveRepaymentLoan,
 } from "../../../../utils/repaymentLoan";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
@@ -22,8 +23,29 @@ function RepayLoan({ lendContract, loan, masterContract, from }) {
   const web3 = new Web3(Web3.givenProvider);
   const queryClient = useQueryClient();
   const { active, account, chainId } = useWeb3React();
-  let isEarly = parseInt(loan?.loanEndTime) > Math.floor(Date.now() / (86400 * 1000)) * 86400 ? true : false;
+  let isEarly =
+    parseInt(loan?.loanEndTime) >
+    Math.floor(Date.now() / (86400 * 1000)) * 86400
+      ? true
+      : false;
   console.log("isEarly Repayment", isEarly);
+
+  useEffect(() => {
+    console.log("RepayLoan useEffect");
+    checkApproveRepaymentLoan(
+      masterContract,
+      account,
+      loan?.loanID,
+      ERC20_ABI,
+      lendContract._address,
+      loan?.stableCoinAddress,
+      setApproved,
+      dispatch,
+      queryClient,
+      from
+    );
+  }, [account, chainId, loan, masterContract, queryClient, from]);
+
   return (
     <div>
       {/* {isInstallment && (
@@ -52,22 +74,22 @@ function RepayLoan({ lendContract, loan, masterContract, from }) {
       </Row>
       {isEarly ? (
         <Row>
-        <Col sm="7">
-          Early Loan Repayment Penalty
-          <Tooltip
-            className="tooltip-icon"
-            placement="top"
-            title={"Early Loan Repayment Penalty"}
-          >
-            <SvgIcon name="info" viewbox="0 0 22 22.001" />
-          </Tooltip>
-          &nbsp;:&nbsp;
-        </Col>
-        <Col sm="5" className="text-right">
-          <b>{loan?.penalty} %</b>
-        </Col>
-      </Row>) : null
-      }
+          <Col sm="7">
+            Early Loan Repayment Penalty
+            <Tooltip
+              className="tooltip-icon"
+              placement="top"
+              title={"Early Loan Repayment Penalty"}
+            >
+              <SvgIcon name="info" viewbox="0 0 22 22.001" />
+            </Tooltip>
+            &nbsp;:&nbsp;
+          </Col>
+          <Col sm="5" className="text-right">
+            <b>{loan?.penalty} %</b>
+          </Col>
+        </Row>
+      ) : null}
       {!approved ? (
         <Button
           className="action-btn mt-3"
