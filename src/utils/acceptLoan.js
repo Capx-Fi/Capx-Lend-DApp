@@ -41,7 +41,7 @@ export const approveAcceptLoan = async (
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
-          new BigNumber(100 - loan?.discount).multipliedBy(100).toString(10)
+          new BigNumber(loan?.discount).multipliedBy(100).toString(10)
         )
         .call();
       if (result) {
@@ -56,7 +56,7 @@ export const approveAcceptLoan = async (
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
-          new BigNumber(100 - loan?.discount).multipliedBy(100).toString(10)
+          new BigNumber(loan?.discount).multipliedBy(100).toString(10)
         )
         .call();
       if (result) {
@@ -193,7 +193,7 @@ export const checkApproveAcceptLoan = async (
           loan?.collateralAddress,
           loan?.stableCoinAddress,
           new BigNumber(loan?.loanToValue).multipliedBy(100).toString(10),
-          new BigNumber(100 - loan?.discount).multipliedBy(100).toString(10)
+          new BigNumber(loan?.discount).multipliedBy(100).toString(10)
         )
         .call();
       if (result) {

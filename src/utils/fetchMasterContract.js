@@ -55,7 +55,7 @@ export const fetchWVTAmt = async (
   let result = null;
   try {
     result = await masterContract.methods
-      .wvtAmountCalculation(scAmt, wvtAddress, scAddress, ltv, 10000 - discount)
+      .wvtAmountCalculation(scAmt, wvtAddress, scAddress, ltv, discount)
       .call();
     if (result) {
       console.log("WVT Amount :", result);
@@ -82,7 +82,7 @@ export const fetchSCAmt = async (
         wvtAddress,
         scAddress,
         ltv,
-        10000 - discount
+        discount
       )
       .call();
     if (result) {
@@ -134,7 +134,7 @@ export const getLoanAmt = (
       Math.pow(10, scDecimal) *
       new BigNumber(amount).multipliedBy(Math.pow(10, wvtDecimal)) *
       (ltv * 100) *
-      ((100 - discount) * 100);
+      (discount * 100);
     let denom = 100000000 * Math.pow(10, wvtDecimal);
     loanAmt = new BigNumber(num / denom).dividedBy(Math.pow(10, scDecimal));
   } else {
@@ -143,7 +143,7 @@ export const getLoanAmt = (
       new BigNumber(amount).multipliedBy(Math.pow(10, scDecimal)) *
       Math.pow(10, wvtDecimal);
     let denom =
-      price * (ltv * 100) * ((100 - discount) * 100) * Math.pow(10, scDecimal);
+      price * (ltv * 100) * (discount * 100) * Math.pow(10, scDecimal);
     loanAmt = new BigNumber(num / denom).dividedBy(Math.pow(10, wvtDecimal));
   }
   return loanAmt.toString(10);
