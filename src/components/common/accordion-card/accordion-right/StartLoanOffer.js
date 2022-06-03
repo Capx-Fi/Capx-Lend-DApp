@@ -15,10 +15,10 @@ function StartLoanOffer({ lendContract, loan, from }) {
     <div>
       <Row className="mb-2">
         <Col sm="12">
-          <b>Start Loan Offer</b>
+          <b className="titles-right">Start Loan Offer</b>
         </Col>
       </Row>
-      <Row>
+      <Row className="align-items-center">
         <Col sm="7">Loan Amount : $ &nbsp;</Col>
         <Col sm="5" className="text-right">
           <b> {loan?.stableCoinAmt}</b>

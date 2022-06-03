@@ -53,7 +53,7 @@ function LiquidateLoan({ lendContract, loan, masterContract, from }) {
       )} */}
       <Row className="mb-2">
         <Col sm="12">
-          <b>Liquidate Loan</b>
+          <b className="titles-right">Liquidate Loan</b>
         </Col>
       </Row>
       <Row>

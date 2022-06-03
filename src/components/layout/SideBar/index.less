@@ -8,6 +8,7 @@
 	padding: 40px 30px;
 	border-right: 1px solid #404040;
 	transition: all ease-in-out 0.4s;
+	min-height: 100%;
 	.sidebar-menu {
 		ul {
 			list-style-type: none;
@@ -21,6 +22,10 @@
 					align-items: center;
 					border-radius: 40px;
 					opacity: 0.5;
+					font-size: 16px;
+					@media screen and (max-width:1366px) {
+						font-size: 14px;
+					}
 					.icon {
 						fill: @grey-color;
 						margin-right: 10px;
@@ -51,6 +56,9 @@
 			margin-bottom: 1.5rem;
 			margin-left: 1rem;
 			font-weight: 600;
+			@media screen and (max-width:1280px) {
+				font-size: 14px;
+			}
 			.icon {
 				width: 24px;
 				fill: @text-color-primary;

@@ -17,8 +17,8 @@ function LiquidationLoader() {
           <h2>Liquidation Market</h2>
           <p>Liquidate the collateral from Defaulted loans.</p>
         </Col>
+        <Col sm="12" className="filterby-heading"><h3> Filter By </h3></Col>
         <Col className="left-col">
-          <h3> Filter By </h3>
           <div className="filter-container">
             <div className="select-container">
               <p>{"Company Type:"}</p>

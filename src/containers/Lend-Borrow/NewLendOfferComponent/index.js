@@ -408,7 +408,7 @@ const NewLendOfferComponent = (props) => {
             }`}
           >
             <Row>
-              <Col sm="12" className="mb-4">
+              <Col sm="12" className="mb-3">
                 <label className="lb-label">Loan type</label>
                 <Radio.Group onChange={onChange} value={value}>
                   <Radio value={1}>Single Repayment</Radio>
@@ -451,10 +451,8 @@ const NewLendOfferComponent = (props) => {
                             ? {
                                 background: "#192229",
                                 color: "white",
-                                width: "70%",
                               }
                             : {
-                                width: "70%",
                                 background: "#233039",
                                 color: "white",
                               }
@@ -478,10 +476,8 @@ const NewLendOfferComponent = (props) => {
                             ? {
                                 background: "#192229",
                                 color: "white",
-                                width: "30%",
                               }
                             : {
-                                width: "30%",
                                 background: "#233039",
                                 color: "white",
                               }
@@ -527,10 +523,8 @@ const NewLendOfferComponent = (props) => {
                             ? {
                                 background: "#192229",
                                 color: "white",
-                                width: "70%",
                               }
                             : {
-                                width: "70%",
                                 background: "#233039",
                                 color: "white",
                               }
@@ -545,7 +539,6 @@ const NewLendOfferComponent = (props) => {
                       <Select
                         dropdownClassName="capx-dropdown"
                         disabled={approved || globalDisabled !== 2}
-                        style={{ width: "30%" }}
                         onSelect={onCoinChange}
                         value={stableCoinList[currentCoinIndex].stableCoin}
                         suffixIcon={
@@ -580,7 +573,7 @@ const NewLendOfferComponent = (props) => {
             )}
             {props.lend_loan_assets && (
               <Row>
-                <Col className="mb-4">
+                <Col className="mb-2">
                   <label className="lb-label">
                     Loan Amount{" "}
                     <small className="align-right">
@@ -609,10 +602,8 @@ const NewLendOfferComponent = (props) => {
                           ? {
                               background: "#192229",
                               color: "white",
-                              width: "70%",
                             }
                           : {
-                              width: "70%",
                               background: "#233039",
                               color: "white",
                             }
@@ -624,7 +615,6 @@ const NewLendOfferComponent = (props) => {
                     <Select
                       dropdownClassName="capx-dropdown"
                       disabled={approved || globalDisabled !== 2}
-                      style={{ width: "30%" }}
                       onSelect={onCoinChange}
                       value={stableCoinList[currentCoinIndex].stableCoin}
                       suffixIcon={
@@ -659,7 +649,7 @@ const NewLendOfferComponent = (props) => {
                     </div>
                   )}
                 </Col>
-                <Col className="mb-4">
+                <Col className="mb-2">
                   <label className="lb-label">Collateral Amount </label>
                   <Input.Group className="groupwith-select">
                     <Input
@@ -668,10 +658,8 @@ const NewLendOfferComponent = (props) => {
                           ? {
                               background: "#192229",
                               color: "white",
-                              width: "70%",
                             }
                           : {
-                              width: "70%",
                               background: "#233039",
                               color: "white",
                             }
@@ -697,10 +685,8 @@ const NewLendOfferComponent = (props) => {
                           ? {
                               background: "#192229",
                               color: "white",
-                              width: "30%",
                             }
                           : {
-                              width: "30%",
                               background: "#233039",
                               color: "white",
                             }
@@ -720,7 +706,7 @@ const NewLendOfferComponent = (props) => {
               </Row>
             )}
             {props.lend_loan_assets && (
-              <Col sm="6" className="mb-4 mt-2" style={{ padding: "0" }}>
+              <Col sm="6" className="mb-2" style={{ padding: "0" }}>
                 <Checkbox
                   disabled={
                     approved ||

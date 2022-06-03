@@ -16,7 +16,7 @@ function CancelLoan({ lendContract, loan, from }) {
     <div>
       <Row className="mb-2">
         <Col sm="12">
-          <b>Cancel Loan Offer</b>
+          <b className="titles-right">Cancel Loan Offer</b>
           <Tooltip
             className="tooltip-icon"
             placement="top"

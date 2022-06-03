@@ -34,7 +34,6 @@ function AcceptLoanOffer({
     console.log(`checked = ${e.target.checked}`);
     setIsChecked(e.target.checked);
   };
-
   useEffect(() => {
     console.log("AcceptLoanOffer useEffect");
     checkApproveAcceptLoan(
@@ -57,10 +56,10 @@ function AcceptLoanOffer({
       <div style={{ marginTop: "-1rem", paddingBottom: "1.5rem" }}>
         <Row className="mb-2">
           <Col sm="12">
-            <b>Accept Loan Offer</b>
+            <b className="titles-right">Accept Loan Offer</b>
           </Col>
         </Row>
-        <Row>
+        <Row className="align-items-center">
           <Col sm="7">Loan Amount : $ &nbsp;</Col>
           <Col sm="5" className="text-right">
             <b> {amount}</b>
@@ -82,7 +81,7 @@ function AcceptLoanOffer({
             </Checkbox>
           ) : null}
           <Button
-            className="action-btn mt-1"
+            className="action-btn mt-3"
             block
             onClick={() =>
               approveAcceptLoan(
@@ -118,7 +117,7 @@ function AcceptLoanOffer({
             </Checkbox>
           ) : null}
           <Button
-            className="action-btn mt-1"
+            className="action-btn mt-3"
             block
             onClick={() =>
               acceptLoan(

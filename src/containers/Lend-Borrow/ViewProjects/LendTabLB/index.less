@@ -1,2 +1,13 @@
 @import "../../../../assets/less/_variables.less";
 
+.ScrollbarsCustom {
+    &.lendbrrow-scroll{
+        height: calc(100vh - 392px) !important;
+        @media screen and (max-width:1440px) {
+            height: calc(100vh - 362px) !important;
+        }
+        @media screen and (max-width:1366px) {
+            height: calc(100vh - 342px) !important;
+        }
+    }
+}
