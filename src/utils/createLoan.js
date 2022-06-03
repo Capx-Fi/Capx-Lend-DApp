@@ -197,7 +197,7 @@ export const createLoan = async (
         ltv,
         lt,
         duration,
-        100 - discount,
+        10000 - discount,
         externalLiquidation
       )
       .send({ from: account });
