@@ -29,68 +29,72 @@ import RepaySuccess from "../../../assets/lottie/Repay/RepaySuccess.json";
 // Error
 import ErrorState from "../../../assets/lottie/Error/ErrorState.json";
 
-const CapxModal = (modal) => {
-	const dispatch = useDispatch();
+import AcceptLoanSuccess from "../../../assets/lottie/CreateLoan/CreateLoanSuccess.json";
 
-	return (
-		<>
-			<Modal
-				title={null}
-				className="capx-modal capx-modal-loading"
-				visible={true}
-				onCancel={() => dispatch(hideModal())}
-				closable={modal.closable}
-				footer={" "}
-				keyboard={false}
-				maskClosable={false}
-				maskStyle={{
-					height: "calc(100vh - 90px)",
-					top: 61,
-					background: "#151517",
-				}}
-				centered
-			>
-				{/* <div className="modal-icon">{modal.modalIcon}</div> */}
-				<Lottie
-					style={{
-						width: "70%",
-						margin: "0 auto",
-					}}
-					loop={true}
-					animationData={
-						modal.modalType === "Error"
-							? ErrorState
-							: modal.modalType === "CreateLoan"
-							? CreateLoanInProgress
-							: modal.modalType === "CreateLoanSuccess"
-							? CreateLoanSuccess
-							: modal.modalType === "ApproveLoan"
-							? ApproveLoanInProgress
-							: modal.modalType === "ApproveLoanSuccess"
-							? ApproveLoanSuccess
-							: modal.modalType === "CancelLoan"
-							? CancelLoanInProgress
-							: modal.modalType === "CancelLoanSuccess"
-							? CancelLoanSuccess
-							: modal.modalType === "LiquidateLoan"
-							? CancelLoanInProgress
-							: modal.modalType === "LiquidateLoanSuccess"
-							? CreateLoanSuccess
-							: modal.modalType === "RepayLoan"
-							? RepayInProgress
-							: modal.modalType === "RepayLoanSuccess"
-							? RepaySuccess
-							: modal.modalType === "ClaimSuccess"
-							? ApproveLoanSuccess
-							: CreateLoanInProgress
-					}
-				/>
-				<p>{modal.modalProps.lottie}</p>
-				<h4>{modal.modalTitle}</h4>
-				<p>{modal.modalSubtitle}</p>
-			</Modal>
-		</>
-	);
+const CapxModal = (modal) => {
+  const dispatch = useDispatch();
+
+  return (
+    <>
+      <Modal
+        title={null}
+        className="capx-modal capx-modal-loading"
+        visible={true}
+        onCancel={() => dispatch(hideModal())}
+        closable={modal.closable}
+        footer={" "}
+        keyboard={false}
+        maskClosable={false}
+        maskStyle={{
+          height: "calc(100vh - 90px)",
+          top: 61,
+          background: "#151517",
+        }}
+        centered
+      >
+        {/* <div className="modal-icon">{modal.modalIcon}</div> */}
+        <Lottie
+          style={{
+            width: "70%",
+            margin: "0 auto",
+          }}
+          loop={true}
+          animationData={
+            modal.modalType === "Error"
+              ? ErrorState
+              : modal.modalType === "CreateLoan"
+              ? CreateLoanInProgress
+              : modal.modalType === "CreateLoanSuccess"
+              ? CreateLoanSuccess
+              : modal.modalType === "ApproveLoan"
+              ? ApproveLoanInProgress
+              : modal.modalType === "ApproveLoanSuccess"
+              ? ApproveLoanSuccess
+              : modal.modalType === "CancelLoan"
+              ? CancelLoanInProgress
+              : modal.modalType === "CancelLoanSuccess"
+              ? CancelLoanSuccess
+              : modal.modalType === "LiquidateLoan"
+              ? CancelLoanInProgress
+              : modal.modalType === "LiquidateLoanSuccess"
+              ? CreateLoanSuccess
+              : modal.modalType === "RepayLoan"
+              ? RepayInProgress
+              : modal.modalType === "RepayLoanSuccess"
+              ? RepaySuccess
+              : modal.modalType === "ClaimSuccess"
+              ? ApproveLoanSuccess
+              : modal.modalType === "AcceptLoanSuccess"
+              ? AcceptLoanSuccess
+              : CreateLoanInProgress
+          }
+        />
+        <p>{modal.modalProps.lottie}</p>
+        <h4>{modal.modalTitle}</h4>
+        <p>{modal.modalSubtitle}</p>
+      </Modal>
+    </>
+  );
 };
 
 export default CapxModal;

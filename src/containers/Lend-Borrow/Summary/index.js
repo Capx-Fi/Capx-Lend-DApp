@@ -5,7 +5,11 @@ import BigNumber from "bignumber.js";
 import { MASTER_ABI } from "../../../contracts/Master";
 import { ORACLE_ABI } from "../../../contracts/Oracle";
 import { LEND_ABI } from "../../../contracts/Lend";
-import { approveCreateLoan, createLoan } from "../../../utils/createLoan";
+import {
+  approveCreateLoan,
+  checkApproveCreateLoan,
+  createLoan,
+} from "../../../utils/createLoan";
 import { ERC20_ABI } from "../../../contracts/ERC20";
 import { useWeb3React } from "@web3-react/core";
 import { convertToInternationalCurrencySystemTotalInterest } from "../../../utils/convertToInternationalCurrencySystem";
@@ -44,6 +48,45 @@ const Summary = (props) => {
   const history = useHistory();
   console.log(props.collateralAmount);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isValid && active) {
+      console.log("Summary useEffect");
+      checkApproveCreateLoan(
+        account,
+        ERC20_ABI,
+        lendContract._address,
+        props.isBorrower,
+        props.isBorrower
+          ? new BigNumber(props?.collateralActualAmount).multipliedBy(
+              Math.pow(10, props?.collateralDecimal).toString(10)
+            )
+          : new BigNumber(props?.stableCoinActualAmount).multipliedBy(
+              Math.pow(10, props?.stableCoinDecimal).toString(10)
+            ),
+        props.collateralAddress,
+        props.stableCoinAddress,
+        dispatch,
+        setApproved
+      );
+    }
+  }, [
+    isValid,
+    account,
+    active,
+    chainId,
+    props.loanID,
+    props.isBorrower,
+    props.collateralAddress,
+    props.stableCoinAddress,
+    props.collateralActualAmount,
+    props.stableCoinActualAmount,
+    props.collateralDecimal,
+    props.stableCoinDecimal,
+    setApproved,
+    lendContract,
+  ]);
+
   return (
     <>
       <div className="summary-head">

@@ -1,6 +1,10 @@
 import { Button, Col, Radio, Row } from "antd";
-import React, { useState } from "react";
-import { liquidation, approveLiquidation } from "../../../../utils/liquidation";
+import React, { useEffect, useState } from "react";
+import {
+  liquidation,
+  approveLiquidation,
+  checkApproveLiquidation,
+} from "../../../../utils/liquidation";
 import Web3 from "web3";
 import { useWeb3React } from "@web3-react/core";
 import { ERC20_ABI } from "../../../../contracts/ERC20";
@@ -19,6 +23,22 @@ function LiquidateLoan({ lendContract, loan, masterContract, from }) {
   const web3 = new Web3(Web3.givenProvider);
   const queryClient = useQueryClient();
   const { active, account, chainId } = useWeb3React();
+
+  useEffect(() => {
+    console.log("LiquidateLoan useEffect");
+    checkApproveLiquidation(
+      masterContract,
+      account,
+      loan?.loanID,
+      ERC20_ABI,
+      lendContract._address,
+      loan?.stableCoinAddress,
+      setApproved,
+      dispatch,
+      queryClient,
+      from
+    );
+  }, [account, chainId, loan, masterContract, queryClient, from]);
   return (
     <div>
       {/* {isInstallment && (
@@ -33,7 +53,7 @@ function LiquidateLoan({ lendContract, loan, masterContract, from }) {
       )} */}
       <Row className="mb-2">
         <Col sm="12">
-          <b>Liquidate Loan</b>
+          <b className="titles-right">Liquidate Loan</b>
         </Col>
       </Row>
       <Row>

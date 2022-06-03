@@ -7,9 +7,14 @@
 		width: 100%;
 		padding-right: 50px;
 		.groupwith-select {
+			display: flex;
 			.ant-input {
 				border-radius: 8px 0 0 8px;
 				border-right: 0;
+				@media screen and (max-width:1366px) {
+					height: 36px;
+					line-height: 36px;
+				}
 			}
 			.ant-select {
 				.ant-select-selector {
@@ -36,6 +41,11 @@
 			}
 		}
 		.loanassets-group {
+			.ant-input{
+				@media screen and (max-width:1366px) {
+					height: 36px;
+				}
+			}
 			.ant-btn {
 				height: 100%;
 				height: 40px;
@@ -48,6 +58,9 @@
 				border-color: @border-dark-green;
 				border-left: 0;
 				pointer-events: none;
+				@media screen and (max-width:1366px) {
+					height: 36px;
+				}
 				.icon {
 					width: 20px;
 					margin-right: 4px;
@@ -95,6 +108,9 @@
 			font-weight: 600;
 			display: block;
 			margin-bottom: 3px;
+			@media screen and (max-width: 1366px) {
+				font-size: 12px;
+			}
 			.tooltip-icon {
 				fill: @tooltip-icon;
 				display: inline-block;
@@ -159,18 +175,46 @@
 		max-width: 500px;
 		display: flex;
 		flex-direction: column;
+		margin-bottom: 15px;
+		@media screen and (max-width: 1440px) {
+			max-width: 420px;
+		}
+		@media screen and (max-width: 1280px) {
+			max-width: 374px;
+		}
 		.summary-head {
 			border-bottom: 1px solid @border-color-base;
 			margin: 0 24px 15px;
 			padding: 15px 0;
+			@media screen and (max-width: 1366px) {
+				padding: 12px 0;
+			}
 			h3 {
 				font-size: 22px;
 				margin-bottom: 0;
+				@media screen and (max-width: 1440px) {
+					font-size: 20px;
+				}
+				@media screen and (max-width: 1366px) {
+					font-size: 19px;
+				}
+				@media screen and (max-width: 1280px) {
+					font-size: 18px;
+				}
 			}
 			p {
 				font-size: 14px;
 				margin-bottom: 0;
 				color: @text-color-secondary;
+				@media screen and (max-width: 1440px) {
+					font-size: 14px;
+				}
+				@media screen and (max-width: 1366px) {
+					font-size: 13px;
+				}
+				@media screen and (max-width: 1280px) {
+					font-size: 12px;
+				}
 			}
 		}
 		.summary-content {
@@ -184,6 +228,9 @@
 					width: 100%;
 					font-size: 15px;
 					color: @text-white;
+					@media screen and (max-width:1366px) {
+						font-size: 13px;
+					}
 					label {
 						font-weight: normal;
 					}
@@ -199,11 +246,24 @@
 			padding: 12px 24px;
 			border-top: 1px solid @border-color-base;
 			margin-top: auto;
+			background: #172026;
+			border-radius: 0 0 7px 7px;
+			@media screen and (max-width: 1366px) {
+				padding: 8px 15px;
+			}
 			.left {
 				border-right: 1px solid @border-color-base;
 				margin-right: 30px;
 				padding-right: 20px;
 				min-width: 140px;
+				@media screen and (max-width: 1366px) {
+					line-height: 1.1;
+				}
+				@media screen and (max-width: 1280px) {
+					margin-right: 20px;
+    				padding-right: 10px;
+					min-width: 130px;
+				}
 				small {
 					color: @text-color-secondary;
 					&:last-child {
@@ -215,12 +275,23 @@
 					font-size: 30px;
 					font-weight: 600;
 					line-height: 1;
+					@media screen and (max-width: 1440px) {
+						font-size: 28px;
+					}
+					@media screen and (max-width: 1366px) {
+						font-size: 25px;
+					}
 				}
 			}
 			.right {
 				width: 100%;
 				.ant-btn {
 					width: 100%;
+					padding: 0 15px;
+					@media screen and (max-width: 1280px) {
+						padding: 0 15px;
+						font-size: 14px;
+					}
 				}
 			}
 		}

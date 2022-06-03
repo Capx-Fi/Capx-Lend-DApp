@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.6.0",
-    "@craco/craco": "6.2.0",
+    "@craco/craco": "^6.2.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@restart/context": "^2.1.4",
     "@testing-library/jest-dom": "^5.11.4",
@@ -23,7 +23,7 @@
     "react-dom": "^17.0.2",
     "react-query": "^3.39.0",
     "react-redux": "^8.0.1",
-    "react-responsive": "^9.0.0-beta.6",
+    "react-responsive": "^9.0.0-beta.8",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "react-scrollbars-custom": "^4.0.27",

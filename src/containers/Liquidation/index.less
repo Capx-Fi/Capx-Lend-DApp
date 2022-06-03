@@ -1,28 +1,21 @@
 @import "../../assets/less/_variables.less";
 
-.filter-container {
-	display: flex;
-	.select-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		.capx-dropdown {
-			width: 10px;
-			&:hover {
-				border-color: none !important;
-				box-shadow: none !important;
-			}
-		}
-		p {
-			margin-bottom: 0;
-		}
-	}
-}
 
 .no-orders {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+}
+
+.ScrollbarsCustom {
+	&.luqidation-scroll{
+		height: calc(100vh - 322px) !important;
+		@media screen and (max-width:1440px) {
+			height: calc(100vh - 300px) !important;
+		}
+		@media screen and (max-width:1366px) {
+            height: calc(100vh - 280px) !important;
+        }
+	}
 }

@@ -6,7 +6,6 @@ import NavigationBar from "./components/layout/NavigationBar";
 import Dashboard from "./containers/Dashboard";
 import LendBorrow from "./containers/Lend-Borrow";
 import Metamask from "./containers/Metamask";
-import { useMediaQuery } from "react-responsive";
 
 //Svg Sprite
 import svgFile from "./assets/images/svg/svg-sprite.svg";
@@ -27,6 +26,7 @@ import CapxModal from "./components/common/modals/CapxModal";
 import { useHistory } from "react-router-dom";
 import { useQueryClient } from "react-query";
 import Breakpoint from "./containers/Breakpoint";
+import { useMediaQuery } from 'react-responsive'
 
 const { Header, Content, Sider, Footer } = Layout;
 
@@ -70,6 +70,13 @@ const App = () => {
 			document.body.classList.remove("sidebar-open");
 		}
 	};
+
+	const isDesktop1440 = useMediaQuery({
+		query: '(min-width: 1441px)'
+	})
+	const isDesktop1280 = useMediaQuery({
+		query: '(max-width: 1280px)'
+	})
 	return (
 		<>
 			{!loading ? (
@@ -85,7 +92,7 @@ const App = () => {
 									<>
 										{modal.modalType !== null && <CapxModal {...modal} />}
 										<Sider
-											width={290}
+											width={isDesktop1440 ? 290 : 240}
 											collapsible
 											breakpoint="xl"
 											className={

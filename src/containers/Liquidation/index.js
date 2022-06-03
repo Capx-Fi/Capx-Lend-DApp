@@ -129,8 +129,8 @@ const Liquidation = () => {
 					<h2>Liquidation Market</h2>
 					<p>Liquidate the collateral from Defaulted loans.</p>
 				</Col>
+				<Col sm="12" className="filterby-heading"><h3> Filter By </h3></Col>
 				<Col className="left-col">
-					<h3> Filter By </h3>
 					{/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
@@ -204,9 +204,9 @@ const Liquidation = () => {
 					</Select>
 				</Col>
 			</Row>
-			<Row>
+			<Row> 
 				<Col>
-					<Scrollbar style={{ height: "calc(100vh - 322px)" }}>
+					<Scrollbar className="luqidation-scroll">
 						<div className="order-list">
 							<h2 className="card-title">Defaulted Loans</h2>
 							{availableLoanStatus(filteredLoans).map(function (status) {

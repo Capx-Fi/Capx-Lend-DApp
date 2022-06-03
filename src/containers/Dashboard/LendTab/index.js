@@ -190,8 +190,8 @@ const LendTab = (collapsed) => {
 				</Col>
 			</Row>
 			<Row className="heading-row">
+				<Col sm="12" className="filterby-heading"><h3> Filter By </h3></Col>
 				<Col className="left-col">
-					<h3> Filter By </h3>
 					{/* <Select
             dropdownClassName="capx-dropdown"
             suffixIcon={<SvgIcon name="arrow-down" viewbox="0 0 18 10.5" />}
@@ -281,7 +281,7 @@ const LendTab = (collapsed) => {
 			</Row>
 			<Row>
 				<Col>
-					<Scrollbar style={{ height: "calc(100vh - 510px)" }}>
+					<Scrollbar className="dashboard-scroll">
 						<div className="order-list">
 							{/* {availableLoanStatus(filteredLoans).map(function (status) {
                 return ( */}

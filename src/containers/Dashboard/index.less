@@ -18,6 +18,10 @@
 					padding: 0 26px;
 					background: none;
 					border-radius: 10px;
+					@media screen and (max-width:1366px) {
+						font-size: 13px;
+						height: 30px;
+					}
 					.ant-tabs-tab-btn {
 						color: @text-white;
 						font-weight: 600;
@@ -42,10 +46,19 @@
 		color: @text-white;
 		margin-bottom: 0;
 		font-weight: 700;
+		@media screen and (max-width:1440px) {
+			font-size: 24px;
+		}
+		@media screen and (max-width:1366px) {
+			font-size: 20px;
+		}
 	}
 	.left-col {
-		padding-bottom: 20px;
+		padding-bottom: 15px;
 		max-width: 100%;
+		@media screen and (max-width:1440px) {
+			padding-bottom: 12px;
+		}
 		.ant-select {
 			.ant-select-selector {
 				color: #a1a1a1;
@@ -69,8 +82,11 @@
 		}
 	}
 	.right-col {
-		padding-bottom: 20px;
+		padding-bottom: 15px;
 		max-width: fit-content;
+		@media screen and (max-width:1440px) {
+			padding-bottom: 12px;
+		}
 		.ant-select {
 			float: right;
 		}
@@ -91,10 +107,22 @@
 				font-size: 16px;
 				margin-bottom: 0;
 				color: @text-muted;
+				@media screen and (max-width:1440px) {
+					font-size: 12px;
+				}
+				@media screen and (max-width:1280px) {
+					font-size: 10px;
+				}
 			}
 			h4 {
 				font-size: 26px;
 				margin-bottom: 0;
+				@media screen and (max-width:1440px) {
+					font-size: 20px;
+				}
+				@media screen and (max-width:1280px) {
+					font-size: 18px;
+				}
 			}
 		}
 	}
@@ -112,25 +140,6 @@
 	}
 }
 
-.filter-container {
-	display: flex;
-	.select-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		.capx-dropdown {
-			width: 10px;
-			&:hover {
-				border-color: none !important;
-				box-shadow: none !important;
-			}
-		}
-		p {
-			margin-bottom: 0;
-		}
-	}
-}
 
 .orderlist-card {
 	margin-bottom: 15px;
@@ -148,6 +157,12 @@
 		justify-content: space-between;
 		.upper-left {
 			font-size: 20px;
+			@media screen and (max-width:1440px) {
+				font-size: 16px;
+			}
+			@media screen and (max-width:1280px) {
+				font-size: 14px;
+			}
 			b {
 				font-weight: 600;
 			}
@@ -161,6 +176,7 @@
 			.helthfactor-title {
 				margin-left: 7.5rem;
 				color: #abfab6;
+				font-weight: bold;
 				b {
 					color: #abfab6;
 				}
@@ -260,6 +276,9 @@
 			li {
 				padding-left: 30px;
 				position: relative;
+				@media screen and (max-width:1600px) {
+					padding-left: 10px;
+				}
 				&:first-child {
 					padding-left: 0;
 				}
@@ -300,17 +319,35 @@
 			li {
 				padding-left: 30px;
 				position: relative;
+				@media screen and (max-width:1600px) {
+					padding-left: 10px;
+				}
+				@media screen and (max-width:1280px) {
+					padding-left: 5px;
+				}
 				&:first-child {
 					padding-left: 0;
 				}
 				p {
 					font-size: 16px;
 					margin-bottom: 0;
+					@media screen and (max-width:1440px) {
+						font-size: 12px;
+					}
+					@media screen and (max-width:1280px) {
+						font-size: 11px;
+					}
 				}
 				h4 {
 					font-size: 20px;
 					margin-bottom: 0;
 					font-weight: 600;
+					@media screen and (max-width:1440px) {
+						font-size: 15px;
+					}
+					@media screen and (max-width:1280px) {
+						font-size: 14px;
+					}
 				}
 			}
 		}
@@ -326,6 +363,12 @@
 			padding: 38px 25px 20px 25px;
 			h3 {
 				font-size: 20px;
+				@media screen and (max-width:1440px) {
+					font-size: 18px;
+				}
+				@media screen and (max-width:1280px) {
+					font-size: 16px;
+				}
 			}
 			.additional-info-dtl {
 				display: flex;
@@ -364,6 +407,9 @@
 								margin-bottom: 0;
 								font-weight: 600;
 								color: @text-white;
+								@media screen and (max-width:1280px) {
+									font-size: 14px;
+								}
 							}
 						}
 					}
@@ -378,6 +424,10 @@
 					color: @text-white;
 					.additionalinfo-right-inner {
 						width: 80%;
+						font-size: 16px;
+						@media screen and (max-width:1280px) {
+							font-size: 14px;
+						}
 						.action-btn {
 							background: @btn-gradient;
 							color: @secondary-color;
@@ -390,6 +440,12 @@
 							background: @btn-cancel-gradient;
 							font-weight: bold;
 							border: 0;
+						}
+						.titles-right{
+							font-size: 18px;
+							@media screen and (max-width:1280px) {
+								font-size: 16px;
+							}
 						}
 						b {
 							font-size: 16px;
@@ -485,10 +541,24 @@
 		margin-top: -1.5rem;
 		width: 7rem;
 		height: 7rem;
+		@media screen and (max-width:1440px) {
+			width: 5.375rem;
+			height: 5.375rem;
+		}
+		@media screen and (max-width:1280px) {
+			width: 4.75rem;
+			height: 4.75rem;
+		}
 	}
 	.statusTitle {
 		text-align: center;
 		font-size: 1.5rem;
 		font-weight: 600;
+		@media screen and (max-width:1440px) {
+			font-size: 1.125rem;
+		}
+		@media screen and (max-width:1280px) {
+			font-size: 1rem;
+		}
 	}
 }

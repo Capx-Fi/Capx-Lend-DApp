@@ -9,7 +9,7 @@ export function getAdditionalInfo(loan) {
     },
     {
       label: "Discount",
-      value: loan.discount.toString() + " %",
+      value: (100 - loan.discount).toString() + " %",
       tooltip: discountTooltip,
     },
     {
