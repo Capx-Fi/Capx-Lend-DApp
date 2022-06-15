@@ -234,13 +234,13 @@ const Liquidation = () => {
 									</div>
 								);
 							})}
-							{availableLoanStatus(filteredLoans)?.length === 0 && (
-								<div className="no-orders">
-									<img src={noLiquidate} alt="No Borrows" />
-									<h2>Nothing to Liquidate!</h2>
-								</div>
-							)}
 						</div>
+						{availableLoanStatus(filteredLoans)?.length === 0 && (
+							<div className="no-orders">
+								<img src={noLiquidate} alt="No Borrows" />
+								<h2>Nothing to Liquidate!</h2>
+							</div>
+						)}
 					</Scrollbar>
 				</Col>
 			</Row>

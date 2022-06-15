@@ -310,14 +310,12 @@ const BorrowTab = () => {
 								</div>
 							)}
 						</div>
-						<div>
-							{availableLoanStatus(filteredLoans)?.length === 0 && (
-								<div className="no-orders">
-									<img src={noBorrow} alt="No Borrows" />
-									<h2>Oops! No Borrow Orders Found!</h2>
-								</div>
-							)}
-						</div>
+						{availableLoanStatus(filteredLoans)?.length === 0 && (
+							<div className="no-orders">
+								<img src={noBorrow} alt="No Borrows" />
+								<h2>Oops! No Borrow Orders Found!</h2>
+							</div>
+						)}
 					</Scrollbar>
 				</Col>
 			</Row>

@@ -6,6 +6,10 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	h2{
+		margin-top: 10px;
+		margin-bottom: 0;
+	}
 }
 
 .ScrollbarsCustom {
@@ -17,5 +21,14 @@
 		@media screen and (max-width:1366px) {
             height: calc(100vh - 280px) !important;
         }
+		.no-orders{
+			height: calc(100vh - 380px) !important;
+			@media screen and (max-width:1440px) {
+				height: calc(100vh - 360px) !important;
+			}
+			@media screen and (max-width:1366px) {
+				height: calc(100vh - 340px) !important;
+			}
+		}
 	}
 }

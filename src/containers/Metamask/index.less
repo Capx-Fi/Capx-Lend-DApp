@@ -3,11 +3,10 @@
 .main-container {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: flex-start;
 	top: 7.5rem;
 	position: relative;
-	padding: 4rem;
+	padding: 3rem 4rem;
 	border-radius: 2rem;
 	margin: auto;
 	background: linear-gradient(
@@ -16,11 +15,30 @@
 		rgba(18, 28, 32, 0.3) 117.26%
 	);
 	width: 50vw;
-	height: 40vh;
+	height: 45vh;
+	min-height: 400px;
+
+	@media screen and (min-width:1440px) {
+		width: 60vw;
+		height: 50vh;
+	}
+
+	@media screen and (min-width:1660px) {
+		height: 55vh;
+	}
+
+	@media screen and (max-width:1400px) {
+		top: 4rem;
+		width: 60vw;
+	}
 
 	.header {
 		color: white;
-		font-size: 32px;
+		font-size: 38px;
+		font-weight: 600;
+		@media screen and (min-width:1600px) {
+			font-size: 50px;
+		}
 	}
 	.connect-btn {
 		color: black;
@@ -32,20 +50,28 @@
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
+		margin-top: 3rem;
 		.metamask-icon {
 			margin-right: 1rem;
 			width: 1.5rem;
+			@media screen and (min-width:1600px) {
+				width: 2.3rem;
+			}
+		}
+		@media screen and (min-width:1600px) {
+			font-size: 1.5rem;
+			padding: 1rem 1.5rem;
 		}
 	}
 	.firefox {
 		position: absolute;
-		right: -7.5rem;
-		bottom: -7.5rem;
+		right: -5rem;
+    	bottom: -3.2rem;
 		@media @desktop {
-			width: 20rem;
+			width: 18rem;
 		}
 		@media @upper {
-			width: 25rem;
+			width: 22rem;
 		}
 		@media screen and (max-width:1440px) {
 			width: 20rem;
