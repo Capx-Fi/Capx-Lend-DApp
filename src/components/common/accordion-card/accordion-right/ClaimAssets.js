@@ -3,14 +3,14 @@ import React from "react";
 import { claimAssetsTooltip } from "../../../../constants/toolTips";
 import SvgIcon from "../../svg-icon/svg-icon";
 import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
 import { pullAssets } from "../../../../utils/pullAssets";
 import { showModal } from "../../../../redux/features/modalSlice";
 import { useDispatch } from "react-redux";
 import { useQueryClient } from "react-query";
+import useWagmi from "../../../../useWagmi";
 function ClaimAssets({ lendContract, loan, amount, penalty, from }) {
   const web3 = new Web3(Web3.givenProvider);
-  const { active, account, chainId } = useWeb3React();
+  const { active, account, chainId } = useWagmi();
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   return (

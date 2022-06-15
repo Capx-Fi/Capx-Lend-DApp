@@ -7,11 +7,11 @@ import {
   checkApproveRepaymentLoan,
 } from "../../../../utils/repaymentLoan";
 import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
 import { ERC20_ABI } from "../../../../contracts/ERC20";
 import { convertToInternationalCurrencySystem } from "../../../../utils/convertToInternationalCurrencySystem";
 import { useDispatch } from "react-redux";
 import { useQueryClient } from "react-query";
+import useWagmi from "../../../../useWagmi";
 
 function RepayLoan({ lendContract, loan, masterContract, from }) {
   const [value, setValue] = React.useState(1);
@@ -22,7 +22,7 @@ function RepayLoan({ lendContract, loan, masterContract, from }) {
   const [approved, setApproved] = useState(false);
   const web3 = new Web3(Web3.givenProvider);
   const queryClient = useQueryClient();
-  const { active, account, chainId } = useWeb3React();
+  const { active, account, chainId } = useWagmi();
   let isEarly =
     parseInt(loan?.loanEndTime) >
     Math.floor(Date.now() / (86400 * 1000)) * 86400

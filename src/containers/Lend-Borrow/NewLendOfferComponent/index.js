@@ -15,7 +15,6 @@ import Summary from "../Summary";
 import isNumeric from "antd/lib/_util/isNumeric";
 import { fetchUserWVTs } from "../../../utils/fetchUserWVTs";
 import { fetchAllWVTs } from "../../../utils/fetchAllWVTs";
-import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import Web3 from "web3";
 import { MASTER_ABI } from "../../../contracts/Master";
 import { ORACLE_ABI } from "../../../contracts/Oracle";
@@ -29,6 +28,7 @@ import {
   getWrappedURL,
   stableCoinListConfig,
 } from "../../../constants/getChainConfig";
+import useWagmi from "../../../useWagmi";
 
 BigNumber.config({
   ROUNDING_MODE: 3,
@@ -105,7 +105,7 @@ const marks = {
 
 const NewLendOfferComponent = (props) => {
   const web3 = new Web3(Web3.givenProvider);
-  const { active, account, chainId } = useWeb3React();
+  const { active, account, chainId } = useWagmi();
   const [globalDisabled, setGlobalDisabled] = useState(0); //0 is Loading, 1 is disabled due to empty wvt array, 2 is active
   const [balance, setBalance] = useState(10);
   const [value, setValue] = React.useState(1);

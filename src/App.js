@@ -19,139 +19,139 @@ import ViewLendBorrow from "./containers/Lend-Borrow/ViewProjects";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
-import { useWeb3React, UnsupportedChainIdError } from "@web3-react/core";
 import Liquidation from "./containers/Liquidation";
 import { useSelector } from "react-redux";
 import CapxModal from "./components/common/modals/CapxModal";
 import { useHistory } from "react-router-dom";
 import { useQueryClient } from "react-query";
 import Breakpoint from "./containers/Breakpoint";
-import { useMediaQuery } from 'react-responsive'
+import { useMediaQuery } from "react-responsive";
+import useWagmi from "./useWagmi";
 
 const { Header, Content, Sider, Footer } = Layout;
 
 const App = () => {
-	const history = useHistory();
-	const queryClient = useQueryClient();
-	const [collapsed, setCollapsed] = React.useState(false);
-	const [loading, setLoading] = React.useState(true);
-	const isMobile = useMediaQuery({ query: "(max-width: 1240px)" });
-	const [isOpen, setIsOpen] = useState(!!isMobile);
-	const toggleCollapsed = () => {
-		setCollapsed(!collapsed);
-	};
-	const isConnected = true;
-	console.log(isConnected.isConnected);
+  const history = useHistory();
+  const queryClient = useQueryClient();
+  const [collapsed, setCollapsed] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const isMobile = useMediaQuery({ query: "(max-width: 1240px)" });
+  const [isOpen, setIsOpen] = useState(!!isMobile);
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+  const isConnected = true;
+  console.log(isConnected.isConnected);
 
-	useEffect(() => {
-		console.log("useEffect", history?.location);
-		queryClient.invalidateQueries(
-			"lendDashboard",
-			"borrowDashboard",
-			"lendLB",
-			"borrowLB"
-		);
-	}, [history?.location]);
+  useEffect(() => {
+    console.log("useEffect", history?.location);
+    queryClient.invalidateQueries(
+      "lendDashboard",
+      "borrowDashboard",
+      "lendLB",
+      "borrowLB"
+    );
+  }, [history?.location]);
 
-	setTimeout(() => {
-		setLoading(false);
-	}, 3500);
+  setTimeout(() => {
+    setLoading(false);
+  }, 3500);
 
-	const { active, account, library, connector, activate, deactivate, chainId } =
-		useWeb3React();
+  const { active, account, library, connector, activate, deactivate, chainId } =
+    useWagmi();
 
-	const modal = useSelector((state) => state.modal);
+  const modal = useSelector((state) => state.modal);
 
-	const toggle = () => {
-		setIsOpen(!isOpen);
-		if (isOpen && isMobile) {
-			document.body.classList.add("sidebar-open");
-		} else {
-			document.body.classList.remove("sidebar-open");
-		}
-	};
+  const toggle = () => {
+    setIsOpen(!isOpen);
+    if (isOpen && isMobile) {
+      document.body.classList.add("sidebar-open");
+    } else {
+      document.body.classList.remove("sidebar-open");
+    }
+  };
 
-	const isDesktop1440 = useMediaQuery({
-		query: '(min-width: 1441px)'
-	})
-	const isDesktop1280 = useMediaQuery({
-		query: '(max-width: 1280px)'
-	})
-	return (
-		<>
-			{!loading ? (
-				<>
-					<SvgSprite url={svgFile} />
-					<Router>
-						<Layout>
-							<Header className="header">
-								<NavigationBar />
-							</Header>
-							<Layout className="main-content ">
-								{active ? (
-									<>
-										{modal.modalType !== null && <CapxModal {...modal} />}
-										<Sider
-											width={isDesktop1440 ? 290 : 240}
-											collapsible
-											breakpoint="xl"
-											className={
-												isOpen ? "capx-sider" : "sidebar-open capx-sider"
-											}
-											collapsed={collapsed}
-											trigger={null}
-										>
-											<SideBar />
+  const isDesktop1440 = useMediaQuery({
+    query: "(min-width: 1441px)",
+  });
+  const isDesktop1280 = useMediaQuery({
+    query: "(max-width: 1280px)",
+  });
+  return (
+    <>
+      {!loading ? (
+        <>
+          <SvgSprite url={svgFile} />
+          <Router>
+            <Layout>
+              <Header className="header">
+                <NavigationBar />
+              </Header>
+              <Layout className="main-content ">
+                {active ? (
+                  <>
+                    {modal.modalType !== null && <CapxModal {...modal} />}
+                    <Sider
+                      width={isDesktop1440 ? 290 : 240}
+                      collapsible
+                      breakpoint="xl"
+                      className={
+                        isOpen ? "capx-sider" : "sidebar-open capx-sider"
+                      }
+                      collapsed={collapsed}
+                      trigger={null}
+                    >
+                      <SideBar />
 
-											<Button
-												className="menu-link"
-												type="link"
-												onClick={toggleCollapsed}
-												style={{ marginBottom: 16 }}
-											>
-												{collapsed ? (
-													<SvgIcon
-														name="chevron-right"
-														viewbox="0 0 5.333 9.333"
-													/>
-												) : (
-													<SvgIcon
-														name="chevron-left"
-														viewbox="0 0 5.333 9.333"
-													/>
-												)}
-											</Button>
-										</Sider>
-										<Content className="right-content-wrapper">
-											<Switch>
-												<Route path="/liquidation" component={Liquidation} />
-												<Route path="/market" component={ViewLendBorrow} />
-												<Route path="/" component={Dashboard} />
-											</Switch>
-										</Content>
-									</>
-								) : (
-									<Content className="right-content-wrapper">
-										<Metamask />
-									</Content>
-								)}
-							</Layout>
-							<Layout className="breakpoint">
-								<Content className="content-wrapper">
-									<Breakpoint />
-								</Content>
-							</Layout>
-							<Footer className="main-footer">
-								© 2021 Capx All rights reserved.
-							</Footer>
-						</Layout>
-					</Router>
-				</>
-			) : (
-				<LoadingScreen />
-			)}
-		</>
-	);
+                      <Button
+                        className="menu-link"
+                        type="link"
+                        onClick={toggleCollapsed}
+                        style={{ marginBottom: 16 }}
+                      >
+                        {collapsed ? (
+                          <SvgIcon
+                            name="chevron-right"
+                            viewbox="0 0 5.333 9.333"
+                          />
+                        ) : (
+                          <SvgIcon
+                            name="chevron-left"
+                            viewbox="0 0 5.333 9.333"
+                          />
+                        )}
+                      </Button>
+                    </Sider>
+                    <Content className="right-content-wrapper">
+                      <Switch>
+                        <Route path="/liquidation" component={Liquidation} />
+                        <Route path="/market" component={ViewLendBorrow} />
+                        <Route path="/" component={Dashboard} />
+                      </Switch>
+                    </Content>
+                  </>
+                ) : (
+                  <Content className="right-content-wrapper">
+                    <Metamask />
+                  </Content>
+                )}
+              </Layout>
+              <Layout className="breakpoint">
+                <Content className="content-wrapper">
+                  <Breakpoint />
+                </Content>
+              </Layout>
+              <Footer className="main-footer">
+                © 2021 Capx All rights reserved.
+              </Footer>
+            </Layout>
+          </Router>
+        </>
+      ) : (
+        <LoadingScreen />
+      )}
+    </>
+  );
 };
 
 export default App;

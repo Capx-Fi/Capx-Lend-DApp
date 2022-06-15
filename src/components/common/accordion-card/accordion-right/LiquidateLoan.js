@@ -6,12 +6,12 @@ import {
   checkApproveLiquidation,
 } from "../../../../utils/liquidation";
 import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
 import { ERC20_ABI } from "../../../../contracts/ERC20";
 import { useDispatch } from "react-redux";
 import { convertToInternationalCurrencySystem } from "../../../../utils/convertToInternationalCurrencySystem";
 import BigNumber from "bignumber.js";
 import { useQueryClient } from "react-query";
+import useWagmi from "../../../../useWagmi";
 
 function LiquidateLoan({ lendContract, loan, masterContract, from }) {
   const [value, setValue] = React.useState(1);
@@ -22,7 +22,7 @@ function LiquidateLoan({ lendContract, loan, masterContract, from }) {
   const dispatch = useDispatch();
   const web3 = new Web3(Web3.givenProvider);
   const queryClient = useQueryClient();
-  const { active, account, chainId } = useWeb3React();
+  const { active, account, chainId } = useWagmi();
 
   useEffect(() => {
     console.log("LiquidateLoan useEffect");

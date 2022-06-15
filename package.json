@@ -16,7 +16,7 @@
     "bignumber.js": "^9.0.2",
     "classnames": "^2.3.1",
     "craco-less": "1.20.0",
-    "ethers": "^5.6.4",
+    "ethers": "^5.6.8",
     "graphql": "^16.4.0",
     "lottie-react": "^2.2.1",
     "react": "^17.0.2",
@@ -29,6 +29,7 @@
     "react-scrollbars-custom": "^4.0.27",
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.1",
+    "wagmi": "^0.4.12",
     "web-vitals": "^1.0.1",
     "web3": "^1.6.1"
   },

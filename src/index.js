@@ -10,9 +10,41 @@ import { store } from "./redux/app";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
-function getLibrary(provider) {
-  return new Web3(provider);
-}
+import {
+  WagmiConfig,
+  createClient,
+  configureChains,
+  defaultChains,
+  Chain,
+} from "wagmi";
+
+import { rinkeby, polygonMumbai } from "wagmi/chains";
+
+import { publicProvider } from "wagmi/providers/public";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { avalancheChain, bscTestnet } from "./chainObjects";
+
+const { chains, provider, webSocketProvider } = configureChains(
+  [avalancheChain, bscTestnet, rinkeby, polygonMumbai],
+  [publicProvider()]
+);
+
+const client = createClient({
+  autoConnect: false,
+  connectors: [
+    new MetaMaskConnector({ chains }),
+    new WalletConnectConnector({
+      chains,
+      options: {
+        qrcode: true,
+      },
+    }),
+  ],
+  provider,
+  webSocketProvider,
+});
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -23,7 +55,7 @@ const queryClient = new QueryClient({
   },
 });
 ReactDOM.render(
-  <Web3ReactProvider getLibrary={getLibrary}>
+  <WagmiConfig client={client}>
     <QueryClientProvider client={queryClient}>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <MetamaskStateProvider>
@@ -32,6 +64,6 @@ ReactDOM.render(
         </Provider>
       </MetamaskStateProvider>
     </QueryClientProvider>
-  </Web3ReactProvider>,
+  </WagmiConfig>,
   document.getElementById("root")
 );

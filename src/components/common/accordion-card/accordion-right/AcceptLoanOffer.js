@@ -1,7 +1,6 @@
 import { Button, Col, Row, Checkbox, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
-import { useWeb3React } from "@web3-react/core";
 import { cancelLoan } from "../../../../utils/cancelLoan";
 import {
   approveAcceptLoan,
@@ -12,6 +11,7 @@ import { ERC20_ABI } from "../../../../contracts/ERC20";
 import { useDispatch } from "react-redux";
 import { useQueryClient } from "react-query";
 import SvgIcon from "../../svg-icon/svg-icon";
+import useWagmi from "../../../../useWagmi";
 
 function AcceptLoanOffer({
   masterContract,
@@ -24,7 +24,7 @@ function AcceptLoanOffer({
   isLendMarket,
 }) {
   const web3 = new Web3(Web3.givenProvider);
-  const { active, account, chainId } = useWeb3React();
+  const { active, account, chainId } = useWagmi();
   const [approved, setApproved] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();

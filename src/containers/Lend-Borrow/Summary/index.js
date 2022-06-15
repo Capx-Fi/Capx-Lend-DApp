@@ -11,7 +11,6 @@ import {
   createLoan,
 } from "../../../utils/createLoan";
 import { ERC20_ABI } from "../../../contracts/ERC20";
-import { useWeb3React } from "@web3-react/core";
 import { convertToInternationalCurrencySystemTotalInterest } from "../../../utils/convertToInternationalCurrencySystem";
 import { getInterest } from "../../../utils/fetchLoanDetails";
 import { useDispatch } from "react-redux";
@@ -21,6 +20,7 @@ import {
   getMasterContract,
   getOracleContract,
 } from "../../../constants/getChainConfig";
+import useWagmi from "../../../useWagmi";
 BigNumber.config({
   ROUNDING_MODE: 3,
   DECIMAL_PLACES: 18,
@@ -29,7 +29,7 @@ BigNumber.config({
 const Summary = (props) => {
   const web3 = new Web3(Web3.givenProvider);
   const [isValid, setIsValid] = useState(false);
-  const { active, account, chainId } = useWeb3React();
+  const { active, account, chainId } = useWagmi();
   const approved = props.approved;
   const setApproved = props.setApproved;
   const masterContract =
