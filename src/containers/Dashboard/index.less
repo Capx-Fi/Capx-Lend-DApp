@@ -140,6 +140,17 @@
 	}
 }
 
+@keyframes zoom-in-zoom-out {
+	0% {
+	  transform: scale(1, 1);
+	}
+	50% {
+	  transform: scale(0.98, 0.98);
+	}
+	100% {
+	  transform: scale(1, 1);
+	}
+  }
 
 .orderlist-card {
 	margin-bottom: 15px;
@@ -151,6 +162,9 @@
 		margin-bottom: 10;
 		position: relative;
 		z-index: 1;
+		&:hover{
+			animation: zoom-in-zoom-out 1s ease;
+		}
 	}
 	.ordercard-upper {
 		display: flex;

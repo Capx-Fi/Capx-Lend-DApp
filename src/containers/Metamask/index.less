@@ -6,7 +6,7 @@
 	align-items: flex-start;
 	top: 7.5rem;
 	position: relative;
-	padding: 3rem 4rem;
+	padding: 4rem 4rem;
 	border-radius: 2rem;
 	margin: auto;
 	background: linear-gradient(
@@ -18,14 +18,21 @@
 	height: 45vh;
 	min-height: 400px;
 
-	@media screen and (min-width:1440px) {
+	@media screen and (min-width:1441px) {
 		width: 60vw;
 		height: 55vh;
 	}
 
-	@media screen and (max-width:1400px) {
+	@media screen and (max-width:1440px) {
+		top: 7.5rem;
+		width: 70vw;
+		height: 50vh;
+	}
+
+	@media screen and (max-width:1366px) {
 		top: 4rem;
-		width: 60vw;
+		width: 70vw;
+		height: 48vh;
 	}
 
 	.header {
@@ -41,12 +48,14 @@
 		cursor: pointer;
 		background-color: white;
 		border-radius: 12px;
-		padding: 1rem;
+		padding: 1rem 1.6rem;
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
 		margin-top: 3rem;
+		font-weight: 500;
+		font-size: 1.3rem;
 		.metamask-icon {
 			margin-right: 1rem;
 			width: 1.5rem;
@@ -56,7 +65,7 @@
 		}
 		@media screen and (min-width:1600px) {
 			font-size: 1.5rem;
-			padding: 1rem 1.5rem;
+			padding: 1rem 1.8rem;
 		}
 	}
 	.firefox {
