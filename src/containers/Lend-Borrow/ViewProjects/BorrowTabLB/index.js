@@ -36,9 +36,14 @@ const BorrowTabLB = () => {
   });
   const [filteredLoans, setFilteredLoans] = useState(null);
   const [sortBy, setSortBy] = useState("stableCoinAmt");
-  const web3 = new Web3(Web3.givenProvider);
-  const { active, account, chainId } = useWagmi();
+  const [web3, setWeb3] = useState(null);
 
+  const { active, account, chainId, provider } = useWagmi();
+  useEffect(() => {
+    provider.then((res) => {
+      setWeb3(new Web3(res));
+    });
+  }, [active, chainId]);
   const masterContract = new web3.eth.Contract(
     MASTER_ABI,
     getMasterContract(chainId)

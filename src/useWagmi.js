@@ -21,6 +21,10 @@ function useWagmi() {
   const deactivate = wagmiDisconnect.disconnect;
   const connect = wagmiConnect.connect;
   const switchNetwork = wagmiNetwork.switchNetwork;
+  const { activeConnector } = wagmiConnect;
+  const provider = wagmiConnect.activeConnector?.getProvider().then((res) => {
+    return res;
+  });
 
   return {
     active,
@@ -32,6 +36,8 @@ function useWagmi() {
     error,
     connect,
     switchNetwork,
+    activeConnector,
+    provider,
   };
 }
 
