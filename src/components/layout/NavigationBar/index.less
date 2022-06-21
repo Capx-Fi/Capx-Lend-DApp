@@ -17,9 +17,6 @@
 			}
 		}
 		.top-bar-right {
-			@media (max-width: 1919px) {
-				display: none;
-			}
 			font-size: 26px;
 			height: 100%;
 			display: flex;
@@ -70,6 +67,12 @@
 							color: @text-white;
 							.svg-icon {
 								margin-right: 8px;
+								display: flex;
+								align-items: center;
+								.svg-icon-inner{
+									display: flex;
+									align-items: center;
+								}
 							}
 							&.ant-select-item-option-active,
 							.ant-select-item-option-selected {
@@ -129,6 +132,8 @@
 				font-weight: normal;
 				.svg-icon {
 					margin-right: 8px;
+					display: flex;
+					align-items: center;
 					.svg-icon-inner {
 						display: flex;
 						align-items: center;

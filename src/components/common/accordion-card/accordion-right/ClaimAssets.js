@@ -17,7 +17,7 @@ function ClaimAssets({ lendContract, loan, amount, penalty, from }) {
     <div>
       <Row className="mb-2">
         <Col sm="12">
-          <b>Claim Asset</b>
+          <b className="titles-right">Claim Asset</b>
         </Col>
       </Row>
       <Row>

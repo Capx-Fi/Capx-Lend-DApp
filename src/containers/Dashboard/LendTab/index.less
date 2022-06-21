@@ -4,21 +4,23 @@
 	display: flex;
 }
 
-.filter-container {
-	display: flex;
-	.select-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		.capx-dropdown {
-			width: 10px;
-			&:hover {
-				border-color: none !important;
-				box-shadow: none !important;
-			}
+.ScrollbarsCustom {
+	&.dashboard-scroll{
+		height: calc(100vh - 510px) !important;
+		@media screen and (max-width:1440px) {
+			height: calc(100vh - 458px) !important;
 		}
-		p {
-			margin-bottom: 0;
+		@media screen and (max-width:1366px) {
+            height: calc(100vh - 433px) !important;
+        }
+		.no-orders{
+			height: calc(100vh - 560px) !important;
+			@media screen and (max-width:1440px) {
+				height: calc(100vh - 500px) !important;
+			}
+			@media screen and (max-width:1366px) {
+				height: calc(100vh - 480px) !important;
+			}
 		}
 	}
 }

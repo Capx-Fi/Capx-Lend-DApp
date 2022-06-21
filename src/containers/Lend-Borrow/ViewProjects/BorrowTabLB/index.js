@@ -140,8 +140,8 @@ const BorrowTabLB = () => {
 			<>
 				<h1 className="mb-2">Marketplace</h1>
 				<Row className="heading-row">
+					<Col sm="12" className="filterby-heading"><h3> Filter By </h3></Col>
 					<Col className="left-col">
-						<h3> Filter By </h3>
 						<div className="filter-container">
 							<div className="select-container">
 								<p>{"Company Asset:"}</p>
@@ -203,7 +203,7 @@ const BorrowTabLB = () => {
 						<h2>All Offers</h2>
 					</Col>
 					<Col>
-						<Scrollbar style={{ height: "calc(100vh - 392px)" }}>
+						<Scrollbar className="lendbrrow-scroll">
 							<div className="order-list">
 								{/* {availableLoanStatus(filteredLoans).map(function (status) {
 									return ( */}
